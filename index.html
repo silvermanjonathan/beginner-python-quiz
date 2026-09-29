@@ -1,0 +1,873 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Beginner Python Quiz</title>
+<meta name="description" content="A 51-question quiz for Python beginners. Read a short program, predict what it does, then see what Python really prints.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* Lecture Light: built for a projector in a room with the lights on.
+   Light ground, near-black text, few accents, no hairlines. */
+:root{
+  --paper:#F4F0E6; --card:#FFFDF7; --ink:#17181B; --ink-soft:#4A4D53; --rule:#D3CBB8;
+  --teal:#0E4D52; --teal-deep:#0A3A3E; --teal-tint:#E3EDEE; --clay:#9C2B22; --clay-tint:#F7E4E1;
+  --ochre:#8A5A00; --ochre-line:#D99B12; --ochre-tint:#FBF2DC;
+  --green:#1D5B39; --green-tint:#E8F1E9; --green-ink:#122B1C; --code-bg:#EDE7D9;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0; background:var(--paper); color:var(--ink);
+  font-family:'DM Sans',system-ui,sans-serif; font-size:18px; font-weight:500; line-height:1.65}
+header.top{background:var(--teal); color:#FFFDF7; border-bottom:6px solid var(--ochre-line);
+  padding:30px 22px 26px}
+.wrap{max-width:900px; margin:0 auto}
+.eyebrow{font-family:'JetBrains Mono',monospace; font-size:13px; letter-spacing:.14em;
+  text-transform:uppercase; color:#F2D89B; margin:0 0 10px; font-weight:700}
+h1{font-family:'Bricolage Grotesque','DM Sans',sans-serif; font-weight:800;
+  font-size:clamp(29px,4.8vw,44px); line-height:1.1; margin:0 0 10px}
+h2{font-family:'Bricolage Grotesque','DM Sans',sans-serif; font-weight:700; font-size:25px;
+  line-height:1.25; margin:0 0 14px; color:var(--teal-deep)}
+h3{font-family:'Bricolage Grotesque','DM Sans',sans-serif; font-weight:700; font-size:20px;
+  margin:18px 0 10px; color:var(--teal-deep)}
+header.top h1{color:#FFFDF7}
+.sub{color:#EAE3D2; margin:0; font-size:19px; font-weight:400}
+main{padding:28px 22px 12px}
+section{background:var(--card); border:2px solid var(--rule); border-radius:6px;
+  padding:22px 24px; margin:0 0 20px}
+section.intro{border-left:8px solid var(--green)}
+section.pick{border-left:8px solid var(--teal)}
+section.q{border-left:8px solid var(--ochre-line)}
+section.res{border-left:8px solid var(--teal)}
+.label,.chunk-no{font-family:'JetBrains Mono',monospace; font-size:13px; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--ochre); margin:0 0 8px; font-weight:700}
+.label.green{color:var(--green)} .label.clay{color:var(--clay)} .label.teal{color:var(--teal)}
+p{margin:0 0 14px}
+ol,ul{margin:0 0 14px; padding-left:26px} li{margin:0 0 8px}
+code,pre,.tile,.typed{font-variant-ligatures:none; font-feature-settings:"liga" 0,"calt" 0,"dlig" 0}
+code{font-family:'JetBrains Mono',monospace; font-size:.9em; font-weight:700;
+  background:var(--code-bg); color:#1E2A2B; padding:2px 6px; border-radius:3px}
+pre{font-family:'JetBrains Mono',monospace; font-size:15.5px; line-height:1.6;
+  background:var(--code-bg); color:var(--ink); border:2px solid var(--rule);
+  border-left:6px solid #B9AF96; border-radius:4px; padding:14px 16px; overflow-x:auto;
+  margin:0 0 16px; font-weight:500}
+pre.out{background:var(--green-tint); border-color:#A9C6B2; border-left:6px solid var(--green);
+  color:var(--green-ink)}
+pre.target{background:#FFFDF7; border-color:var(--ochre-line); border-left:6px solid var(--ochre-line)}
+.empty{font-family:'DM Sans',sans-serif; font-style:italic; color:var(--ink-soft)}
+/* Code colours by role, from VS Code's Light+ theme, darkened where needed to clear 4.5:1. */
+.tk-ctl{color:#9A00C2} .tk-kw{color:#0000FF} .tk-str{color:#A31515} .tk-num{color:#06704A}
+.tk-com{color:#3B6E2A} .tk-fn{color:#795E26} .tk-cls{color:#1D6A80} .tk-var{color:#001080}
+.blank{background:var(--ochre-tint); color:var(--ochre); border-bottom:3px solid var(--ochre-line);
+  font-weight:700; padding:0 2px}
+.filled{background:#FBF2DC; box-shadow:0 0 0 2px #FBF2DC}
+a{color:var(--teal)}
+kbd{font-family:'JetBrains Mono',monospace; font-size:.9em; font-weight:700; background:#fff;
+  border:2px solid var(--rule); border-bottom-width:3px; border-radius:4px; padding:0 7px}
+button{font-family:'DM Sans',sans-serif}
+.btn{display:inline-block; font-size:17px; font-weight:700; background:var(--teal);
+  color:#FFFDF7; border:2px solid var(--teal); border-radius:4px; padding:11px 20px;
+  cursor:pointer; text-decoration:none; line-height:1.3}
+.btn:hover{background:var(--teal-deep)}
+.btn.quiet{background:var(--card); color:var(--teal)}
+.btn.quiet:hover{background:#EFE9DA}
+.btn.big{font-size:19px; padding:14px 26px}
+.btn:disabled{opacity:.45; cursor:not-allowed}
+.btn.hint{background:var(--card); color:var(--ochre); border-color:var(--ochre-line)}
+.btn.hint:hover{background:var(--ochre-tint)}
+.row{display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin:0 0 14px}
+:focus-visible{outline:3px solid var(--ochre-line); outline-offset:2px}
+
+/* start screen */
+.rounds{display:grid; gap:10px; grid-template-columns:minmax(0,1fr); margin:0 0 6px}
+@media(min-width:760px){.rounds{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+.round{display:flex; gap:12px; align-items:flex-start; border:2px solid var(--rule);
+  border-radius:5px; padding:12px 14px; background:#FFFDF7; cursor:pointer}
+.round:has(input:checked){border-color:var(--teal); background:var(--teal-tint)}
+.round input{width:22px; height:22px; margin:3px 0 0; accent-color:var(--teal); flex:none}
+.round .n{font-family:'JetBrains Mono',monospace; font-weight:700; color:var(--teal);
+  min-width:26px}
+.round b{display:block; font-size:18px; line-height:1.3}
+.round .about{display:block; font-size:15.5px; color:var(--ink-soft); line-height:1.45}
+.round .count{display:block; font-family:'JetBrains Mono',monospace; font-size:13px;
+  color:var(--ochre); font-weight:700; margin-top:4px}
+.modes{display:grid; gap:10px; margin:0 0 14px}
+.mode{display:flex; gap:12px; align-items:flex-start; border:2px solid var(--rule);
+  border-radius:5px; padding:12px 14px; cursor:pointer; background:#FFFDF7}
+.mode:has(input:checked){border-color:var(--teal); background:var(--teal-tint)}
+.mode input{width:20px; height:20px; margin:4px 0 0; accent-color:var(--teal); flex:none}
+.mode span{display:block; font-size:16px; color:var(--ink-soft)}
+.check{display:flex; gap:10px; align-items:center; cursor:pointer}
+.check input{width:20px; height:20px; accent-color:var(--teal)}
+.note{font-size:16px; color:var(--ink-soft)}
+
+/* question */
+.qmeta{display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center;
+  gap:8px 16px; margin:0 0 10px}
+.qmeta .where{font-family:'JetBrains Mono',monospace; font-size:13.5px; font-weight:700;
+  color:var(--teal); letter-spacing:.06em; text-transform:uppercase}
+.progress{height:14px; background:#E6DFCD; border:2px solid var(--rule); border-radius:999px;
+  overflow:hidden; margin:0 0 20px}
+.progress i{display:block; height:100%; background:var(--teal)}
+.ask{font-size:24px; outline:none}
+.codehead{display:flex; justify-content:space-between; align-items:center; gap:10px;
+  margin:0 0 6px}
+.codehead .fname{font-family:'JetBrains Mono',monospace; font-size:13px; font-weight:700;
+  color:var(--ink-soft)}
+.small{font-size:14.5px; font-weight:700; background:var(--card); color:var(--teal);
+  border:2px solid var(--rule); border-radius:4px; padding:5px 11px; cursor:pointer}
+.small:hover{background:#EFE9DA}
+.stdin{background:var(--ochre-tint); border:2px dashed var(--ochre); border-radius:5px;
+  padding:10px 14px; margin:0 0 16px}
+.opts{display:grid; gap:12px; margin:0 0 18px}
+.opt{display:flex; gap:14px; align-items:flex-start; width:100%; text-align:left;
+  background:#FFFDF7; border:2px solid var(--rule); border-radius:6px; padding:12px 14px;
+  font:inherit; color:var(--ink); cursor:pointer; min-width:0}
+.opt:hover:not([disabled]){border-color:var(--teal)}
+.opt[aria-checked="true"]{border-color:var(--teal); background:var(--teal-tint);
+  box-shadow:inset 0 0 0 1px var(--teal)}
+.opt[disabled]{cursor:default}
+.opt .letter{flex:none; width:36px; height:36px; border-radius:50%; border:2px solid var(--teal);
+  display:flex; align-items:center; justify-content:center;
+  font-family:'JetBrains Mono',monospace; font-weight:700; color:var(--teal); background:#fff}
+.opt[aria-checked="true"] .letter{background:var(--teal); color:#fff}
+.opt .body{flex:1; min-width:0; padding-top:4px}
+.opt .body pre{margin:0; padding:0; background:none; border:0; font-size:16px; line-height:1.5;
+  white-space:pre; overflow-x:auto}
+.opt .body .err{font-family:'JetBrains Mono',monospace; font-weight:700}
+.opt .tag{flex:none; font-family:'JetBrains Mono',monospace; font-size:12.5px; font-weight:700;
+  letter-spacing:.08em; text-transform:uppercase; padding-top:8px}
+.opt.right{border-color:var(--green); background:var(--green-tint); box-shadow:none}
+.opt.right .tag{color:var(--green)}
+.opt.right .letter{border-color:var(--green); color:var(--green); background:#fff}
+.opt.wrong{border-color:var(--clay); background:var(--clay-tint); box-shadow:none}
+.opt.wrong .tag{color:var(--clay)}
+.opt.wrong .letter{border-color:var(--clay); color:#fff; background:var(--clay)}
+.opt.dim{opacity:.7}
+.hints{margin:0 0 12px}
+.hintbox{border-top:2px solid var(--ochre-line); padding-top:10px; margin:0 0 12px}
+.sure p{font-weight:700; margin:0 0 8px}
+.typed{font-family:'JetBrains Mono',monospace; font-size:18px; padding:10px 12px;
+  border:2px solid var(--ink-soft); border-radius:4px; width:100%; max-width:460px;
+  background:#fff; color:var(--ink); margin:0 0 16px}
+.fb{margin-top:20px; padding-top:18px; border-top:2px solid var(--rule)}
+.verdict{font-family:'Bricolage Grotesque','DM Sans',sans-serif; font-weight:800; font-size:26px;
+  padding:10px 16px; border-radius:5px; margin:0 0 16px; outline:none}
+.verdict.good{background:var(--green-tint); color:var(--green); border-left:8px solid var(--green)}
+.verdict.bad{background:var(--clay-tint); color:var(--clay); border-left:8px solid var(--clay)}
+.verdict.plain{background:var(--teal-tint); color:var(--teal-deep); border-left:8px solid var(--teal)}
+.why{border-left:4px solid var(--clay); padding-left:14px; margin:0 0 16px}
+.why.good{border-left-color:var(--green)}
+.why p:last-child,.why pre:last-child{margin-bottom:0}
+.keys{font-family:'JetBrains Mono',monospace; font-size:13px; color:var(--ink-soft); margin:0 0 20px}
+@media(max-width:700px){.keys{display:none}}
+
+/* put the lines in order */
+.parsons{display:grid; gap:16px; grid-template-columns:minmax(0,1fr); margin:0 0 16px}
+@media(min-width:820px){.parsons{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+.parsons > div{min-width:0}
+.well{border:2px dashed var(--rule); border-radius:6px; padding:10px; min-height:70px; background:#FBF9F3}
+.well.prog{border-color:var(--teal); background:#FFFDF7}
+.well ol{list-style:none; margin:0; padding:0}
+.well li{margin:0 0 8px; display:flex; gap:8px; align-items:stretch}
+.well li:last-child{margin-bottom:0}
+.ln{flex:none; width:28px; font-family:'JetBrains Mono',monospace; font-size:13px; color:var(--ink-soft);
+  font-weight:700; padding-top:10px; text-align:right}
+.tile{flex:1; min-width:0; display:block; text-align:left; font-family:'JetBrains Mono',monospace;
+  font-size:15.5px; line-height:1.5; white-space:pre; overflow-x:auto; background:var(--code-bg);
+  border:2px solid var(--rule); border-radius:4px; padding:8px 12px; cursor:pointer; color:var(--ink)}
+.tile:hover:not([disabled]){border-color:var(--teal)}
+.tile[disabled]{cursor:default}
+.well .placeholder{color:var(--ink-soft); font-size:15.5px; margin:8px 6px}
+
+/* results */
+.score{font-family:'Bricolage Grotesque','DM Sans',sans-serif; font-weight:800;
+  font-size:clamp(34px,6vw,52px); line-height:1.1; color:var(--teal-deep); margin:0 0 8px}
+.conf{display:grid; gap:12px; grid-template-columns:1fr; margin:6px 0 0}
+@media(min-width:700px){.conf{grid-template-columns:1fr 1fr}}
+.cbox{border:2px solid var(--rule); border-radius:5px; padding:14px 16px; background:#FFFDF7}
+.cbox .num{font-family:'Bricolage Grotesque','DM Sans',sans-serif; font-weight:800; font-size:32px;
+  line-height:1}
+.cbox b{display:block; margin:4px 0 4px}
+.cbox span{display:block; font-size:15.5px; color:var(--ink-soft); line-height:1.45}
+.cbox.sw{border-top:6px solid var(--clay)} .cbox.sw .num{color:var(--clay)}
+.cbox.nw{border-top:6px solid var(--ochre-line)} .cbox.nw .num{color:var(--ochre)}
+.cbox.nr{border-top:6px solid var(--teal)} .cbox.nr .num{color:var(--teal)}
+.cbox.sr{border-top:6px solid var(--green)} .cbox.sr .num{color:var(--green)}
+.bars{display:grid; gap:10px}
+.bar{display:grid; grid-template-columns:minmax(0,1fr) auto; gap:4px 12px; align-items:center}
+.bar .t{font-weight:700}
+.bar .v{font-family:'JetBrains Mono',monospace; font-weight:700; color:var(--teal)}
+.bar .track{grid-column:1 / -1; height:14px; background:#E6DFCD; border:2px solid var(--rule);
+  border-radius:999px; overflow:hidden}
+.bar .track i{display:block; height:100%; background:var(--green)}
+details.rev{border:2px solid var(--rule); border-radius:5px; background:#FFFDF7; margin:0 0 10px}
+details.rev summary{cursor:pointer; padding:12px 14px; font-weight:700}
+details.rev[open] summary{border-bottom:2px solid var(--rule)}
+details.rev .in{padding:14px}
+.meta{font-family:'JetBrains Mono',monospace; font-size:12.5px; color:var(--ochre);
+  letter-spacing:.06em; text-transform:uppercase; margin-right:8px}
+.peek{display:block; font-family:'JetBrains Mono',monospace; font-size:14px; font-weight:500;
+  color:var(--ink-soft); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+
+footer{background:#EAE4D5; border-top:4px solid var(--teal); padding:22px 22px 36px;
+  font-size:15px; color:var(--ink-soft)}
+footer p{max-width:900px; margin:0 auto 8px}
+
+/* class mode: for a projector */
+body.classmode{font-size:21px}
+body.classmode .ask{font-size:31px}
+body.classmode pre{font-size:20px}
+body.classmode .opt .body pre{font-size:20px}
+body.classmode .tile{font-size:19px}
+body.classmode .opt .letter{width:44px; height:44px; font-size:20px}
+body.classmode .wrap{max-width:1100px}
+
+@media(max-width:600px){
+  header.top{padding:24px 16px 22px}
+  main{padding:20px 16px 8px}
+  section{padding:18px 14px}
+  footer{padding:20px 16px 30px}
+  .ask{font-size:21px}
+  pre{font-size:14px; padding:10px 10px; border-left-width:5px}
+  .tile{font-size:14px; padding:8px 10px}
+  .well{padding:8px}
+  .ln{width:20px}
+  .opt{padding:10px 10px; gap:10px}
+  .opt .tag{display:none}
+  .opt.right .body::after{content:"Right answer"; display:block; font-family:'JetBrains Mono',monospace;
+    font-size:12px; font-weight:700; color:var(--green); letter-spacing:.08em; text-transform:uppercase; margin-top:4px}
+  .opt.wrong .body::after{content:"Your answer"; display:block; font-family:'JetBrains Mono',monospace;
+    font-size:12px; font-weight:700; color:var(--clay); letter-spacing:.08em; text-transform:uppercase; margin-top:4px}
+  .btn{padding:11px 16px}
+}
+@media print{
+  body{background:#fff}
+  header.top{background:#fff; color:#111; border-bottom:3px solid #111}
+  header.top h1,.sub,.eyebrow{color:#111}
+  section{background:#fff; break-inside:avoid}
+  .row,.keys,footer{display:none}
+}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+<p class="eyebrow">Python for beginners · Quiz</p>
+<h1>Beginner Python Quiz</h1>
+<p class="sub">51 questions in 11 rounds. Each one shows a short program and asks what it will do.</p>
+</div></header>
+<main class="wrap" id="app">
+<noscript><section><p>This quiz needs JavaScript turned on in your browser.</p></section></noscript>
+</main>
+<footer>
+<p>Every program on this page was run with Python 3.11.15 when the page was built, and every right answer comes from what it really printed. Newer versions of Python word a few error messages differently, but the error names are the same.</p>
+<p>The questions are in <a href="https://github.com/silvermanjonathan/beginner-python-quiz/blob/main/build/questions.py">build/questions.py</a>. Source: <a href="https://github.com/silvermanjonathan/beginner-python-quiz">github.com/silvermanjonathan/beginner-python-quiz</a></p>
+</footer>
+<script type="application/json" id="quiz-data">{"rounds":[{"id":"names","title":"Printing and names","about":"print, quote marks, and names that hold values","count":4},{"id":"types","title":"Input and types","about":"input, text against numbers, type(), int(), f-strings","count":5},{"id":"gates","title":"Comparisons and if","about":"True and False, ==, if, elif, else","count":4},{"id":"andor","title":"and, or, and while","about":"two conditions at once, and loops that stop","count":5},{"id":"loops","title":"for loops and range","about":"range, the loop variable, adding up a total","count":4},{"id":"lists","title":"Lists","about":"index numbers, len, max, sum, counters, best so far","count":5},{"id":"functions","title":"Functions","about":"def, parameters, return against print","count":5},{"id":"strings","title":"Strings","about":"index numbers, slices, strip, replace, in","count":5},{"id":"remainders","title":"Remainders","about":"%, wrapping around, even and odd","count":4},{"id":"dicts","title":"Dictionaries","about":"keys and values, KeyError, counting with a dictionary","count":4},{"id":"errors","title":"Reading errors","about":"error names, which line, bugs with no error message","count":6}],"questions":[{"id":"names-1","round":"names","kind":"output","ask":"What does this program print?","peek":"pet = \"Rex\"","hints":["Quote marks make text. A word with no quote marks is a name, and Python looks up its value."],"explain":"Line 2 prints the text inside the quote marks: pet. Line 3 has no quote marks, so Python looks up the name <code>pet<\/code> and prints its value: Rex.","stdin":null,"code":"<span class=\"tk-var\">pet<\/span> = <span class=\"tk-str\">\"Rex\"<\/span>\n<span class=\"tk-fn\">print<\/span>(<span class=\"tk-str\">\"pet\"<\/span>)\n<span class=\"tk-fn\">print<\/span>(<span class=\"tk-var\">pet<\/span>)\n","copy":"pet = \"Rex\"\nprint(\"pet\")\nprint(pet)\n","real":"pet\nRex","opts":[{"t":"pet\nRex","h":"pet\nRex","s":"out","ok":true,"why":"","out":null},{"t":"Rex\nRex","h":"Rex\nRex","s":"out","ok":false,"why":"The first print has quote marks around pet. Quote marks make text, so Python prints the three letters p, e, t. It does not look up the name.","out":null},{"t":"pet\npet","h":"pet\npet","s":"out","ok":false,"why":"The second print has no quote marks, so Python looks up the name <code>pet<\/code> and prints the value stored under it: Rex.","out":null},{"t":"Rex\npet","h":"Rex\npet","s":"out","ok":false,"why":"Python runs the lines from top to bottom. The print with quote marks comes first.","out":null}]},{"id":"names-2","round":"names","kind":"output","ask":"Line 2 and line 3 are the same. What does the program print?","peek":"score = 10","hints":["Go one line at a time and write down the value of score after each line."],"explain":"Python works out the right side of <code>=<\/code> first, then stores the answer under the name on the left. Line 2 gives 10 + 5 = 15. Line 3 gives 15 + 5 = 20.","stdin":null,"code":"<span class=\"tk-var\">score<\/span> = <span class=\"tk-num\">10<\/span>\n<span class=\"tk-var\">score<\/span> = <span class=\"tk-var\">score<\/span> + <span class=\"tk-num\">5<\/span>\n<span class=\"tk-var\">score<\/span> = <span class=\"tk-var\">score<\/span> + <span class=\"tk-num\">5<\/span>\n<span class=\"tk-fn\">print<\/span>(<span class=\"tk-var\">score<\/span>)\n","copy":"score = 10\nscore = score + 5\nscore = score + 5\nprint(score)\n","real":"20","opts":[{"t":"20","h":"20","s":"out","ok":true,"why":"","out":null},{"t":"15","h":"15","s":"out","ok":false,"why":"Line 3 runs too. It adds 5 to the 15 that line 2 stored.","out":null},{"t":"10","h":"10","s":"out","ok":false,"why":"Each line with <code>=<\/code> stores a new value under <code>score<\/code>. The 10 is replaced on line 2, and replaced again on line 3.","out":null},{"t":"score + 5","h":"score + 5","s":"out","ok":false,"why":"There are no quote marks, so Python works out <code>score + 5<\/code> as arithmetic. It does not print the words.","out":null}]},{"id":"names-3","round":"names","kind":"output","ask":"What does this program print?","peek":"a = 3","hints":["Keep a list of each name and its value. Line 2 sets b to whatever a is at that moment."],"explain":"Line 2 stores the value of <code>a<\/code>, which is 3, under the name <code>b<\/code>. Line 3 gives <code>a<\/code> a new value, 7, but <code>b<\/code> still holds 3.","stdin":null,"code":"<span class=\"tk-var\">a<\/span> = <span class=\"tk-num\">3<\/span>\n<span class=\"tk-var\">b<\/span> = <span class=\"tk-var\">a<\/span>\n<span class=\"tk-var\">a<\/span> = <span class=\"tk-num\">7<\/span>\n<span class=\"tk-fn\">print<\/span>(<span class=\"tk-var\">b<\/span>)\n","copy":"a = 3\nb = a\na = 7\nprint(b)\n","real":"3","opts":[{"t":"3","h":"3","s":"out","ok":true,"why":"","out":null},{"t":"7","h":"7","s":"out","ok":false,"why":"<code>b = a<\/code> stores the value <code>a<\/code> has at that moment, which is 3. Giving <code>a<\/code> a new value on line 3 does not change <code>b<\/code>.","out":null},{"t":"a","h":"a","s":"out","ok":false,"why":"Line 2 has no quote marks, so <code>b<\/code> gets the value of <code>a<\/code>, which is 3, not the letter a.","out":null},{"t":"10","h":"10","s":"out","ok":false,"why":"Nothing here adds. Line 3 replaces the value of <code>a<\/code> with 7. It does not add 7 to it.","out":null}]},{"id":"names-4","round":"names","kind":"error","ask":"Does this program run? If not, what is the name of the error?","peek":"name = \"Mo\"","hints":["Look closely at the first letter of the name on each line."],"explain":"The last line of the error starts with NameError and names the word <code>Name<\/code>. Python treats capital and small letters as different, so <code>Name<\/code> is a new name that was never given a value.","stdin":null,"code":"<span class=\"tk-var\">name<\/span> = <span class=\"tk-str\">\"Mo\"<\/span>\n<span class=\"tk-fn\">print<\/span>(<span class=\"tk-var\">Name<\/span>)\n","copy":"name = \"Mo\"\nprint(Name)\n","real":"Traceback (most recent call last):\n  File \"Ada_quiz.py\", line 2, in <module>\n    print(Name)\n          ^^^^\nNameError: name 'Name' is not defined. Did you mean: 'name'?","opts":[{"t":"NameError","h":"NameError","s":"err","ok":true,"why":"","out":null},{"t":"No error. It prints Mo","h":"No error. It prints Mo","s":"text","ok":false,"why":"Python treats a capital N and a small n as different letters. <code>name<\/code> and <code>Name<\/code> are two different names, and only <code>name<\/code> was given a value.","out":null},{"t":"SyntaxError","h":"SyntaxError","s":"err","ok":false,"why":"A SyntaxError means Python cannot read a line at all, like a missing bracket. Both lines here are written correctly. The problem is a name Python does not know.","out":null},{"t":"TypeError","h":"TypeError","s":"err","ok":false,"why":"A TypeError is about the wrong type of value, like text plus a number. Here Python never finds a value at all, because nothing was stored under <code>Name<\/code>.","out":null}]},{"id":"types-1","round":"types","kind":"last","ask":"What does the print line show?","peek":"age = input(\"Robot age: \")","hints":["What type of value does input give you: text or a number?"],"explain":"<code>input<\/code> always gives text, even when the person types digits. So <code>age<\/code> holds the text <code>\"3\"<\/code>. With two pieces of text, <code>+<\/code> joins them end to end: <code>\"3\" + \"3\"<\/code> is <code>\"33\"<\/code>.","stdin":"3","code":"<span class=\"tk-var\">age<\/span> = <span class=\"tk-fn\">input<\/span>(<span class=\"tk-str\">\"Robot age: \"<\/span>)\n<span class=\"tk-fn\">print<\/span>(<span class=\"tk-var\">age<\/span> + <span class=\"tk-var\">age<\/span>)\n","copy":"age = input(\"Robot age: \")\nprint(age + age)\n","real":"Robot age: 3\n33","opts":[{"t":"33","h":"33","s":"out","ok":true,"why":"","out":null},{"t":"6","h":"6","s":"out","ok":false,"why":"<code>input<\/code> always gives text. <code>age<\/code> holds the text <code>\"3\"<\/code>, and <code>+<\/code> joins two pieces of text end to end.","out":null},{"t":"It stops with an error","h":"It stops with an error","s":"text","ok":false,"why":"Text plus text is allowed: <code>+<\/code> joins them. The error comes from text plus a number, and there is no number here.","out":null},{"t":"3 3","h":"3 3","s":"out","ok":false,"why":"<code>+<\/code> joins text with nothing in between. It does not add a space.","out":null}]},{"id":"types-2","round":"types","kind":"error","ask":"Does this program run? If not, what is the name of the error?","peek":"age = input(\"Robot age: \")","hints":["The 3 the person typed comes back from input as text."],"explain":"<code>age<\/code> holds the text <code>\"3\"<\/code>. Text plus a number is not allowed, so Python stops on line 2 with a TypeError. The last line of the error names both types: str (text) and int (a whole number).","stdin":"3","code":"<span class=\"tk-var\">age<\/span> = <span class=\"tk-fn\">input<\/span>(<span class=\"tk-str\">\"Robot age: \"<\/span>)\n<span class=\"tk-fn\">print<\/span>(<span class=\"tk-var\">age<\/span> + <span class=\"tk-num\">1<\/span>)\n","copy":"age = input(\"Robot age: \")\nprint(age + 1)\n","real":"Robot age: 3\nTraceback (most recent call last):\n  File \"Ada_quiz.py\", line 2, in <module>\n    print(age + 1)\n          ~~~~^~~\nTypeError: can only concatenate str (not \"int\") to str","opts":[{"t":"TypeError","h":"TypeError","s":"err","ok":true,"why":"","out":null},{"t":"No error. It prints 4","h":"No error. It prints 4","s":"text","ok":false,"why":"<code>age<\/code> holds the text <code>\"3\"<\/code>, not the number 3. Python will not add a number to text.","out":null},{"t":"NameError","h":"NameError","s":"err","ok":false,"why":"Every name here has a value: <code>age<\/code> was given one on line 1. The problem is the type of value <code>age<\/code> holds.","out":null},{"t":"SyntaxError","h":"SyntaxError","s":"err","ok":false,"why":"Both lines are written correctly, so Python starts running. The error happens on line 2, when Python tries text plus a number.","out":null}]},{"id":"types-3","round":"types","kind":"output","ask":"What does this program print?","peek":"print(type(\"7\"))","hints":["One 7 has quote marks and one does not."],"explain":"<code>type()<\/code> tells you what <b>type<\/b> a value is. <code>\"7\"<\/code> has quote marks, so it is a str (text). <code>7<\/code> has none, so it is an int (a whole number).","stdin":null,"code":"<span class=\"tk-fn\">print<\/span>(<span class=\"tk-fn\">type<\/span>(<span class=\"tk-str\">\"7\"<\/span>))\n<span class=\"tk-fn\">print<\/span>(<span class=\"tk-fn\">type<\/span>(<span class=\"tk-num\">7<\/span>))\n","copy":"print(type(\"7\"))\nprint(type(7))\n","real":"<class 'str'>\n<class 'int'>","opts":[{"t":"<class 'str'>\n<class 'int'>","h":"&lt;class 'str'&gt;\n&lt;class 'int'&gt;","s":"out","ok":true,"why":"","out":null},{"t":"<class 'int'>\n<class 'int'>","h":"&lt;class 'int'&gt;\n&lt;class 'int'&gt;","s":"out","ok":false,"why":"Quote marks make text, even around digits. <code>\"7\"<\/code> is a str, Python's word for text.","out":null},{"t":"<class 'str'>\n<class 'str'>","h":"&lt;class 'str'&gt;\n&lt;class 'str'&gt;","s":"out","ok":false,"why":"7 with no quote marks is a whole number. Python's name for that type is int.","out":null},{"t":"7\n7","h":"7\n7","s":"out","ok":false,"why":"<code>type()<\/code> does not give back the value. It tells you what type the value is.","out":null}]},{"id":"types-4","round":"types","kind":"blank","ask":"Which fills the blank so the program prints exactly what is shown below it?","peek":"coins = input(\"Coins: \")","hints":["The first line always gives text. Which fill changes the type to a whole number?"],"explain":"<code>int()<\/code> changes the type from text to a whole number: <code>int(\"4\")<\/code> gives 4. The answer is stored back under <code>coins<\/code>, so line 3 works out 4 + 1.","stdin":"4","real":"Coins: 4\n5","finished":"<span class=\"tk-var\">coins<\/span> = <span class=\"tk-fn\">input<\/span>(<span class=\"tk-str\">\"Coins: \"<\/span>)\n<span class=\"filled\"><span class=\"tk-var\">coins<\/span> = <span class=\"tk-cls\">int<\/span>(<span class=\"tk-var\">coins<\/span>)<\/span>\n<span class=\"tk-fn\">print<\/span>(<span class=\"tk-var\">coins<\/span> + <span class=\"tk-num\">1<\/span>)\n","copy":"coins = input(\"Coins: \")\ncoins = int(coins)\nprint(coins + 1)\n","code":"<span class=\"tk-var\">coins<\/span> = <span class=\"tk-fn\">input<\/span>(<span class=\"tk-str\">\"Coins: \"<\/span>)\n<span class=\"tk-var\">coins<\/span> = <span class=\"blank\" aria-label=\"blank\">___<\/span>\n<span class=\"tk-fn\">print<\/span>(<span class=\"tk-var\">coins<\/span> + <span class=\"tk-num\">1<\/span>)\n","target":"Coins: 4\n5","opts":[{"t":"int(coins)","h":"<span class=\"tk-cls\">int<\/span>(<span class=\"tk-var\">coins<\/span>)","s":"code","ok":true,"why":"","out":"Coins: 4\n5"},{"t":"coins","h":"<span class=\"tk-var\">coins<\/span>","s":"code","ok":false,"why":"This stores the same text back. <code>coins<\/code> still holds <code>\"4\"<\/code>, so <code>coins + 1<\/code> is text plus a number.","out":"Coins: 4\nTraceback (most recent call last):\n  File \"Ada_quiz.py\", line 3, in <module>\n    print(coins + 1)\n          ~~~~~~^~~\nTypeError: can only concatenate str (not \"int\") to str"},{"t":"str(coins)","h":"<span class=\"tk-cls\">str<\/span>(<span class=\"tk-var\">coins<\/span>)","s":"code","ok":false,"why":"<code>str()<\/code> changes a value to text. <code>coins<\/code> is already text, so nothing changes and <code>coins + 1<\/code> still fails.","out":"Coins: 4\nTraceback (most recent call last):\n  File \"Ada_quiz.py\", line 3, in <module>\n    print(coins + 1)\n          ~~~~~~^~~\nTypeError: can only concatenate str (not \"int\") to str"},{"t":"\"coins\"","h":"<span class=\"tk-str\">\"coins\"<\/span>","s":"code","ok":false,"why":"With quote marks, this stores the word coins, not the value. <code>coins + 1<\/code> is then text plus a number.","out":"Coins: 4\nTraceback (most recent call last):\n  File \"Ada_quiz.py\", line 3, in <module>\n    print(coins + 1)\n          ~~~~~~^~~\nTypeError: can only concatenate str (not \"int\") to str"}]},{"id":"types-5","round":"types","kind":"type","ask":"Type exactly what this program prints.","peek":"name = \"Ada\"","hints":["The f in front of the quote mark matters."],"explain":"The <code>f<\/code> in front of the quote makes an <b>f-string<\/b>. Python puts the value of each name in curly brackets into the text: <code>{name}<\/code> becomes Ada and <code>{laps}<\/code> becomes 3.","stdin":null,"code":"<span class=\"tk-var\">name<\/span> = <span class=\"tk-str\">\"Ada\"<\/span>\n<span class=\"tk-var\">laps<\/span> = <span class=\"tk-num\">3<\/span>\n<span class=\"tk-fn\">print<\/span>(<span class=\"tk-kw\">f<\/span><span class=\"tk-str\">\"<\/span><span class=\"tk-kw\">{<\/span><span class=\"tk-var\">name<\/span><span class=\"tk-kw\">}<\/span><span class=\"tk-str\"> ran <\/span><span class=\"tk-kw\">{<\/span><span class=\"tk-var\">laps<\/span><span class=\"tk-kw\">}<\/span><span class=\"tk-str\"> laps\"<\/span>)\n","copy":"name = \"Ada\"\nlaps = 3\nprint(f\"{name} ran {laps} laps\")\n","real":"Ada ran 3 laps","answer":"Ada ran 3 laps","common":[{"t":"{name} ran {laps} laps","why":"The <code>f<\/code> in front of the opening quote tells Python to put in the value of each name in curly brackets."},{"t":"name ran laps laps","why":"The curly brackets tell Python to put in the value of the name, not the name itself."}]},{"id":"gates-1","round":"gates","kind":"output","ask":"What does this program print?","peek":"print(5 > 3)","hints":["<code>==<\/code> asks whether two values are equal. <code>!=<\/code> asks whether they are not equal."],"explain":"Each comparison gives True or False. 5 is greater than 3: True. 5 is not equal to 3, so <code>5 == 3<\/code> is False and <code>5 != 3<\/code> is True.","stdin":null,"code":"<span class=\"tk-fn\">print<\/span>(<span class=\"tk-num\">5<\/span> &gt; <span class=\"tk-num\">3<\/span>)\n<span class=\"tk-fn\">print<\/span>(<span class=\"tk-num\">5<\/span> == <span class=\"tk-num\">3<\/span>)\n<span class=\"tk-fn\">print<\/span>(<span class=\"tk-num\">5<\/span> != <span class=\"tk-num\">3<\/span>)\n","copy":"print(5 > 3)\nprint(5 == 3)\nprint(5 != 3)\n","real":"True\nFalse\nTrue","opts":[{"t":"True\nFalse\nTrue","h":"True\nFalse\nTrue","s":"out","ok":true,"why":"","out":null},{"t":"True\nFalse\nFalse","h":"True\nFalse\nFalse","s":"out","ok":false,"why":"<code>!=<\/code> means not equal. 5 is not equal to 3, so <code>5 != 3<\/code> is True.","out":null},{"t":"Yes\nNo\nYes","h":"Yes\nNo\nYes","s":"out","ok":false,"why":"A comparison gives one of Python's two yes-or-no values: True or False.","out":null},{"t":"5 > 3\n5 == 3\n5 != 3","h":"5 &gt; 3\n5 == 3\n5 != 3","s":"out","ok":false,"why":"There are no quote marks, so Python works out each comparison and prints the result.","out":null}]},{"id":"gates-2","round":"gates","kind":"output","ask":"85 is more than 50 and more than 80. What does the program print?","peek":"score = 85","hints":["Python checks the conditions in order, from the top. How many of the three print lines can run?"],"explain":"Python checks the conditions from the top down. <code>score &gt; 50<\/code> is True, so it prints pass and skips the <code>elif<\/code> and the <code>else<\/code>. To print great for 85, the <code>score &gt; 80<\/code> check would have to come first.","stdin":null,"code":"<span class=\"tk-var\">score<\/span> = <span class=\"tk-num\">85<\/span>\n<span class=\"tk-ctl\">if<\/span> <span class=\"tk-var\">score<\/span> &gt; <span class=\"tk-num\">50<\/span>:\n    <span class=\"tk-fn\">print<\/span>(<span class=\"tk-str\">\"pass\"<\/span>)\n<span class=\"tk-ctl\">elif<\/span> <span class=\"tk-var\">score<\/span> &gt; <span class=\"tk-num\">80<\/span>:\n    <span class=\"tk-fn\">print<\/span>(<span class=\"tk-str\">\"great\"<\/span>)\n<span class=\"tk-ctl\">else<\/span>:\n    <span class=\"tk-fn\">print<\/span>(<span class=\"tk-str\">\"try again\"<\/span>)\n","copy":"score = 85\nif score > 50:\n    print(\"pass\")\nelif score > 80:\n    print(\"great\")\nelse:\n    print(\"try again\")\n","real":"pass","opts":[{"t":"pass","h":"pass","s":"out","ok":true,"why":"","out":null},{"t":"great","h":"great","s":"out","ok":false,"why":"<code>85 &gt; 80<\/code> is True, but Python never gets to it. Python checks from the top and runs the lines under the first condition that is True: <code>score &gt; 50<\/code>.","out":null},{"t":"pass\ngreat","h":"pass\ngreat","s":"out","ok":false,"why":"<code>if<\/code>, <code>elif<\/code> and <code>else<\/code> together run one set of lines at most. Once a condition is True, Python skips the rest.","out":null},{"t":"try again","h":"try again","s":"out","ok":false,"why":"The lines under <code>else<\/code> run only when every condition above is False. Here the first condition is True.","out":null}]},{"id":"gates-3","round":"gates","kind":"error","ask":"Does this program run? If not, what is the name of the error?","peek":"lives = 3","hints":["Count the equals signs on line 2. What does one equals sign do?"],"explain":"One equals sign stores a value. Two equals signs ask whether two values are equal. An <code>if<\/code> needs a question, so Python cannot read line 2. It stops with a SyntaxError before running any line.","stdin":null,"code":"<span class=\"tk-var\">lives<\/span> = <span class=\"tk-num\">3<\/span>\n<span class=\"tk-ctl\">if<\/span> <span class=\"tk-var\">lives<\/span> = <span class=\"tk-num\">0<\/span>:\n    <span class=\"tk-fn\">print<\/span>(<span class=\"tk-str\">\"game over\"<\/span>)\n","copy":"lives = 3\nif lives = 0:\n    print(\"game over\")\n","real":"  File \"Ada_quiz.py\", line 2\n    if lives = 0:\n       ^^^^^^^^^\nSyntaxError: invalid syntax. Maybe you meant '==' or ':=' instead of '='?","opts":[{"t":"SyntaxError","h":"SyntaxError","s":"err","ok":true,"why":"","out":null},{"t":"No error. It prints nothing","h":"No error. It prints nothing","s":"text","ok":false,"why":"One equals sign means store a value. An <code>if<\/code> needs a question, and the question is <code>==<\/code>, two equals signs. Python cannot read line 2 as it is.","out":null},{"t":"NameError","h":"NameError","s":"err","ok":false,"why":"<code>lives<\/code> has a value from line 1. The problem is the punctuation on line 2, not a name.","out":null},{"t":"TypeError","h":"TypeError","s":"err","ok":false,"why":"Python never gets as far as comparing values. It cannot read line 2, so no line runs at all.","out":null}]},{"id":"gates-4","round":"gates","kind":"blank","ask":"A ride's rule: you must be at least 120 cm tall. Which fills the blank so a rider who is exactly 120 cm gets on?","peek":"height = 120","hints":["At least 120 includes 120 itself."],"explain":"<code>&gt;=<\/code> means greater than or equal to. <code>120 &gt;= 120<\/code> is True, so the rider gets on.","stdin":null,"real":"you can ride","finished":"<span class=\"tk-var\">height<\/span> = <span class=\"tk-num\">120<\/span>\n<span class=\"filled\"><span class=\"tk-ctl\">if<\/span> <span class=\"tk-var\">height<\/span> &gt;= <span class=\"tk-num\">120<\/span>:<\/span>\n    <span class=\"tk-fn\">print<\/span>(<span class=\"tk-str\">\"you can ride\"<\/span>)\n<span class=\"tk-ctl\">else<\/span>:\n    <span class=\"tk-fn\">print<\/span>(<span class=\"tk-str\">\"too short\"<\/span>)\n","copy":"height = 120\nif height >= 120:\n    print(\"you can ride\")\nelse:\n    print(\"too short\")\n","code":"<span class=\"tk-var\">height<\/span> = <span class=\"tk-num\">120<\/span>\n<span class=\"tk-ctl\">if<\/span> <span class=\"tk-var\">height<\/span> <span class=\"blank\" aria-label=\"blank\">___<\/span> <span class=\"tk-num\">120<\/span>:\n    <span class=\"tk-fn\">print<\/span>(<span class=\"tk-str\">\"you can ride\"<\/span>)\n<span class=\"tk-ctl\">else<\/span>:\n    <span class=\"tk-fn\">print<\/span>(<span class=\"tk-str\">\"too short\"<\/span>)\n","target":"you can ride","opts":[{"t":">","h":"&gt;","s":"code","ok":false,"why":"<code>120 &gt; 120<\/code> is False, because 120 is not more than itself. The rider who is exactly 120 is turned away.","out":"too short"},{"t":">=","h":"&gt;=","s":"code","ok":true,"why":"","out":"you can ride"},{"t":"<","h":"&lt;","s":"code","ok":false,"why":"<code>&lt;<\/code> means less than. <code>120 &lt; 120<\/code> is False, so this prints too short. It would also let shorter riders on.","out":"too short"},{"t":"!=","h":"!=","s":"code","ok":false,"why":"<code>120 != 120<\/code> is False, because the two values are equal.","out":"too short"}]},{"id":"andor-1","round":"andor","kind":"output","ask":"What does this program print?","peek":"age = 10","hints":["Work out <code>age &gt;= 8<\/code> and <code>height &gt;= 140<\/code> first. Each one is True or False."],"explain":"<code>age &gt;= 8<\/code> is True and <code>height &gt;= 140<\/code> is False. With <b>and<\/b>, both sides must be True, so the first line is False. With <b>or<\/b>, one True side is enough, so the second line is True.","stdin":null,"code":"<span class=\"tk-var\">age<\/span> = <span class=\"tk-num\">10<\/span>\n<span class=\"tk-var\">height<\/span> = <span class=\"tk-num\">130<\/span>\n<span class=\"tk-fn\">print<\/span>(<span class=\"tk-var\">age<\/span> &gt;= <span class=\"tk-num\">8<\/span> <span class=\"tk-kw\">and<\/span> <span class=\"tk-var\">height<\/span> &gt;= <span class=\"tk-num\">140<\/span>)\n<span class=\"tk-fn\">print<\/span>(<span class=\"tk-var\">age<\/span> &gt;= <span class=\"tk-num\">8<\/span> <span class=\"tk-kw\">or<\/span> <span class=\"tk-var\">height<\/span> &gt;= <span class=\"tk-num\">140<\/span>)\n","copy":"age = 10\nheight = 130\nprint(age >= 8 and height >= 140)\nprint(age >= 8 or height >= 140)\n","real":"False\nTrue","opts":[{"t":"False\nTrue","h":"False\nTrue","s":"out","ok":true,"why":"","out":null},{"t":"True\nTrue","h":"True\nTrue","s":"out","ok":false,"why":"<code>and<\/code> needs both sides to be True. <code>height &gt;= 140<\/code> is False, so the first line is False.","out":null},{"t":"False\nFalse","h":"False\nFalse","s":"out","ok":false,"why":"<code>or<\/code> needs only one side to be True. <code>age &gt;= 8<\/code> is True, so the second line is True.","out":null},{"t":"True\nFalse","h":"True\nFalse","s":"out","ok":false,"why":"This has <code>and<\/code> and <code>or<\/code> the wrong way round. <code>and<\/code> needs both sides True; <code>or<\/code> needs one.","out":null}]},{"id":"andor-2","round":"andor","kind":"output","ask":"The door needs the key and at least 3 coins. What does the program print?","peek":"has_key = True","hints":["Is <code>coins &gt;= 3<\/code> True or False when coins is 2?"],"explain":"<code>has_key<\/code> is True. <code>coins &gt;= 3<\/code> is <code>2 &gt;= 3<\/code>, which is False. With <code>and<\/code>, one False side makes the condition False, so the lines under <code>else<\/code> run.","stdin":null,"code":"<span class=\"tk-var\">has_key<\/span> = <span class=\"tk-kw\">True<\/span>\n<span class=\"tk-var\">coins<\/span> = <span class=\"tk-num\">2<\/span>\n<span class=\"tk-ctl\">if<\/span> <span class=\"tk-var\">has_key<\/span> <span class=\"tk-kw\">and<\/span> <span class=\"tk-var\">coins<\/span> &gt;= <span class=\"tk-num\">3<\/span>:\n    <span class=\"tk-fn\">print<\/span>(<span class=\"tk-str\">\"door opens\"<\/span>)\n<span class=\"tk-ctl\">else<\/span>:\n    <span class=\"tk-fn\">print<\/span>(<span class=\"tk-str\">\"door stays shut\"<\/span>)\n","copy":"has_key = True\ncoins = 2\nif has_key and coins >= 3:\n    print(\"door opens\")\nelse:\n    print(\"door stays shut\")\n","real":"door stays shut","opts":[{"t":"door stays shut","h":"door stays shut","s":"out","ok":true,"why":"","out":null},{"t":"door opens","h":"door opens","s":"out","ok":false,"why":"<code>has_key<\/code> is True, but <code>coins &gt;= 3<\/code> is <code>2 &gt;= 3<\/code>, which is False. <code>and<\/code> needs both sides True.","out":null},{"t":"door opens\ndoor stays shut","h":"door opens\ndoor stays shut","s":"out","ok":false,"why":"Python runs the lines under the <code>if<\/code> or the lines under the <code>else<\/code>, never both.","out":null},{"t":"It stops with an error","h":"It stops with an error","s":"text","ok":false,"why":"True is already a yes-or-no value, so <code>has_key<\/code> can stand on its own in a condition.","out":null}]},{"id":"andor-3","round":"andor","kind":"output","ask":"What does this program print?","peek":"fuel = 3","hints":["One time through the indented lines is one pass. The condition is checked before every pass."],"explain":"The loop checks <code>fuel &gt; 0<\/code> before every <b>pass<\/b> (one time through its indented lines). It prints 3, 2 and 1, lowering fuel by 1 each time. When fuel is 0, <code>0 &gt; 0<\/code> is False, so the loop stops. This condition is the loop's <b>stopping condition<\/b>. The last line then prints empty.","stdin":null,"code":"<span class=\"tk-var\">fuel<\/span> = <span class=\"tk-num\">3<\/span>\n<span class=\"tk-ctl\">while<\/span> <span class=\"tk-var\">fuel<\/span> &gt; <span class=\"tk-num\">0<\/span>:\n    <span class=\"tk-fn\">print<\/span>(<span class=\"tk-var\">fuel<\/span>)\n    <span class=\"tk-var\">fuel<\/span> = <span class=\"tk-var\">fuel<\/span> - <span class=\"tk-num\">1<\/span>\n<span class=\"tk-fn\">print<\/span>(<span class=\"tk-str\">\"empty\"<\/span>)\n","copy":"fuel = 3\nwhile fuel > 0:\n    print(fuel)\n    fuel = fuel - 1\nprint(\"empty\")\n","real":"3\n2\n1\nempty","opts":[{"t":"3\n2\n1\nempty","h":"3\n2\n1\nempty","s":"out","ok":true,"why":"","out":null},{"t":"3\n2\n1\n0\nempty","h":"3\n2\n1\n0\nempty","s":"out","ok":false,"why":"When fuel reaches 0, the condition <code>0 &gt; 0<\/code> is False, so the loop stops before it prints 0.","out":null},{"t":"2\n1\n0\nempty","h":"2\n1\n0\nempty","s":"out","ok":false,"why":"<code>print(fuel)<\/code> comes before <code>fuel = fuel - 1<\/code>, so the first pass prints 3.","out":null},{"t":"3\nempty","h":"3\nempty","s":"out","ok":false,"why":"<code>while<\/code> repeats its lines as long as its condition is True. It checks the condition again before every pass.","out":null}]},{"id":"andor-4","round":"andor","kind":"output","ask":"What does this program print?","peek":"steps = 0","hints":["Write down steps after each pass: 3, 6, ... Check <code>steps &lt; 10<\/code> each time."],"explain":"steps goes 0, 3, 6, 9, 12. The loop checks <code>steps &lt; 10<\/code> before each pass. <code>9 &lt; 10<\/code> is True, so it adds 3 once more. <code>12 &lt; 10<\/code> is False, so the loop stops and the program prints 12.","stdin":null,"code":"<span class=\"tk-var\">steps<\/span> = <span class=\"tk-num\">0<\/span>\n<span class=\"tk-ctl\">while<\/span> <span class=\"tk-var\">steps<\/span> &lt; <span class=\"tk-num\">10<\/span>:\n    <span class=\"tk-var\">steps<\/span> = <span class=\"tk-var\">steps<\/span> + <span class=\"tk-num\">3<\/span>\n<span class=\"tk-fn\">print<\/span>(<span class=\"tk-var\">steps<\/span>)\n","copy":"steps = 0\nwhile steps < 10:\n    steps = steps + 3\nprint(steps)\n","real":"12","opts":[{"t":"12","h":"12","s":"out","ok":true,"why":"","out":null},{"t":"9","h":"9","s":"out","ok":false,"why":"When steps is 9, the condition <code>9 &lt; 10<\/code> is still True, so the loop runs once more and adds 3.","out":null},{"t":"10","h":"10","s":"out","ok":false,"why":"steps goes up by 3 each pass: 0, 3, 6, 9, 12. It is never exactly 10.","out":null},{"t":"3\n6\n9\n12","h":"3\n6\n9\n12","s":"out","ok":false,"why":"<code>print(steps)<\/code> is not indented, so it is not part of the loop. It runs once, after the loop stops.","out":null}]},{"id":"andor-5","round":"andor","kind":"order","ask":"Put the lines in order so the program prints the countdown shown.","peek":"prints 3","hints":["The while line checks count, so count needs a value before it.","The countdown shows 3 first. Which indented line has to come first?"],"explain":"<code>count = 3<\/code> comes first, because the <code>while<\/code> line uses <code>count<\/code>. The two indented lines are the loop's body: print, then take away 1, so 3 is printed before it goes down. <code>print(\"lift off\")<\/code> is not indented, so it runs once, after the loop stops.","stdin":null,"lines":["<span class=\"tk-var\">count<\/span> = <span class=\"tk-num\">3<\/span>","<span class=\"tk-ctl\">while<\/span> <span class=\"tk-var\">count<\/span> &gt; <span class=\"tk-num\">0<\/span>:","    <span class=\"tk-fn\">print<\/span>(<span class=\"tk-var\">count<\/span>)","    <span class=\"tk-var\">count<\/span> = <span class=\"tk-var\">count<\/span> - <span class=\"tk-num\">1<\/span>","<span class=\"tk-fn\">print<\/span>(<span class=\"tk-str\">\"lift off\"<\/span>)"],"plain":["count = 3","while count > 0:","    print(count)","    count = count - 1","print(\"lift off\")"],"target":"3\n2\n1\nlift off","perms":{"0,1,2,3,4":0,"0,1,2,4,3":1,"0,1,3,2,4":2,"0,1,3,4,2":3,"0,1,4,2,3":4,"0,1,4,3,2":4,"0,2,1,3,4":5,"0,2,1,4,3":5,"0,2,3,1,4":5,"0,2,3,4,1":5,"0,2,4,1,3":5,"0,2,4,3,1":5,"0,3,1,2,4":6,"0,3,1,4,2":6,"0,3,2,1,4":6,"0,3,2,4,1":6,"0,3,4,1,2":6,"0,3,4,2,1":6,"0,4,1,2,3":7,"0,4,1,3,2":8,"0,4,2,1,3":9,"0,4,2,3,1":9,"0,4,3,1,2":10,"0,4,3,2,1":10,"1,0,2,3,4":11,"1,0,2,4,3":11,"1,0,3,2,4":11,"1,0,3,4,2":11,"1,0,4,2,3":11,"1,0,4,3,2":11,"1,2,0,3,4":12,"1,2,0,4,3":1,"1,2,3,0,4":13,"1,2,3,4,0":13,"1,2,4,0,3":1,"1,2,4,3,0":12,"1,3,0,2,4":14,"1,3,0,4,2":3,"1,3,2,0,4":13,"1,3,2,4,0":13,"1,3,4,0,2":3,"1,3,4,2,0":14,"1,4,0,2,3":15,"1,4,0,3,2":15,"1,4,2,0,3":15,"1,4,2,3,0":15,"1,4,3,0,2":15,"1,4,3,2,0":15,"2,0,1,3,4":16,"2,0,1,4,3":16,"2,0,3,1,4":16,"2,0,3,4,1":16,"2,0,4,1,3":16,"2,0,4,3,1":16,"2,1,0,3,4":16,"2,1,0,4,3":16,"2,1,3,0,4":16,"2,1,3,4,0":16,"2,1,4,0,3":16,"2,1,4,3,0":16,"2,3,0,1,4":16,"2,3,0,4,1":16,"2,3,1,0,4":16,"2,3,1,4,0":16,"2,3,4,0,1":16,"2,3,4,1,0":16,"2,4,0,1,3":16,"2,4,0,3,1":16,"2,4,1,0,3":16,"2,4,1,3,0":16,"2,4,3,0,1":16,"2,4,3,1,0":16,"3,0,1,2,4":17,"3,0,1,4,2":17,"3,0,2,1,4":17,"3,0,2,4,1":17,"3,0,4,1,2":17,"3,0,4,2,1":17,"3,1,0,2,4":17,"3,1,0,4,2":17,"3,1,2,0,4":17,"3,1,2,4,0":17,"3,1,4,0,2":17,"3,1,4,2,0":17,"3,2,0,1,4":17,"3,2,0,4,1":17,"3,2,1,0,4":17,"3,2,1,4,0":17,"3,2,4,0,1":17,"3,2,4,1,0":17,"3,4,0,1,2":17,"3,4,0,2,1":17,"3,4,1,0,2":17,"3,4,1,2,0":17,"3,4,2,0,1":17,"3,4,2,1,0":17,"4,0,1,2,3":7,"4,0,1,3,2":8,"4,0,2,1,3":9,"4,0,2,3,1":9,"4,0,3,1,2":10,"4,0,3,2,1":10,"4,1,0,2,3":18,"4,1,0,3,2":18,"4,1,2,0,3":1,"4,1,2,3,0":19,"4,1,3,0,2":3,"4,1,3,2,0":19,"4,2,0,1,3":5,"4,2,0,3,1":5,"4,2,1,0,3":5,"4,2,1,3,0":5,"4,2,3,0,1":5,"4,2,3,1,0":5,"4,3,0,1,2":6,"4,3,0,2,1":6,"4,3,1,0,2":6,"4,3,1,2,0":6,"4,3,2,0,1":6,"4,3,2,1,0":6},"outs":["3\n2\n1\nlift off","  File \"Ada_quiz.py\", line 5\n    count = count - 1\nIndentationError: unexpected indent","2\n1\n0\nlift off","  File \"Ada_quiz.py\", line 5\n    print(count)\nIndentationError: unexpected indent","  File \"Ada_quiz.py\", line 3\n    print(\"lift off\")\n    ^\nIndentationError: expected an indented block after 'while' statement on line 2","  File \"Ada_quiz.py\", line 2\n    print(count)\nIndentationError: unexpected indent","  File \"Ada_quiz.py\", line 2\n    count = count - 1\nIndentationError: unexpected indent","lift off\n3\n2\n1","lift off\n2\n1\n0","  File \"Ada_quiz.py\", line 3\n    print(count)\nIndentationError: unexpected indent","  File \"Ada_quiz.py\", line 3\n    count = count - 1\nIndentationError: unexpected indent","  File \"Ada_quiz.py\", line 2\n    count = 3\n    ^\nIndentationError: expected an indented block after 'while' statement on line 1","  File \"Ada_quiz.py\", line 4\n    count = count - 1\nIndentationError: unexpected indent","Traceback (most recent call last):\n  File \"Ada_quiz.py\", line 1, in <module>\n    while count > 0:\n          ^^^^^\nNameError: name 'count' is not defined. Did you mean: 'round'?","  File \"Ada_quiz.py\", line 4\n    print(count)\nIndentationError: unexpected indent","  File \"Ada_quiz.py\", line 2\n    print(\"lift off\")\n    ^\nIndentationError: expected an indented block after 'while' statement on line 1","  File \"Ada_quiz.py\", line 1\n    print(count)\nIndentationError: unexpected indent","  File \"Ada_quiz.py\", line 1\n    count = count - 1\nIndentationError: unexpected indent","  File \"Ada_quiz.py\", line 3\n    count = 3\n    ^\nIndentationError: expected an indented block after 'while' statement on line 2","lift off\nTraceback (most recent call last):\n  File \"Ada_quiz.py\", line 2, in <module>\n    while count > 0:\n          ^^^^^\nNameError: name 'count' is not defined. Did you mean: 'round'?"],"okKeys":["0,1,2,3,4"],"finished":"<span class=\"tk-var\">count<\/span> = <span class=\"tk-num\">3<\/span>\n<span class=\"tk-ctl\">while<\/span> <span class=\"tk-var\">count<\/span> &gt; <span class=\"tk-num\">0<\/span>:\n    <span class=\"tk-fn\">print<\/span>(<span class=\"tk-var\">count<\/span>)\n    <span class=\"tk-var\">count<\/span> = <span class=\"tk-var\">count<\/span> - <span class=\"tk-num\">1<\/span>\n<span class=\"tk-fn\">print<\/span>(<span class=\"tk-str\">\"lift off\"<\/span>)","copy":"count = 3\nwhile count > 0:\n    print(count)\n    count = count - 1\nprint(\"lift off\")","real":"3\n2\n1\nlift off"},{"id":"loops-1","round":"loops","kind":"output","ask":"What does this program print?","peek":"for i in range(3):","hints":["<code>range(3)<\/code> gives three numbers. What is the first one?"],"explain":"<code>range(3)<\/code> gives the numbers 0, 1 and 2: three numbers, starting at 0 and stopping before 3. Each pass, the <b>loop variable<\/b> <code>i<\/code> takes the next one, and the print line runs.","stdin":null,"code":"<span class=\"tk-ctl\">for<\/span> <span class=\"tk-var\">i<\/span> <span class=\"tk-ctl\">in<\/span> <span class=\"tk-fn\">range<\/span>(<span class=\"tk-num\">3<\/span>):\n    <span class=\"tk-fn\">print<\/span>(<span class=\"tk-var\">i<\/span>)\n","copy":"for i in range(3):\n    print(i)\n","real":"0\n1\n2","opts":[{"t":"0\n1\n2","h":"0\n1\n2","s":"out","ok":true,"why":"","out":null},{"t":"1\n2\n3","h":"1\n2\n3","s":"out","ok":false,"why":"<code>range(3)<\/code> starts at 0, not 1.","out":null},{"t":"0\n1\n2\n3","h":"0\n1\n2\n3","s":"out","ok":false,"why":"<code>range(3)<\/code> stops before 3. It gives three numbers: 0, 1 and 2.","out":null},{"t":"3","h":"3","s":"out","ok":false,"why":"The print line is indented, so it runs once for every number <code>range<\/code> gives.","out":null}]},{"id":"loops-2","round":"loops","kind":"type","ask":"What is the last number this program prints? Type it.","peek":"for n in range(1, 5):","hints":["With two numbers, range starts at the first and stops before the second."],"explain":"<code>range(1, 5)<\/code> gives 1, 2, 3 and 4. It starts at the first number and stops before the second, so the last number printed is 4.","stdin":null,"code":"<span class=\"tk-ctl\">for<\/span> <span class=\"tk-var\">n<\/span> <span class=\"tk-ctl\">in<\/span> <span class=\"tk-fn\">range<\/span>(<span class=\"tk-num\">1<\/span>, <span class=\"tk-num\">5<\/span>):\n    <span class=\"tk-fn\">print<\/span>(<span class=\"tk-var\">n<\/span>)\n","copy":"for n in range(1, 5):\n    print(n)\n","real":"1\n2\n3\n4","answer":"4","common":[{"t":"5","why":"<code>range(1, 5)<\/code> starts at 1 and stops before 5."},{"t":"1","why":"The question asks for the last number printed. <code>n<\/code> takes several values, one each pass."}]},{"id":"loops-3","round":"loops","kind":"output","ask":"What does this program print?","peek":"total = 0","hints":["Write down total after each pass. It starts at 0."],"explain":"<code>total<\/code> starts at 0. Each pass adds the loop variable <code>n<\/code>: 0 + 1 = 1, then 1 + 2 = 3, then 3 + 3 = 6. A variable that keeps a running total like this is called an <b>accumulator<\/b>.","stdin":null,"code":"<span class=\"tk-var\">total<\/span> = <span class=\"tk-num\">0<\/span>\n<span class=\"tk-ctl\">for<\/span> <span class=\"tk-var\">n<\/span> <span class=\"tk-ctl\">in<\/span> <span class=\"tk-fn\">range<\/span>(<span class=\"tk-num\">1<\/span>, <span class=\"tk-num\">4<\/span>):\n    <span class=\"tk-var\">total<\/span> = <span class=\"tk-var\">total<\/span> + <span class=\"tk-var\">n<\/span>\n<span class=\"tk-fn\">print<\/span>(<span class=\"tk-var\">total<\/span>)\n","copy":"total = 0\nfor n in range(1, 4):\n    total = total + n\nprint(total)\n","real":"6","opts":[{"t":"6","h":"6","s":"out","ok":true,"why":"","out":null},{"t":"10","h":"10","s":"out","ok":false,"why":"<code>range(1, 4)<\/code> gives 1, 2 and 3. It stops before 4, so 4 is not added.","out":null},{"t":"3","h":"3","s":"out","ok":false,"why":"3 is the last value of <code>n<\/code>. <code>total<\/code> keeps everything added so far.","out":null},{"t":"1\n3\n6","h":"1\n3\n6","s":"out","ok":false,"why":"<code>print(total)<\/code> is not indented, so it runs once, after the loop is finished.","out":null}]},{"id":"loops-4","round":"loops","kind":"order","ask":"Put the lines in order so the program prints the total of 1, 2, 3, 4 and 5.","peek":"prints 15","hints":["The line inside the loop uses total, so total needs a value first."],"explain":"<code>total = 0<\/code> goes first, because the loop adds to it. The indented line goes straight under the <code>for<\/code> line, so it runs on every pass. <code>print(total)<\/code> is not indented, so it goes last and runs once, after the loop.","stdin":null,"lines":["<span class=\"tk-var\">total<\/span> = <span class=\"tk-num\">0<\/span>","<span class=\"tk-ctl\">for<\/span> <span class=\"tk-var\">n<\/span> <span class=\"tk-ctl\">in<\/span> <span class=\"tk-fn\">range<\/span>(<span class=\"tk-num\">1<\/span>, <span class=\"tk-num\">6<\/span>):","    <span class=\"tk-var\">total<\/span> = <span class=\"tk-var\">total<\/span> + <span class=\"tk-var\">n<\/span>","<span class=\"tk-fn\">print<\/span>(<span class=\"tk-var\">total<\/span>)"],"plain":["total = 0","for n in range(1, 6):","    total = total + n","print(total)"],"target":"15","perms":{"0,1,2,3":0,"0,1,3,2":1,"0,2,1,3":2,"0,2,3,1":2,"0,3,1,2":3,"0,3,2,1":4,"1,0,2,3":5,"1,0,3,2":5,"1,2,0,3":6,"1,2,3,0":6,"1,3,0,2":7,"1,3,2,0":7,"2,0,1,3":8,"2,0,3,1":8,"2,1,0,3":8,"2,1,3,0":8,"2,3,0,1":8,"2,3,1,0":8,"3,0,1,2":9,"3,0,2,1":4,"3,1,0,2":10,"3,1,2,0":9,"3,2,0,1":2,"3,2,1,0":2},"outs":["15","  File \"Ada_quiz.py\", line 3\n    print(total)\n    ^\nIndentationError: expected an indented block after 'for' statement on line 2","  File \"Ada_quiz.py\", line 2\n    total = total + n\nIndentationError: unexpected indent","0","  File \"Ada_quiz.py\", line 3\n    total = total + n\nIndentationError: unexpected indent","  File \"Ada_quiz.py\", line 2\n    total = 0\n    ^\nIndentationError: expected an indented block after 'for' statement on line 1","Traceback (most recent call last):\n  File \"Ada_quiz.py\", line 2, in <module>\n    total = total + n\n            ^^^^^\nNameError: name 'total' is not defined","  File \"Ada_quiz.py\", line 2\n    print(total)\n    ^\nIndentationError: expected an indented block after 'for' statement on line 1","  File \"Ada_quiz.py\", line 1\n    total = total + n\nIndentationError: unexpected indent","Traceback (most recent call last):\n  File \"Ada_quiz.py\", line 1, in <module>\n    print(total)\n          ^^^^^\nNameError: name 'total' is not defined","  File \"Ada_quiz.py\", line 3\n    total = 0\n    ^\nIndentationError: expected an indented block after 'for' statement on line 2"],"okKeys":["0,1,2,3"],"finished":"<span class=\"tk-var\">total<\/span> = <span class=\"tk-num\">0<\/span>\n<span class=\"tk-ctl\">for<\/span> <span class=\"tk-var\">n<\/span> <span class=\"tk-ctl\">in<\/span> <span class=\"tk-fn\">range<\/span>(<span class=\"tk-num\">1<\/span>, <span class=\"tk-num\">6<\/span>):\n    <span class=\"tk-var\">total<\/span> = <span class=\"tk-var\">total<\/span> + <span class=\"tk-var\">n<\/span>\n<span class=\"tk-fn\">print<\/span>(<span class=\"tk-var\">total<\/span>)","copy":"total = 0\nfor n in range(1, 6):\n    total = total + n\nprint(total)","real":"15"},{"id":"lists-1","round":"lists","kind":"output","ask":"What does this program print?","peek":"colours = [\"red\", \"green\", \"blue\"]","hints":["The first item in a list is at index 0."],"explain":"A <b>list<\/b> holds many values in order. Each item has an <b>index<\/b>, its position number, and the first index is 0. So red is at index 0, green at 1 and blue at 2.","stdin":null,"code":"<span class=\"tk-var\">colours<\/span> = [<span class=\"tk-str\">\"red\"<\/span>, <span class=\"tk-str\">\"green\"<\/span>, <span class=\"tk-str\">\"blue\"<\/span>]\n<span class=\"tk-fn\">print<\/span>(<span class=\"tk-var\">colours<\/span>[<span class=\"tk-num\">1<\/span>])\n","copy":"colours = [\"red\", \"green\", \"blue\"]\nprint(colours[1])\n","real":"green","opts":[{"t":"green","h":"green","s":"out","ok":true,"why":"","out":null},{"t":"red","h":"red","s":"out","ok":false,"why":"Index numbers start at 0. <code>colours[0]<\/code> is red, so <code>colours[1]<\/code> is the next one.","out":null},{"t":"blue","h":"blue","s":"out","ok":false,"why":"Count from 0: red is at index 0, green at 1, blue at 2.","out":null},{"t":"It stops with an IndexError","h":"It stops with an IndexError","s":"text","ok":false,"why":"Index 1 is inside the list. The list has index numbers 0, 1 and 2.","out":null}]},{"id":"lists-2","round":"lists","kind":"error","ask":"Does this program run? If not, what is the name of the error?","peek":"colours = [\"red\", \"green\", \"blue\"]","hints":["The list has 3 items. Write down the index of each one."],"explain":"The list has 3 items, at index 0, 1 and 2. Asking for index 3 goes past the end, so Python stops with an IndexError.","stdin":null,"code":"<span class=\"tk-var\">colours<\/span> = [<span class=\"tk-str\">\"red\"<\/span>, <span class=\"tk-str\">\"green\"<\/span>, <span class=\"tk-str\">\"blue\"<\/span>]\n<span class=\"tk-fn\">print<\/span>(<span class=\"tk-var\">colours<\/span>[<span class=\"tk-num\">3<\/span>])\n","copy":"colours = [\"red\", \"green\", \"blue\"]\nprint(colours[3])\n","real":"Traceback (most recent call last):\n  File \"Ada_quiz.py\", line 2, in <module>\n    print(colours[3])\n          ~~~~~~~^^^\nIndexError: list index out of range","opts":[{"t":"IndexError","h":"IndexError","s":"err","ok":true,"why":"","out":null},{"t":"No error. It prints blue","h":"No error. It prints blue","s":"text","ok":false,"why":"blue is at index 2. The list has 3 items, at index 0, 1 and 2, so there is no index 3.","out":null},{"t":"NameError","h":"NameError","s":"err","ok":false,"why":"<code>colours<\/code> was given a value on line 1, so Python knows the name. The problem is the index.","out":null},{"t":"TypeError","h":"TypeError","s":"err","ok":false,"why":"A TypeError is about the wrong type of value. 3 is the right type for an index, but no item is there.","out":null}]},{"id":"lists-3","round":"lists","kind":"output","ask":"What does this program print?","peek":"scores = [4, 9, 2, 7]","hints":["<code>len<\/code> counts, <code>max<\/code> finds the biggest, <code>sum<\/code> adds them all."],"explain":"<code>len<\/code> counts the items: 4. <code>max<\/code> gives the biggest value: 9. <code>sum<\/code> adds them all: 4 + 9 + 2 + 7 = 22.","stdin":null,"code":"<span class=\"tk-var\">scores<\/span> = [<span class=\"tk-num\">4<\/span>, <span class=\"tk-num\">9<\/span>, <span class=\"tk-num\">2<\/span>, <span class=\"tk-num\">7<\/span>]\n<span class=\"tk-fn\">print<\/span>(<span class=\"tk-fn\">len<\/span>(<span class=\"tk-var\">scores<\/span>))\n<span class=\"tk-fn\">print<\/span>(<span class=\"tk-fn\">max<\/span>(<span class=\"tk-var\">scores<\/span>))\n<span class=\"tk-fn\">print<\/span>(<span class=\"tk-fn\">sum<\/span>(<span class=\"tk-var\">scores<\/span>))\n","copy":"scores = [4, 9, 2, 7]\nprint(len(scores))\nprint(max(scores))\nprint(sum(scores))\n","real":"4\n9\n22","opts":[{"t":"4\n9\n22","h":"4\n9\n22","s":"out","ok":true,"why":"","out":null},{"t":"3\n9\n22","h":"3\n9\n22","s":"out","ok":false,"why":"<code>len<\/code> counts the items, and there are 4. The last index is 3, but the count is 4.","out":null},{"t":"4\n7\n22","h":"4\n7\n22","s":"out","ok":false,"why":"<code>max<\/code> gives the biggest value in the list, not the last one.","out":null},{"t":"4\n9\n20","h":"4\n9\n20","s":"out","ok":false,"why":"Check the adding: 4 + 9 = 13, 13 + 2 = 15, 15 + 7 = 22.","out":null}]},{"id":"lists-4","round":"lists","kind":"blank","ask":"Which fills the blank so the program counts how many scores are 10 or more?","peek":"scores = [12, 7, 10, 3, 15]","hints":["The program should add 1 to count for each score that passes the check."],"explain":"A <b>counter<\/b> is a variable the program adds 1 to. <code>count<\/code> starts at 0, and <code>count = count + 1<\/code> runs once for each score that passes the check <code>s &gt;= 10<\/code>: 12, 10 and 15.","stdin":null,"real":"3","finished":"<span class=\"tk-var\">scores<\/span> = [<span class=\"tk-num\">12<\/span>, <span class=\"tk-num\">7<\/span>, <span class=\"tk-num\">10<\/span>, <span class=\"tk-num\">3<\/span>, <span class=\"tk-num\">15<\/span>]\n<span class=\"tk-var\">count<\/span> = <span class=\"tk-num\">0<\/span>\n<span class=\"tk-ctl\">for<\/span> <span class=\"tk-var\">s<\/span> <span class=\"tk-ctl\">in<\/span> <span class=\"tk-var\">scores<\/span>:\n    <span class=\"tk-ctl\">if<\/span> <span class=\"tk-var\">s<\/span> &gt;= <span class=\"tk-num\">10<\/span>:\n<span class=\"filled\">        <span class=\"tk-var\">count<\/span> = <span class=\"tk-var\">count<\/span> + <span class=\"tk-num\">1<\/span><\/span>\n<span class=\"tk-fn\">print<\/span>(<span class=\"tk-var\">count<\/span>)\n","copy":"scores = [12, 7, 10, 3, 15]\ncount = 0\nfor s in scores:\n    if s >= 10:\n        count = count + 1\nprint(count)\n","code":"<span class=\"tk-var\">scores<\/span> = [<span class=\"tk-num\">12<\/span>, <span class=\"tk-num\">7<\/span>, <span class=\"tk-num\">10<\/span>, <span class=\"tk-num\">3<\/span>, <span class=\"tk-num\">15<\/span>]\n<span class=\"tk-var\">count<\/span> = <span class=\"tk-num\">0<\/span>\n<span class=\"tk-ctl\">for<\/span> <span class=\"tk-var\">s<\/span> <span class=\"tk-ctl\">in<\/span> <span class=\"tk-var\">scores<\/span>:\n    <span class=\"tk-ctl\">if<\/span> <span class=\"tk-var\">s<\/span> &gt;= <span class=\"tk-num\">10<\/span>:\n        <span class=\"blank\" aria-label=\"blank\">___<\/span>\n<span class=\"tk-fn\">print<\/span>(<span class=\"tk-var\">count<\/span>)\n","target":"3","opts":[{"t":"count = count + 1","h":"<span class=\"tk-var\">count<\/span> = <span class=\"tk-var\">count<\/span> + <span class=\"tk-num\">1<\/span>","s":"code","ok":true,"why":"","out":"3"},{"t":"count = s","h":"<span class=\"tk-var\">count<\/span> = <span class=\"tk-var\">s<\/span>","s":"code","ok":false,"why":"This stores the score itself, not a count. After the loop, <code>count<\/code> holds the last score that passed the check.","out":"15"},{"t":"count = count + s","h":"<span class=\"tk-var\">count<\/span> = <span class=\"tk-var\">count<\/span> + <span class=\"tk-var\">s<\/span>","s":"code","ok":false,"why":"This adds up the scores instead of counting them.","out":"37"},{"t":"count + 1","h":"<span class=\"tk-var\">count<\/span> + <span class=\"tk-num\">1<\/span>","s":"code","ok":false,"why":"This works out <code>count + 1<\/code> but never stores it, so <code>count<\/code> stays 0.","out":"0"}]},{"id":"lists-5","round":"lists","kind":"output","ask":"What does this program print?","peek":"heights = [120, 145, 132, 150, 128]","hints":["Go through the list one height at a time. Does tallest change?"],"explain":"<code>tallest<\/code> starts as the first item, 120. The loop checks each height against it: 145 is bigger, so tallest becomes 145; 132 is not; 150 is, so tallest becomes 150; 128 is not. This is called <b>best so far<\/b>.","stdin":null,"code":"<span class=\"tk-var\">heights<\/span> = [<span class=\"tk-num\">120<\/span>, <span class=\"tk-num\">145<\/span>, <span class=\"tk-num\">132<\/span>, <span class=\"tk-num\">150<\/span>, <span class=\"tk-num\">128<\/span>]\n<span class=\"tk-var\">tallest<\/span> = <span class=\"tk-var\">heights<\/span>[<span class=\"tk-num\">0<\/span>]\n<span class=\"tk-ctl\">for<\/span> <span class=\"tk-var\">h<\/span> <span class=\"tk-ctl\">in<\/span> <span class=\"tk-var\">heights<\/span>:\n    <span class=\"tk-ctl\">if<\/span> <span class=\"tk-var\">h<\/span> &gt; <span class=\"tk-var\">tallest<\/span>:\n        <span class=\"tk-var\">tallest<\/span> = <span class=\"tk-var\">h<\/span>\n<span class=\"tk-fn\">print<\/span>(<span class=\"tk-var\">tallest<\/span>)\n","copy":"heights = [120, 145, 132, 150, 128]\ntallest = heights[0]\nfor h in heights:\n    if h > tallest:\n        tallest = h\nprint(tallest)\n","real":"150","opts":[{"t":"150","h":"150","s":"out","ok":true,"why":"","out":null},{"t":"128","h":"128","s":"out","ok":false,"why":"128 is the last item, but <code>tallest<\/code> only changes when <code>h &gt; tallest<\/code>. When h is 128, tallest is already 150.","out":null},{"t":"120","h":"120","s":"out","ok":false,"why":"<code>tallest<\/code> starts at 120, then changes each time a taller height comes along.","out":null},{"t":"145","h":"145","s":"out","ok":false,"why":"After 145, the loop keeps going. <code>150 &gt; 145<\/code> is True, so <code>tallest<\/code> changes again.","out":null}]},{"id":"functions-1","round":"functions","kind":"output","ask":"What does this program print?","peek":"def double(n):","hints":["Which lines print something? A value that comes back from a function does not print by itself."],"explain":"<code>return<\/code> sends a value back to the line that called the function. On line 4, <code>double(4)<\/code> returns 8, but nothing uses it, so nothing appears. Line 5 prints the value <code>double(5)<\/code> returns: 10.","stdin":null,"code":"<span class=\"tk-kw\">def<\/span> <span class=\"tk-fn\">double<\/span>(<span class=\"tk-var\">n<\/span>):\n    <span class=\"tk-ctl\">return<\/span> <span class=\"tk-var\">n<\/span> * <span class=\"tk-num\">2<\/span>\n\n<span class=\"tk-fn\">double<\/span>(<span class=\"tk-num\">4<\/span>)\n<span class=\"tk-fn\">print<\/span>(<span class=\"tk-fn\">double<\/span>(<span class=\"tk-num\">5<\/span>))\n","copy":"def double(n):\n    return n * 2\n\ndouble(4)\nprint(double(5))\n","real":"10","opts":[{"t":"10","h":"10","s":"out","ok":true,"why":"","out":null},{"t":"8\n10","h":"8\n10","s":"out","ok":false,"why":"<code>double(4)<\/code> returns 8, but line 4 does nothing with it: no print, no name to store it under. So the 8 is lost.","out":null},{"t":"8","h":"8","s":"out","ok":false,"why":"Nothing prints the 8 from <code>double(4)<\/code>. The print line calls <code>double(5)<\/code>.","out":null},{"t":"None","h":"None","s":"out","ok":false,"why":"<code>double<\/code> has a <code>return<\/code> line, so it returns <code>n * 2<\/code>. None is what a function returns when it has no <code>return<\/code> line.","out":null}]},{"id":"functions-2","round":"functions","kind":"output","ask":"What does this program print?","peek":"def greet(name):","hints":["greet has a print line but no return line. What does a function with no return line give back?"],"explain":"Calling <code>greet(\"Ada\")<\/code> runs its print line, so Hi Ada appears. <code>greet<\/code> has no <code>return<\/code> line, so it returns <b>None<\/b>, Python's value for nothing. That is what <code>result<\/code> holds, and what line 5 prints.","stdin":null,"code":"<span class=\"tk-kw\">def<\/span> <span class=\"tk-fn\">greet<\/span>(<span class=\"tk-var\">name<\/span>):\n    <span class=\"tk-fn\">print<\/span>(<span class=\"tk-kw\">f<\/span><span class=\"tk-str\">\"Hi <\/span><span class=\"tk-kw\">{<\/span><span class=\"tk-var\">name<\/span><span class=\"tk-kw\">}<\/span><span class=\"tk-str\">\"<\/span>)\n\n<span class=\"tk-var\">result<\/span> = <span class=\"tk-fn\">greet<\/span>(<span class=\"tk-str\">\"Ada\"<\/span>)\n<span class=\"tk-fn\">print<\/span>(<span class=\"tk-var\">result<\/span>)\n","copy":"def greet(name):\n    print(f\"Hi {name}\")\n\nresult = greet(\"Ada\")\nprint(result)\n","real":"Hi Ada\nNone","opts":[{"t":"Hi Ada\nNone","h":"Hi Ada\nNone","s":"out","ok":true,"why":"","out":null},{"t":"Hi Ada\nHi Ada","h":"Hi Ada\nHi Ada","s":"out","ok":false,"why":"<code>greet<\/code> prints, but it has no <code>return<\/code> line. A function with no <code>return<\/code> line returns None, so <code>result<\/code> holds None.","out":null},{"t":"None","h":"None","s":"out","ok":false,"why":"Calling <code>greet<\/code> runs its print line first, so Hi Ada appears before None.","out":null},{"t":"Hi Ada","h":"Hi Ada","s":"out","ok":false,"why":"The last line prints <code>result<\/code> too. <code>result<\/code> holds what <code>greet<\/code> returned.","out":null}]},{"id":"functions-3","round":"functions","kind":"blank","ask":"Which fills the blank so the program prints 12, and only 12?","peek":"def area(width, height):","hints":["The last line prints whatever area returns."],"explain":"<code>return width * height<\/code> sends 12 back to the line that called <code>area<\/code>, and that line prints it.","stdin":null,"real":"12","finished":"<span class=\"tk-kw\">def<\/span> <span class=\"tk-fn\">area<\/span>(<span class=\"tk-var\">width<\/span>, <span class=\"tk-var\">height<\/span>):\n<span class=\"filled\">    <span class=\"tk-ctl\">return<\/span> <span class=\"tk-var\">width<\/span> * <span class=\"tk-var\">height<\/span><\/span>\n\n<span class=\"tk-fn\">print<\/span>(<span class=\"tk-fn\">area<\/span>(<span class=\"tk-num\">3<\/span>, <span class=\"tk-num\">4<\/span>))\n","copy":"def area(width, height):\n    return width * height\n\nprint(area(3, 4))\n","code":"<span class=\"tk-kw\">def<\/span> <span class=\"tk-fn\">area<\/span>(<span class=\"tk-var\">width<\/span>, <span class=\"tk-var\">height<\/span>):\n    <span class=\"blank\" aria-label=\"blank\">___<\/span>\n\n<span class=\"tk-fn\">print<\/span>(<span class=\"tk-fn\">area<\/span>(<span class=\"tk-num\">3<\/span>, <span class=\"tk-num\">4<\/span>))\n","target":"12","opts":[{"t":"return width * height","h":"<span class=\"tk-ctl\">return<\/span> <span class=\"tk-var\">width<\/span> * <span class=\"tk-var\">height<\/span>","s":"code","ok":true,"why":"","out":"12"},{"t":"print(width * height)","h":"<span class=\"tk-fn\">print<\/span>(<span class=\"tk-var\">width<\/span> * <span class=\"tk-var\">height<\/span>)","s":"code","ok":false,"why":"This prints 12 inside the function, then the function returns None, and the last line prints that too.","out":"12\nNone"},{"t":"width * height","h":"<span class=\"tk-var\">width<\/span> * <span class=\"tk-var\">height<\/span>","s":"code","ok":false,"why":"This works out 12 and then does nothing with it. With no <code>return<\/code> line, the function returns None.","out":"None"},{"t":"return width + height","h":"<span class=\"tk-ctl\">return<\/span> <span class=\"tk-var\">width<\/span> + <span class=\"tk-var\">height<\/span>","s":"code","ok":false,"why":"<code>+<\/code> adds: 3 + 4 = 7. An area is width times height.","out":"7"}]},{"id":"functions-4","round":"functions","kind":"output","ask":"What does this program print?","peek":"def label(name, score):","hints":["The first value in the brackets of the call goes into the first name in the brackets of the def."],"explain":"The names in the <code>def<\/code> line are <b>parameters<\/b>. The values in the call are <b>arguments<\/b>, and they fill the parameters in order: <code>name<\/code> gets 7 and <code>score<\/code> gets \"Mo\". So the function returns 7: Mo.","stdin":null,"code":"<span class=\"tk-kw\">def<\/span> <span class=\"tk-fn\">label<\/span>(<span class=\"tk-var\">name<\/span>, <span class=\"tk-var\">score<\/span>):\n    <span class=\"tk-ctl\">return<\/span> <span class=\"tk-kw\">f<\/span><span class=\"tk-str\">\"<\/span><span class=\"tk-kw\">{<\/span><span class=\"tk-var\">name<\/span><span class=\"tk-kw\">}<\/span><span class=\"tk-str\">: <\/span><span class=\"tk-kw\">{<\/span><span class=\"tk-var\">score<\/span><span class=\"tk-kw\">}<\/span><span class=\"tk-str\">\"<\/span>\n\n<span class=\"tk-fn\">print<\/span>(<span class=\"tk-fn\">label<\/span>(<span class=\"tk-num\">7<\/span>, <span class=\"tk-str\">\"Mo\"<\/span>))\n","copy":"def label(name, score):\n    return f\"{name}: {score}\"\n\nprint(label(7, \"Mo\"))\n","real":"7: Mo","opts":[{"t":"7: Mo","h":"7: Mo","s":"out","ok":true,"why":"","out":null},{"t":"Mo: 7","h":"Mo: 7","s":"out","ok":false,"why":"Arguments fill the parameters in order. The first argument, 7, goes into <code>name<\/code>, and \"Mo\" goes into <code>score<\/code>.","out":null},{"t":"It stops with an error","h":"It stops with an error","s":"text","ok":false,"why":"Python does not check what type of value a parameter gets. The f-string puts the 7 into the text without a problem.","out":null},{"t":"name: score","h":"name: score","s":"out","ok":false,"why":"The <code>f<\/code> in front of the quote makes Python put in the values, not the names.","out":null}]},{"id":"functions-5","round":"functions","kind":"order","ask":"Put the lines in order so the program prints 12.","peek":"prints 12","hints":["Python has to read a def before any line that calls the function."],"explain":"The <code>def<\/code> and its indented <code>return<\/code> line go first, because Python reads the file from the top and has to know <code>triple<\/code> before a line calls it. Then <code>answer<\/code> stores what <code>triple(4)<\/code> returns, and the last line prints it.","stdin":null,"lines":["<span class=\"tk-kw\">def<\/span> <span class=\"tk-fn\">triple<\/span>(<span class=\"tk-var\">n<\/span>):","    <span class=\"tk-ctl\">return<\/span> <span class=\"tk-var\">n<\/span> * <span class=\"tk-num\">3<\/span>","<span class=\"tk-var\">answer<\/span> = <span class=\"tk-fn\">triple<\/span>(<span class=\"tk-num\">4<\/span>)","<span class=\"tk-fn\">print<\/span>(<span class=\"tk-var\">answer<\/span>)"],"plain":["def triple(n):","    return n * 3","answer = triple(4)","print(answer)"],"target":"12","perms":{"0,1,2,3":0,"0,1,3,2":1,"0,2,1,3":2,"0,2,3,1":2,"0,3,1,2":3,"0,3,2,1":3,"1,0,2,3":4,"1,0,3,2":4,"1,2,0,3":4,"1,2,3,0":4,"1,3,0,2":4,"1,3,2,0":4,"2,0,1,3":5,"2,0,3,1":6,"2,1,0,3":7,"2,1,3,0":7,"2,3,0,1":5,"2,3,1,0":8,"3,0,1,2":9,"3,0,2,1":10,"3,1,0,2":7,"3,1,2,0":7,"3,2,0,1":9,"3,2,1,0":8},"outs":["12","Traceback (most recent call last):\n  File \"Ada_quiz.py\", line 3, in <module>\n    print(answer)\n          ^^^^^^\nNameError: name 'answer' is not defined","  File \"Ada_quiz.py\", line 2\n    answer = triple(4)\n    ^\nIndentationError: expected an indented block after function definition on line 1","  File \"Ada_quiz.py\", line 2\n    print(answer)\n    ^\nIndentationError: expected an indented block after function definition on line 1","  File \"Ada_quiz.py\", line 1\n    return n * 3\nIndentationError: unexpected indent","Traceback (most recent call last):\n  File \"Ada_quiz.py\", line 1, in <module>\n    answer = triple(4)\n             ^^^^^^\nNameError: name 'triple' is not defined. Did you mean: 'tuple'?","  File \"Ada_quiz.py\", line 3\n    print(answer)\n    ^\nIndentationError: expected an indented block after function definition on line 2","  File \"Ada_quiz.py\", line 2\n    return n * 3\nIndentationError: unexpected indent","  File \"Ada_quiz.py\", line 3\n    return n * 3\nIndentationError: unexpected indent","Traceback (most recent call last):\n  File \"Ada_quiz.py\", line 1, in <module>\n    print(answer)\n          ^^^^^^\nNameError: name 'answer' is not defined","  File \"Ada_quiz.py\", line 3\n    answer = triple(4)\n    ^\nIndentationError: expected an indented block after function definition on line 2"],"okKeys":["0,1,2,3"],"finished":"<span class=\"tk-kw\">def<\/span> <span class=\"tk-fn\">triple<\/span>(<span class=\"tk-var\">n<\/span>):\n    <span class=\"tk-ctl\">return<\/span> <span class=\"tk-var\">n<\/span> * <span class=\"tk-num\">3<\/span>\n<span class=\"tk-var\">answer<\/span> = <span class=\"tk-fn\">triple<\/span>(<span class=\"tk-num\">4<\/span>)\n<span class=\"tk-fn\">print<\/span>(<span class=\"tk-var\">answer<\/span>)","copy":"def triple(n):\n    return n * 3\nanswer = triple(4)\nprint(answer)","real":"12"},{"id":"strings-1","round":"strings","kind":"output","ask":"What does this program print?","peek":"word = \"python\"","hints":["Write the index under each letter: p is 0, y is 1, and so on."],"explain":"A string is a row of characters, each with an index starting at 0: p is 0, y is 1, t is 2, h is 3. <code>word[1:4]<\/code> is a <b>slice<\/b>: it takes index 1 up to, but not including, index 4.","stdin":null,"code":"<span class=\"tk-var\">word<\/span> = <span class=\"tk-str\">\"python\"<\/span>\n<span class=\"tk-fn\">print<\/span>(<span class=\"tk-var\">word<\/span>[<span class=\"tk-num\">0<\/span>])\n<span class=\"tk-fn\">print<\/span>(<span class=\"tk-var\">word<\/span>[<span class=\"tk-num\">1<\/span>:<span class=\"tk-num\">4<\/span>])\n","copy":"word = \"python\"\nprint(word[0])\nprint(word[1:4])\n","real":"p\nyth","opts":[{"t":"p\nyth","h":"p\nyth","s":"out","ok":true,"why":"","out":null},{"t":"y\nyth","h":"y\nyth","s":"out","ok":false,"why":"The first character of a string is at index 0, so <code>word[0]<\/code> is p.","out":null},{"t":"p\nytho","h":"p\nytho","s":"out","ok":false,"why":"A slice stops before its second number. <code>word[1:4]<\/code> takes index 1, 2 and 3: y, t, h.","out":null},{"t":"p\npyth","h":"p\npyth","s":"out","ok":false,"why":"A slice starts at its first number. Index 1 is y, the second letter.","out":null}]},{"id":"strings-2","round":"strings","kind":"output","ask":"What does this program print?","peek":"name = \"  ada  \"","hints":["Line 2 has no <code>=<\/code>. Is the result stored anywhere?"],"explain":"<code>name.strip()<\/code> gives a new string with the spaces taken off both ends, but line 2 does not store it, so it is lost. <code>name<\/code> does not change. To keep the result, the line has to be <code>name = name.strip()<\/code>.","stdin":null,"code":"<span class=\"tk-var\">name<\/span> = <span class=\"tk-str\">\"  ada  \"<\/span>\n<span class=\"tk-var\">name<\/span>.<span class=\"tk-fn\">strip<\/span>()\n<span class=\"tk-fn\">print<\/span>(<span class=\"tk-kw\">f<\/span><span class=\"tk-str\">\"[<\/span><span class=\"tk-kw\">{<\/span><span class=\"tk-var\">name<\/span><span class=\"tk-kw\">}<\/span><span class=\"tk-str\">]\"<\/span>)\n","copy":"name = \"  ada  \"\nname.strip()\nprint(f\"[{name}]\")\n","real":"[  ada  ]","opts":[{"t":"[  ada  ]","h":"[  ada  ]","s":"out","ok":true,"why":"","out":null},{"t":"[ada]","h":"[ada]","s":"out","ok":false,"why":"<code>strip<\/code> gives back a new string without the spaces, but line 2 does not store it. <code>name<\/code> has not changed.","out":null},{"t":"[Ada]","h":"[Ada]","s":"out","ok":false,"why":"<code>strip<\/code> removes spaces at the start and end. It does not change small letters to capitals.","out":null},{"t":"[  Ada  ]","h":"[  Ada  ]","s":"out","ok":false,"why":"Nothing in this program makes a capital letter.","out":null}]},{"id":"strings-3","round":"strings","kind":"output","ask":"What does this program print?","peek":"print(\"cat\" in \"concatenate\")","hints":["Look for c, a, t side by side in concatenate."],"explain":"<code>in<\/code> checks whether one string is located in another, as a run of characters in order. concatenate has c, a, t side by side, so the first line is True. Python treats C and c as different, so the second line is False.","stdin":null,"code":"<span class=\"tk-fn\">print<\/span>(<span class=\"tk-str\">\"cat\"<\/span> <span class=\"tk-kw\">in<\/span> <span class=\"tk-str\">\"concatenate\"<\/span>)\n<span class=\"tk-fn\">print<\/span>(<span class=\"tk-str\">\"Cat\"<\/span> <span class=\"tk-kw\">in<\/span> <span class=\"tk-str\">\"concatenate\"<\/span>)\n","copy":"print(\"cat\" in \"concatenate\")\nprint(\"Cat\" in \"concatenate\")\n","real":"True\nFalse","opts":[{"t":"True\nFalse","h":"True\nFalse","s":"out","ok":true,"why":"","out":null},{"t":"True\nTrue","h":"True\nTrue","s":"out","ok":false,"why":"A capital C and a small c are different characters, and concatenate has no capital C.","out":null},{"t":"False\nFalse","h":"False\nFalse","s":"out","ok":false,"why":"<code>in<\/code> checks whether the characters appear together, in order, anywhere in the string. c, a, t appear together in the middle of concatenate.","out":null},{"t":"False\nTrue","h":"False\nTrue","s":"out","ok":false,"why":"This is the wrong way round: the small cat is in concatenate; the capital Cat is not.","out":null}]},{"id":"strings-4","round":"strings","kind":"output","ask":"What does this program print?","peek":"msg = \"a banana\"","hints":["Line 2 has an <code>=<\/code>, so the result is stored."],"explain":"<code>replace(\"a\", \"o\")<\/code> gives a new string with every a swapped for o. Line 2 stores it back under <code>msg<\/code>, so the print shows the new string.","stdin":null,"code":"<span class=\"tk-var\">msg<\/span> = <span class=\"tk-str\">\"a banana\"<\/span>\n<span class=\"tk-var\">msg<\/span> = <span class=\"tk-var\">msg<\/span>.<span class=\"tk-fn\">replace<\/span>(<span class=\"tk-str\">\"a\"<\/span>, <span class=\"tk-str\">\"o\"<\/span>)\n<span class=\"tk-fn\">print<\/span>(<span class=\"tk-var\">msg<\/span>)\n","copy":"msg = \"a banana\"\nmsg = msg.replace(\"a\", \"o\")\nprint(msg)\n","real":"o bonono","opts":[{"t":"o bonono","h":"o bonono","s":"out","ok":true,"why":"","out":null},{"t":"o banana","h":"o banana","s":"out","ok":false,"why":"<code>replace<\/code> swaps every copy, not only the first one.","out":null},{"t":"a banana","h":"a banana","s":"out","ok":false,"why":"This time the result is stored back under <code>msg<\/code> on line 2, so <code>msg<\/code> changes.","out":null},{"t":"a bonono","h":"a bonono","s":"out","ok":false,"why":"The first a is a copy of \"a\" too. <code>replace<\/code> swaps every one.","out":null}]},{"id":"strings-5","round":"strings","kind":"order","ask":"Put the lines in order so the program prints the word backwards.","peek":"prints desserts","hints":["The loop uses both word and backwards, so both need values before it."],"explain":"The first two lines can go in either order, because each one only stores a value. The loop comes after them, because it uses both names. Each pass puts the new letter in front of what is already in <code>backwards<\/code>, so the word comes out reversed.","stdin":null,"lines":["<span class=\"tk-var\">word<\/span> = <span class=\"tk-str\">\"stressed\"<\/span>","<span class=\"tk-var\">backwards<\/span> = <span class=\"tk-str\">\"\"<\/span>","<span class=\"tk-ctl\">for<\/span> <span class=\"tk-var\">letter<\/span> <span class=\"tk-ctl\">in<\/span> <span class=\"tk-var\">word<\/span>:","    <span class=\"tk-var\">backwards<\/span> = <span class=\"tk-var\">letter<\/span> + <span class=\"tk-var\">backwards<\/span>","<span class=\"tk-fn\">print<\/span>(<span class=\"tk-var\">backwards<\/span>)"],"plain":["word = \"stressed\"","backwards = \"\"","for letter in word:","    backwards = letter + backwards","print(backwards)"],"target":"desserts","perms":{"0,1,2,3,4":0,"0,1,2,4,3":1,"0,1,3,2,4":2,"0,1,3,4,2":2,"0,1,4,2,3":3,"0,1,4,3,2":4,"0,2,1,3,4":5,"0,2,1,4,3":5,"0,2,3,1,4":6,"0,2,3,4,1":6,"0,2,4,1,3":7,"0,2,4,3,1":7,"0,3,1,2,4":8,"0,3,1,4,2":8,"0,3,2,1,4":8,"0,3,2,4,1":8,"0,3,4,1,2":8,"0,3,4,2,1":8,"0,4,1,2,3":9,"0,4,1,3,2":4,"0,4,2,1,3":10,"0,4,2,3,1":9,"0,4,3,1,2":2,"0,4,3,2,1":2,"1,0,2,3,4":0,"1,0,2,4,3":1,"1,0,3,2,4":2,"1,0,3,4,2":2,"1,0,4,2,3":3,"1,0,4,3,2":4,"1,2,0,3,4":11,"1,2,0,4,3":11,"1,2,3,0,4":12,"1,2,3,4,0":12,"1,2,4,0,3":7,"1,2,4,3,0":7,"1,3,0,2,4":8,"1,3,0,4,2":8,"1,3,2,0,4":8,"1,3,2,4,0":8,"1,3,4,0,2":8,"1,3,4,2,0":8,"1,4,0,2,3":3,"1,4,0,3,2":4,"1,4,2,0,3":13,"1,4,2,3,0":14,"1,4,3,0,2":2,"1,4,3,2,0":2,"2,0,1,3,4":15,"2,0,1,4,3":15,"2,0,3,1,4":15,"2,0,3,4,1":15,"2,0,4,1,3":15,"2,0,4,3,1":15,"2,1,0,3,4":16,"2,1,0,4,3":16,"2,1,3,0,4":16,"2,1,3,4,0":16,"2,1,4,0,3":16,"2,1,4,3,0":16,"2,3,0,1,4":17,"2,3,0,4,1":17,"2,3,1,0,4":17,"2,3,1,4,0":17,"2,3,4,0,1":17,"2,3,4,1,0":17,"2,4,0,1,3":18,"2,4,0,3,1":18,"2,4,1,0,3":18,"2,4,1,3,0":18,"2,4,3,0,1":18,"2,4,3,1,0":18,"3,0,1,2,4":19,"3,0,1,4,2":19,"3,0,2,1,4":19,"3,0,2,4,1":19,"3,0,4,1,2":19,"3,0,4,2,1":19,"3,1,0,2,4":19,"3,1,0,4,2":19,"3,1,2,0,4":19,"3,1,2,4,0":19,"3,1,4,0,2":19,"3,1,4,2,0":19,"3,2,0,1,4":19,"3,2,0,4,1":19,"3,2,1,0,4":19,"3,2,1,4,0":19,"3,2,4,0,1":19,"3,2,4,1,0":19,"3,4,0,1,2":19,"3,4,0,2,1":19,"3,4,1,0,2":19,"3,4,1,2,0":19,"3,4,2,0,1":19,"3,4,2,1,0":19,"4,0,1,2,3":20,"4,0,1,3,2":4,"4,0,2,1,3":10,"4,0,2,3,1":20,"4,0,3,1,2":2,"4,0,3,2,1":2,"4,1,0,2,3":20,"4,1,0,3,2":4,"4,1,2,0,3":13,"4,1,2,3,0":20,"4,1,3,0,2":2,"4,1,3,2,0":2,"4,2,0,1,3":11,"4,2,0,3,1":11,"4,2,1,0,3":5,"4,2,1,3,0":5,"4,2,3,0,1":20,"4,2,3,1,0":20,"4,3,0,1,2":8,"4,3,0,2,1":8,"4,3,1,0,2":8,"4,3,1,2,0":8,"4,3,2,0,1":8,"4,3,2,1,0":8},"outs":["desserts","  File \"Ada_quiz.py\", line 4\n    print(backwards)\n    ^\nIndentationError: expected an indented block after 'for' statement on line 3","  File \"Ada_quiz.py\", line 3\n    backwards = letter + backwards\nIndentationError: unexpected indent","","  File \"Ada_quiz.py\", line 4\n    backwards = letter + backwards\nIndentationError: unexpected indent","  File \"Ada_quiz.py\", line 3\n    backwards = \"\"\n    ^\nIndentationError: expected an indented block after 'for' statement on line 2","Traceback (most recent call last):\n  File \"Ada_quiz.py\", line 3, in <module>\n    backwards = letter + backwards\n                         ^^^^^^^^^\nNameError: name 'backwards' is not defined","  File \"Ada_quiz.py\", line 3\n    print(backwards)\n    ^\nIndentationError: expected an indented block after 'for' statement on line 2","  File \"Ada_quiz.py\", line 2\n    backwards = letter + backwards\nIndentationError: unexpected indent","Traceback (most recent call last):\n  File \"Ada_quiz.py\", line 2, in <module>\n    print(backwards)\n          ^^^^^^^^^\nNameError: name 'backwards' is not defined","  File \"Ada_quiz.py\", line 4\n    backwards = \"\"\n    ^\nIndentationError: expected an indented block after 'for' statement on line 3","  File \"Ada_quiz.py\", line 3\n    word = \"stressed\"\n    ^\nIndentationError: expected an indented block after 'for' statement on line 2","Traceback (most recent call last):\n  File \"Ada_quiz.py\", line 2, in <module>\n    for letter in word:\n                  ^^^^\nNameError: name 'word' is not defined. Did you mean: 'ord'?","  File \"Ada_quiz.py\", line 4\n    word = \"stressed\"\n    ^\nIndentationError: expected an indented block after 'for' statement on line 3","Traceback (most recent call last):\n  File \"Ada_quiz.py\", line 3, in <module>\n    for letter in word:\n                  ^^^^\nNameError: name 'word' is not defined. Did you mean: 'ord'?","  File \"Ada_quiz.py\", line 2\n    word = \"stressed\"\n    ^\nIndentationError: expected an indented block after 'for' statement on line 1","  File \"Ada_quiz.py\", line 2\n    backwards = \"\"\n    ^\nIndentationError: expected an indented block after 'for' statement on line 1","Traceback (most recent call last):\n  File \"Ada_quiz.py\", line 1, in <module>\n    for letter in word:\n                  ^^^^\nNameError: name 'word' is not defined. Did you mean: 'ord'?","  File \"Ada_quiz.py\", line 2\n    print(backwards)\n    ^\nIndentationError: expected an indented block after 'for' statement on line 1","  File \"Ada_quiz.py\", line 1\n    backwards = letter + backwards\nIndentationError: unexpected indent","Traceback (most recent call last):\n  File \"Ada_quiz.py\", line 1, in <module>\n    print(backwards)\n          ^^^^^^^^^\nNameError: name 'backwards' is not defined"],"okKeys":["0,1,2,3,4","1,0,2,3,4"],"finished":"<span class=\"tk-var\">word<\/span> = <span class=\"tk-str\">\"stressed\"<\/span>\n<span class=\"tk-var\">backwards<\/span> = <span class=\"tk-str\">\"\"<\/span>\n<span class=\"tk-ctl\">for<\/span> <span class=\"tk-var\">letter<\/span> <span class=\"tk-ctl\">in<\/span> <span class=\"tk-var\">word<\/span>:\n    <span class=\"tk-var\">backwards<\/span> = <span class=\"tk-var\">letter<\/span> + <span class=\"tk-var\">backwards<\/span>\n<span class=\"tk-fn\">print<\/span>(<span class=\"tk-var\">backwards<\/span>)","copy":"word = \"stressed\"\nbackwards = \"\"\nfor letter in word:\n    backwards = letter + backwards\nprint(backwards)","real":"desserts"},{"id":"remainders-1","round":"remainders","kind":"output","ask":"What does this program print?","peek":"print(17 % 5)","hints":["<code>17 % 5<\/code> asks: after taking out as many fives as fit into 17, what is left?"],"explain":"<code>%<\/code> gives the <b>remainder<\/b>, what is left over after dividing. 17 is three fives with 2 left over. 20 is four fives with 0 left over. 3 is zero fives with 3 left over.","stdin":null,"code":"<span class=\"tk-fn\">print<\/span>(<span class=\"tk-num\">17<\/span> % <span class=\"tk-num\">5<\/span>)\n<span class=\"tk-fn\">print<\/span>(<span class=\"tk-num\">20<\/span> % <span class=\"tk-num\">5<\/span>)\n<span class=\"tk-fn\">print<\/span>(<span class=\"tk-num\">3<\/span> % <span class=\"tk-num\">5<\/span>)\n","copy":"print(17 % 5)\nprint(20 % 5)\nprint(3 % 5)\n","real":"2\n0\n3","opts":[{"t":"2\n0\n3","h":"2\n0\n3","s":"out","ok":true,"why":"","out":null},{"t":"3.4\n4.0\n0.6","h":"3.4\n4.0\n0.6","s":"out","ok":false,"why":"<code>%<\/code> does not divide. It gives the remainder: what is left over after taking out as many fives as fit.","out":null},{"t":"2\n0\n0","h":"2\n0\n0","s":"out","ok":false,"why":"5 does not fit into 3 at all, so all 3 is left over. <code>3 % 5<\/code> is 3.","out":null},{"t":"2\n5\n3","h":"2\n5\n3","s":"out","ok":false,"why":"20 is exactly four fives, with nothing left over. <code>20 % 5<\/code> is 0.","out":null}]},{"id":"remainders-2","round":"remainders","kind":"output","ask":"A clock uses the hours 0 to 23. It is 22:00. What hour does the program print for 5 hours later?","peek":"hour = 22","hints":["Work out the brackets first. Then take away 24 if the answer is 24 or more."],"explain":"Brackets go first: 22 + 5 = 27. Then <code>% 24<\/code> gives the remainder after taking out 24: 27 is one 24 with 3 left over. So the clock goes past midnight to 3.","stdin":null,"code":"<span class=\"tk-var\">hour<\/span> = <span class=\"tk-num\">22<\/span>\n<span class=\"tk-var\">hour<\/span> = (<span class=\"tk-var\">hour<\/span> + <span class=\"tk-num\">5<\/span>) % <span class=\"tk-num\">24<\/span>\n<span class=\"tk-fn\">print<\/span>(<span class=\"tk-var\">hour<\/span>)\n","copy":"hour = 22\nhour = (hour + 5) % 24\nprint(hour)\n","real":"3","opts":[{"t":"3","h":"3","s":"out","ok":true,"why":"","out":null},{"t":"27","h":"27","s":"out","ok":false,"why":"<code>% 24<\/code> wraps the number around. 27 is one 24 with 3 left over.","out":null},{"t":"5","h":"5","s":"out","ok":false,"why":"The brackets add 5 to 22 first. Then <code>% 24<\/code> works on the 27.","out":null},{"t":"2","h":"2","s":"out","ok":false,"why":"Count on from 22: 23, 0, 1, 2, 3. That is five steps, not four.","out":null}]},{"id":"remainders-3","round":"remainders","kind":"blank","ask":"Which fills the blank so the program prints only the even numbers: 2, 4 and 6?","peek":"for n in range(1, 7):","hints":["What is the remainder when an even number is divided by 2?"],"explain":"An even number divided by 2 leaves nothing over, so <code>n % 2<\/code> is 0. The check <code>n % 2 == 0<\/code> is True for 2, 4 and 6.","stdin":null,"real":"2\n4\n6","finished":"<span class=\"tk-ctl\">for<\/span> <span class=\"tk-var\">n<\/span> <span class=\"tk-ctl\">in<\/span> <span class=\"tk-fn\">range<\/span>(<span class=\"tk-num\">1<\/span>, <span class=\"tk-num\">7<\/span>):\n<span class=\"filled\">    <span class=\"tk-ctl\">if<\/span> <span class=\"tk-var\">n<\/span> % <span class=\"tk-num\">2<\/span> == <span class=\"tk-num\">0<\/span>:<\/span>\n        <span class=\"tk-fn\">print<\/span>(<span class=\"tk-var\">n<\/span>)\n","copy":"for n in range(1, 7):\n    if n % 2 == 0:\n        print(n)\n","code":"<span class=\"tk-ctl\">for<\/span> <span class=\"tk-var\">n<\/span> <span class=\"tk-ctl\">in<\/span> <span class=\"tk-fn\">range<\/span>(<span class=\"tk-num\">1<\/span>, <span class=\"tk-num\">7<\/span>):\n    <span class=\"tk-ctl\">if<\/span> <span class=\"tk-var\">n<\/span> % <span class=\"tk-num\">2<\/span> <span class=\"blank\" aria-label=\"blank\">___<\/span> <span class=\"tk-num\">0<\/span>:\n        <span class=\"tk-fn\">print<\/span>(<span class=\"tk-var\">n<\/span>)\n","target":"2\n4\n6","opts":[{"t":"==","h":"==","s":"code","ok":true,"why":"","out":"2\n4\n6"},{"t":"!=","h":"!=","s":"code","ok":false,"why":"<code>n % 2 != 0<\/code> is True for the odd numbers, so this prints 1, 3 and 5.","out":"1\n3\n5"},{"t":"<","h":"&lt;","s":"code","ok":false,"why":"A remainder is never less than 0, so this prints nothing.","out":""},{"t":"=","h":"=","s":"code","ok":false,"why":"One equals sign stores a value. It cannot go in a condition, so Python stops with a SyntaxError.","out":"  File \"Ada_quiz.py\", line 2\n    if n % 2 = 0:\n       ^^^^^\nSyntaxError: cannot assign to expression here. Maybe you meant '==' instead of '='?"}]},{"id":"remainders-4","round":"remainders","kind":"output","ask":"What does this program print?","peek":"colours = [\"red\", \"green\", \"blue\"]","hints":["Work out <code>i % 3<\/code> for i = 0, 1, 2, 3 and 4."],"explain":"i goes 0, 1, 2, 3, 4. <code>i % 3<\/code> gives 0, 1, 2, 0, 1, so the colours go round: red, green, blue, then back to red and green.","stdin":null,"code":"<span class=\"tk-var\">colours<\/span> = [<span class=\"tk-str\">\"red\"<\/span>, <span class=\"tk-str\">\"green\"<\/span>, <span class=\"tk-str\">\"blue\"<\/span>]\n<span class=\"tk-ctl\">for<\/span> <span class=\"tk-var\">i<\/span> <span class=\"tk-ctl\">in<\/span> <span class=\"tk-fn\">range<\/span>(<span class=\"tk-num\">5<\/span>):\n    <span class=\"tk-fn\">print<\/span>(<span class=\"tk-var\">colours<\/span>[<span class=\"tk-var\">i<\/span> % <span class=\"tk-num\">3<\/span>])\n","copy":"colours = [\"red\", \"green\", \"blue\"]\nfor i in range(5):\n    print(colours[i % 3])\n","real":"red\ngreen\nblue\nred\ngreen","opts":[{"t":"red\ngreen\nblue\nred\ngreen","h":"red\ngreen\nblue\nred\ngreen","s":"out","ok":true,"why":"","out":null},{"t":"It stops with an IndexError","h":"It stops with an IndexError","s":"text","ok":false,"why":"<code>i % 3<\/code> is always 0, 1 or 2, so the index never goes past the end of the list.","out":null},{"t":"red\ngreen\nblue","h":"red\ngreen\nblue","s":"out","ok":false,"why":"<code>range(5)<\/code> gives 5 passes: i is 0, 1, 2, 3 and 4.","out":null},{"t":"green\nblue\nred\ngreen\nblue","h":"green\nblue\nred\ngreen\nblue","s":"out","ok":false,"why":"On the first pass i is 0, and <code>0 % 3<\/code> is 0, so the first colour is red.","out":null}]},{"id":"dicts-1","round":"dicts","kind":"output","ask":"What does this program print?","peek":"ages = {\"Ada\": 11, \"Mo\": 12}","hints":["Line 2 uses a key that is already there. Line 3 uses a key that is not."],"explain":"A <b>dictionary<\/b> pairs each <b>key<\/b> with a <b>value<\/b>. Line 2 changes the value under \"Mo\" to 13. Line 3 adds a new pair, because \"Zed\" was not a key yet. That makes 3 pairs, so <code>len<\/code> gives 3.","stdin":null,"code":"<span class=\"tk-var\">ages<\/span> = {<span class=\"tk-str\">\"Ada\"<\/span>: <span class=\"tk-num\">11<\/span>, <span class=\"tk-str\">\"Mo\"<\/span>: <span class=\"tk-num\">12<\/span>}\n<span class=\"tk-var\">ages<\/span>[<span class=\"tk-str\">\"Mo\"<\/span>] = <span class=\"tk-num\">13<\/span>\n<span class=\"tk-var\">ages<\/span>[<span class=\"tk-str\">\"Zed\"<\/span>] = <span class=\"tk-num\">10<\/span>\n<span class=\"tk-fn\">print<\/span>(<span class=\"tk-var\">ages<\/span>[<span class=\"tk-str\">\"Mo\"<\/span>])\n<span class=\"tk-fn\">print<\/span>(<span class=\"tk-fn\">len<\/span>(<span class=\"tk-var\">ages<\/span>))\n","copy":"ages = {\"Ada\": 11, \"Mo\": 12}\nages[\"Mo\"] = 13\nages[\"Zed\"] = 10\nprint(ages[\"Mo\"])\nprint(len(ages))\n","real":"13\n3","opts":[{"t":"13\n3","h":"13\n3","s":"out","ok":true,"why":"","out":null},{"t":"12\n3","h":"12\n3","s":"out","ok":false,"why":"Line 2 changes the value stored under the key \"Mo\" to 13.","out":null},{"t":"13\n2","h":"13\n2","s":"out","ok":false,"why":"Storing a value under a key that is not there yet adds a new pair. \"Zed\" is added on line 3.","out":null},{"t":"13\n4","h":"13\n4","s":"out","ok":false,"why":"Line 2 changes the value under \"Mo\". It does not add a second \"Mo\". A dictionary holds each key once.","out":null}]},{"id":"dicts-2","round":"dicts","kind":"error","ask":"Does this program run? If not, what is the name of the error?","peek":"ages = {\"Ada\": 11, \"Mo\": 12}","hints":["Compare the key on line 2 with the keys on line 1, letter by letter."],"explain":"The dictionary's keys are \"Ada\" and \"Mo\". \"ada\" with a small a is a different string, so Python stops with a KeyError.","stdin":null,"code":"<span class=\"tk-var\">ages<\/span> = {<span class=\"tk-str\">\"Ada\"<\/span>: <span class=\"tk-num\">11<\/span>, <span class=\"tk-str\">\"Mo\"<\/span>: <span class=\"tk-num\">12<\/span>}\n<span class=\"tk-fn\">print<\/span>(<span class=\"tk-var\">ages<\/span>[<span class=\"tk-str\">\"ada\"<\/span>])\n","copy":"ages = {\"Ada\": 11, \"Mo\": 12}\nprint(ages[\"ada\"])\n","real":"Traceback (most recent call last):\n  File \"Ada_quiz.py\", line 2, in <module>\n    print(ages[\"ada\"])\n          ~~~~^^^^^^^\nKeyError: 'ada'","opts":[{"t":"KeyError","h":"KeyError","s":"err","ok":true,"why":"","out":null},{"t":"No error. It prints 11","h":"No error. It prints 11","s":"text","ok":false,"why":"Keys must match exactly. \"ada\" with a small a is not the same key as \"Ada\".","out":null},{"t":"IndexError","h":"IndexError","s":"err","ok":false,"why":"IndexError is for list positions. A dictionary looks things up by key, and a missing key gives a different error.","out":null},{"t":"NameError","h":"NameError","s":"err","ok":false,"why":"The name <code>ages<\/code> is known. It is the key \"ada\" that is missing.","out":null}]},{"id":"dicts-3","round":"dicts","kind":"output","ask":"What does this program print?","peek":"stock = {\"apples\": 5, \"pears\": 0}","hints":["On a dictionary, <code>in<\/code> looks at the keys only."],"explain":"On a dictionary, <code>in<\/code> checks the keys. \"pears\" is a key, so the first line is True. 5 is a value, not a key, so the second line is False.","stdin":null,"code":"<span class=\"tk-var\">stock<\/span> = {<span class=\"tk-str\">\"apples\"<\/span>: <span class=\"tk-num\">5<\/span>, <span class=\"tk-str\">\"pears\"<\/span>: <span class=\"tk-num\">0<\/span>}\n<span class=\"tk-fn\">print<\/span>(<span class=\"tk-str\">\"pears\"<\/span> <span class=\"tk-kw\">in<\/span> <span class=\"tk-var\">stock<\/span>)\n<span class=\"tk-fn\">print<\/span>(<span class=\"tk-num\">5<\/span> <span class=\"tk-kw\">in<\/span> <span class=\"tk-var\">stock<\/span>)\n","copy":"stock = {\"apples\": 5, \"pears\": 0}\nprint(\"pears\" in stock)\nprint(5 in stock)\n","real":"True\nFalse","opts":[{"t":"True\nFalse","h":"True\nFalse","s":"out","ok":true,"why":"","out":null},{"t":"False\nFalse","h":"False\nFalse","s":"out","ok":false,"why":"\"pears\" is a key, even though its value is 0. <code>in<\/code> checks the keys.","out":null},{"t":"True\nTrue","h":"True\nTrue","s":"out","ok":false,"why":"<code>in<\/code> checks the keys, not the values. 5 is a value, not a key.","out":null},{"t":"False\nTrue","h":"False\nTrue","s":"out","ok":false,"why":"This is the wrong way round: \"pears\" is a key; 5 is only a value.","out":null}]},{"id":"dicts-4","round":"dicts","kind":"type","ask":"Type exactly what this program prints.","peek":"counts = {}","hints":["The first a stores 1. What happens the next time an a comes along?"],"explain":"The first time a letter comes along, it is not a key yet, so the <code>else<\/code> line stores 1. Each time after, the <code>if<\/code> line adds 1. banana has three a's, so <code>counts[\"a\"]<\/code> is 3. Counting like this is called a <b>tally<\/b>.","stdin":null,"code":"<span class=\"tk-var\">counts<\/span> = {}\n<span class=\"tk-ctl\">for<\/span> <span class=\"tk-var\">letter<\/span> <span class=\"tk-ctl\">in<\/span> <span class=\"tk-str\">\"banana\"<\/span>:\n    <span class=\"tk-ctl\">if<\/span> <span class=\"tk-var\">letter<\/span> <span class=\"tk-kw\">in<\/span> <span class=\"tk-var\">counts<\/span>:\n        <span class=\"tk-var\">counts<\/span>[<span class=\"tk-var\">letter<\/span>] = <span class=\"tk-var\">counts<\/span>[<span class=\"tk-var\">letter<\/span>] + <span class=\"tk-num\">1<\/span>\n    <span class=\"tk-ctl\">else<\/span>:\n        <span class=\"tk-var\">counts<\/span>[<span class=\"tk-var\">letter<\/span>] = <span class=\"tk-num\">1<\/span>\n<span class=\"tk-fn\">print<\/span>(<span class=\"tk-var\">counts<\/span>[<span class=\"tk-str\">\"a\"<\/span>])\n","copy":"counts = {}\nfor letter in \"banana\":\n    if letter in counts:\n        counts[letter] = counts[letter] + 1\n    else:\n        counts[letter] = 1\nprint(counts[\"a\"])\n","real":"3","answer":"3","common":[{"t":"1","why":"The <code>else<\/code> lines run only the first time a letter is seen. After that, the <code>if<\/code> lines add 1 each time."},{"t":"6","why":"<code>counts[\"a\"]<\/code> counts only the letter a. banana has 6 letters, but not all of them are a."}]},{"id":"errors-1","round":"errors","kind":"line","ask":"This program stops with an error. Which line does the error message name?","peek":"x = 5","hints":["Which line tries to add a number and text?"],"explain":"Line 3 tries a number plus text: <code>5 + \"3\"<\/code>. Python stops there with a TypeError, and the error message names line 3.","stdin":null,"code":"<span class=\"tk-var\">x<\/span> = <span class=\"tk-num\">5<\/span>\n<span class=\"tk-var\">y<\/span> = <span class=\"tk-str\">\"3\"<\/span>\n<span class=\"tk-var\">total<\/span> = <span class=\"tk-var\">x<\/span> + <span class=\"tk-var\">y<\/span>\n<span class=\"tk-fn\">print<\/span>(<span class=\"tk-var\">total<\/span>)\n","copy":"x = 5\ny = \"3\"\ntotal = x + y\nprint(total)\n","real":"Traceback (most recent call last):\n  File \"Ada_quiz.py\", line 3, in <module>\n    total = x + y\n            ~~^~~\nTypeError: unsupported operand type(s) for +: 'int' and 'str'","opts":[{"t":"Line 1","h":"Line 1","s":"text","ok":false,"why":"<code>x = 5<\/code> is fine: it stores a whole number.","out":null},{"t":"Line 2","h":"Line 2","s":"text","ok":false,"why":"Storing text under a name is allowed. The problem shows up when <code>y<\/code> is used in arithmetic.","out":null},{"t":"Line 3","h":"Line 3","s":"text","ok":true,"why":"","out":null},{"t":"Line 4","h":"Line 4","s":"text","ok":false,"why":"Python never gets to line 4. It stops at the first line it cannot run.","out":null}],"fixed":true},{"id":"errors-2","round":"errors","kind":"line","ask":"The mistake is a spelling mistake on line 1. Which line does the error message name?","peek":"totl = 0","hints":["Python only notices a problem when it reaches a line it cannot run."],"explain":"Python names the line where it could not go on, which is not always the line with the mistake. Line 3 asks for the value of <code>total<\/code> before anything was stored under that name, so Python stops there with a NameError.","stdin":null,"code":"<span class=\"tk-var\">totl<\/span> = <span class=\"tk-num\">0<\/span>\n<span class=\"tk-ctl\">for<\/span> <span class=\"tk-var\">n<\/span> <span class=\"tk-ctl\">in<\/span> [<span class=\"tk-num\">4<\/span>, <span class=\"tk-num\">5<\/span>, <span class=\"tk-num\">6<\/span>]:\n    <span class=\"tk-var\">total<\/span> = <span class=\"tk-var\">total<\/span> + <span class=\"tk-var\">n<\/span>\n<span class=\"tk-fn\">print<\/span>(<span class=\"tk-var\">total<\/span>)\n","copy":"totl = 0\nfor n in [4, 5, 6]:\n    total = total + n\nprint(total)\n","real":"Traceback (most recent call last):\n  File \"Ada_quiz.py\", line 3, in <module>\n    total = total + n\n            ^^^^^\nNameError: name 'total' is not defined. Did you mean: 'totl'?","opts":[{"t":"Line 1","h":"Line 1","s":"text","ok":false,"why":"Line 1 is allowed in Python: it stores 0 under the name <code>totl<\/code>. Python has no way to know you meant <code>total<\/code>.","out":null},{"t":"Line 2","h":"Line 2","s":"text","ok":false,"why":"The <code>for<\/code> line is fine. The trouble starts inside the loop, the first time <code>total<\/code> is used.","out":null},{"t":"Line 3","h":"Line 3","s":"text","ok":true,"why":"","out":null},{"t":"Line 4","h":"Line 4","s":"text","ok":false,"why":"Python never gets to line 4. It stops on the first pass of the loop.","out":null}],"fixed":true},{"id":"errors-3","round":"errors","kind":"error","ask":"Does this program run? If not, what is the name of the error?","peek":"for i in range(3):","hints":["Look at the start of line 2."],"explain":"A line ending in a colon must have at least one indented line under it. Here <code>print(i)<\/code> is not indented, so Python stops with an IndentationError.","stdin":null,"code":"<span class=\"tk-ctl\">for<\/span> <span class=\"tk-var\">i<\/span> <span class=\"tk-ctl\">in<\/span> <span class=\"tk-fn\">range<\/span>(<span class=\"tk-num\">3<\/span>):\n<span class=\"tk-fn\">print<\/span>(<span class=\"tk-var\">i<\/span>)\n","copy":"for i in range(3):\nprint(i)\n","real":"  File \"Ada_quiz.py\", line 2\n    print(i)\n    ^\nIndentationError: expected an indented block after 'for' statement on line 1","opts":[{"t":"IndentationError","h":"IndentationError","s":"err","ok":true,"why":"","out":null},{"t":"No error. It prints 0, 1 and 2","h":"No error. It prints 0, 1 and 2","s":"text","ok":false,"why":"Python uses indentation to know which lines belong to the loop. With no indented line under the <code>for<\/code>, the loop has no lines to repeat.","out":null},{"t":"NameError","h":"NameError","s":"err","ok":false,"why":"<code>i<\/code> is the loop variable, so it is a known name. The problem is the missing indentation.","out":null},{"t":"TypeError","h":"TypeError","s":"err","ok":false,"why":"No values are being combined here. Python stops before running any line.","out":null}]},{"id":"errors-4","round":"errors","kind":"output","ask":"This program is meant to print the total of the list, 10. It has a bug but no error message. What does it print?","peek":"nums = [1, 2, 3, 4]","hints":["Write down total after each pass."],"explain":"<code>total = n<\/code> stores the loop variable, replacing what was there. After the last pass, <code>total<\/code> holds 4. A bug like this gives a wrong answer with no error message, so the way to catch it is to know what the answer should be before you run it.","stdin":null,"code":"<span class=\"tk-var\">nums<\/span> = [<span class=\"tk-num\">1<\/span>, <span class=\"tk-num\">2<\/span>, <span class=\"tk-num\">3<\/span>, <span class=\"tk-num\">4<\/span>]\n<span class=\"tk-var\">total<\/span> = <span class=\"tk-num\">0<\/span>\n<span class=\"tk-ctl\">for<\/span> <span class=\"tk-var\">n<\/span> <span class=\"tk-ctl\">in<\/span> <span class=\"tk-var\">nums<\/span>:\n    <span class=\"tk-var\">total<\/span> = <span class=\"tk-var\">n<\/span>\n<span class=\"tk-fn\">print<\/span>(<span class=\"tk-var\">total<\/span>)\n","copy":"nums = [1, 2, 3, 4]\ntotal = 0\nfor n in nums:\n    total = n\nprint(total)\n","real":"4","opts":[{"t":"4","h":"4","s":"out","ok":true,"why":"","out":null},{"t":"10","h":"10","s":"out","ok":false,"why":"<code>total = n<\/code> replaces <code>total<\/code> with <code>n<\/code> on each pass. Nothing is added.","out":null},{"t":"0","h":"0","s":"out","ok":false,"why":"<code>total<\/code> changes on every pass of the loop, so it does not stay 0.","out":null},{"t":"1\n2\n3\n4","h":"1\n2\n3\n4","s":"out","ok":false,"why":"<code>print(total)<\/code> is not indented, so it runs once, after the loop.","out":null}]},{"id":"errors-5","round":"errors","kind":"blank","ask":"This program should print the total of the list, 10. Which fills the blank so it does?","peek":"nums = [1, 2, 3, 4]","hints":["The new total is the old total plus the loop variable."],"explain":"<code>total = total + n<\/code> takes the total so far, adds the loop variable, and stores the answer back in <code>total<\/code>.","stdin":null,"real":"10","finished":"<span class=\"tk-var\">nums<\/span> = [<span class=\"tk-num\">1<\/span>, <span class=\"tk-num\">2<\/span>, <span class=\"tk-num\">3<\/span>, <span class=\"tk-num\">4<\/span>]\n<span class=\"tk-var\">total<\/span> = <span class=\"tk-num\">0<\/span>\n<span class=\"tk-ctl\">for<\/span> <span class=\"tk-var\">n<\/span> <span class=\"tk-ctl\">in<\/span> <span class=\"tk-var\">nums<\/span>:\n<span class=\"filled\">    <span class=\"tk-var\">total<\/span> = <span class=\"tk-var\">total<\/span> + <span class=\"tk-var\">n<\/span><\/span>\n<span class=\"tk-fn\">print<\/span>(<span class=\"tk-var\">total<\/span>)\n","copy":"nums = [1, 2, 3, 4]\ntotal = 0\nfor n in nums:\n    total = total + n\nprint(total)\n","code":"<span class=\"tk-var\">nums<\/span> = [<span class=\"tk-num\">1<\/span>, <span class=\"tk-num\">2<\/span>, <span class=\"tk-num\">3<\/span>, <span class=\"tk-num\">4<\/span>]\n<span class=\"tk-var\">total<\/span> = <span class=\"tk-num\">0<\/span>\n<span class=\"tk-ctl\">for<\/span> <span class=\"tk-var\">n<\/span> <span class=\"tk-ctl\">in<\/span> <span class=\"tk-var\">nums<\/span>:\n    <span class=\"blank\" aria-label=\"blank\">___<\/span>\n<span class=\"tk-fn\">print<\/span>(<span class=\"tk-var\">total<\/span>)\n","target":"10","opts":[{"t":"total = total + n","h":"<span class=\"tk-var\">total<\/span> = <span class=\"tk-var\">total<\/span> + <span class=\"tk-var\">n<\/span>","s":"code","ok":true,"why":"","out":"10"},{"t":"total = n + 1","h":"<span class=\"tk-var\">total<\/span> = <span class=\"tk-var\">n<\/span> + <span class=\"tk-num\">1<\/span>","s":"code","ok":false,"why":"This replaces <code>total<\/code> on every pass. It ends as 4 + 1.","out":"5"},{"t":"total + n","h":"<span class=\"tk-var\">total<\/span> + <span class=\"tk-var\">n<\/span>","s":"code","ok":false,"why":"This works out a sum but never stores it, so <code>total<\/code> stays 0.","out":"0"},{"t":"total = total + 1","h":"<span class=\"tk-var\">total<\/span> = <span class=\"tk-var\">total<\/span> + <span class=\"tk-num\">1<\/span>","s":"code","ok":false,"why":"This adds 1 on each pass, so it counts the items instead of adding them up.","out":"4"}]},{"id":"errors-6","round":"errors","kind":"error","ask":"Does this program run? If not, what is the name of the error?","peek":"print(double(4))","hints":["Python reads the file from the top. What does it know when line 1 runs?"],"explain":"Python reads a file from the top. Line 1 calls <code>double<\/code> before the <code>def<\/code> that makes it, so Python stops with a NameError. This is why every <code>def<\/code> goes at the top of the file.","stdin":null,"code":"<span class=\"tk-fn\">print<\/span>(<span class=\"tk-fn\">double<\/span>(<span class=\"tk-num\">4<\/span>))\n\n<span class=\"tk-kw\">def<\/span> <span class=\"tk-fn\">double<\/span>(<span class=\"tk-var\">n<\/span>):\n    <span class=\"tk-ctl\">return<\/span> <span class=\"tk-var\">n<\/span> * <span class=\"tk-num\">2<\/span>\n","copy":"print(double(4))\n\ndef double(n):\n    return n * 2\n","real":"Traceback (most recent call last):\n  File \"Ada_quiz.py\", line 1, in <module>\n    print(double(4))\n          ^^^^^^\nNameError: name 'double' is not defined","opts":[{"t":"NameError","h":"NameError","s":"err","ok":true,"why":"","out":null},{"t":"No error. It prints 8","h":"No error. It prints 8","s":"text","ok":false,"why":"Python runs the lines from top to bottom. When line 1 runs, the <code>def<\/code> has not been read yet, so <code>double<\/code> does not exist.","out":null},{"t":"SyntaxError","h":"SyntaxError","s":"err","ok":false,"why":"Every line is written correctly. The problem is the order of the lines.","out":null},{"t":"TypeError","h":"TypeError","s":"err","ok":false,"why":"Python never gets as far as multiplying. It stops because it does not know the name <code>double<\/code> yet.","out":null}]}],"file":"Ada_quiz.py","python":"Python 3.11.15"}</script>
+<script>
+(function () {
+  "use strict";
+
+  var D = JSON.parse(document.getElementById("quiz-data").textContent);
+  var ROUNDS = D.rounds;
+  var QS = D.questions;
+  var ROUND = {};
+  var QIDX = {};
+  ROUNDS.forEach(function (r, i) { r.n = i + 1; ROUND[r.id] = r; });
+  QS.forEach(function (q, i) { QIDX[q.id] = i; });
+  var LETTERS = "ABCDEF";
+  var app = document.getElementById("app");
+
+  // Choices on the start screen. Nothing is saved: closing the page starts fresh.
+  var pick = { rounds: new Set(ROUNDS.map(function (r) { return r.id; })), mode: "solo", shuffle: false };
+  (function readLink() {
+    var p = new URLSearchParams(location.search);
+    var want = (p.get("rounds") || "").split(",").filter(function (id) { return ROUND[id]; });
+    if (want.length) pick.rounds = new Set(want);
+    if (p.get("mode") === "class") pick.mode = "class";
+    if (p.get("shuffle") === "1") pick.shuffle = true;
+  })();
+
+  var S = null; // the quiz in progress
+
+  // ---------------------------------------------------------------- helpers
+  function esc(s) {
+    return String(s).replace(/[&<>"]/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
+    });
+  }
+  function outHTML(s) {
+    return s === "" ? '<span class="empty">(nothing: the program prints no lines)</span>' : esc(s);
+  }
+  function shuffle(a) {
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
+  }
+  function range(n) { var a = []; for (var i = 0; i < n; i++) a.push(i); return a; }
+  function current() { return QS[QIDX[S.queue[S.pos]]]; }
+  function plural(n, word) { return n + " " + word + (n === 1 ? "" : "s"); }
+  function toTop() {
+    var y = app.getBoundingClientRect().top + window.scrollY - 8;
+    if (window.scrollY > y || S) window.scrollTo(0, Math.max(0, y));
+  }
+  function focusEl(el) { if (el) el.focus({ preventScroll: true }); }
+
+  // On a narrow screen, make the type in a code box or line tile smaller until its
+  // longest line fits, down to 11px. A box that still would not fit keeps its size
+  // and scrolls sideways inside itself instead (long error messages do this).
+  function fitCode() {
+    app.querySelectorAll("pre, .tile").forEach(function (el) {
+      el.style.fontSize = "";
+      if (el.scrollWidth <= el.clientWidth + 1) return;
+      var cs = getComputedStyle(el);
+      var pad = parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight);
+      var size = parseFloat(cs.fontSize);
+      var want = size * (el.clientWidth - pad) / (el.scrollWidth - pad);
+      want = Math.floor(want * 2) / 2;
+      if (want < 11) return;
+      el.style.fontSize = want + "px";
+      while (el.scrollWidth > el.clientWidth + 1 && want > 11) { want -= 0.5; el.style.fontSize = want + "px"; }
+    });
+    // every line tile in a question shares the smallest size, so the lines line up
+    var tiles = app.querySelectorAll(".tile"), min = Infinity;
+    tiles.forEach(function (t) { min = Math.min(min, parseFloat(getComputedStyle(t).fontSize)); });
+    tiles.forEach(function (t) { if (parseFloat(getComputedStyle(t).fontSize) !== min) t.style.fontSize = min + "px"; });
+  }
+  function paint(html) { app.innerHTML = html; fitCode(); }
+  var resizeTimer = null;
+  window.addEventListener("resize", function () { clearTimeout(resizeTimer); resizeTimer = setTimeout(fitCode, 150); });
+
+  function copyText(text, btn) {
+    var label = btn.getAttribute("data-label") || btn.textContent;
+    btn.setAttribute("data-label", label);
+    function done() { btn.textContent = "Copied"; setTimeout(function () { btn.textContent = label; }, 1500); }
+    function fallback() {
+      var ta = document.createElement("textarea");
+      ta.value = text; ta.setAttribute("readonly", "");
+      ta.style.position = "fixed"; ta.style.top = "0"; ta.style.opacity = "0";
+      document.body.appendChild(ta); ta.select();
+      try { document.execCommand("copy"); done(); } catch (e) { btn.textContent = "Select the code and copy it"; }
+      document.body.removeChild(ta);
+    }
+    if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(text).then(done, fallback);
+    else fallback();
+  }
+
+  // ---------------------------------------------------------------- start screen
+  function selectedCount() {
+    return QS.filter(function (q) { return pick.rounds.has(q.round); }).length;
+  }
+
+  function renderStart() {
+    S = null;
+    document.body.classList.remove("classmode");
+    var rounds = ROUNDS.map(function (r) {
+      return '<label class="round"><input type="checkbox" value="' + r.id + '"' +
+        (pick.rounds.has(r.id) ? " checked" : "") + '>' +
+        '<span class="n">' + r.n + '</span><span><b>' + esc(r.title) + '</b>' +
+        '<span class="about">' + esc(r.about) + '</span>' +
+        '<span class="count">' + plural(r.count, "question") + '</span></span></label>';
+    }).join("");
+    paint(
+      '<section class="intro"><h2>How it works</h2><ol>' +
+      '<li>Each question shows a short Python program. Work out what it will do before you look at the answers.</li>' +
+      '<li>Pick an answer. Then press <b>Sure</b> or <b>Not sure</b> to check it.</li>' +
+      '<li>Every wrong answer has its own reason, and every question shows what Python really printed.</li>' +
+      '<li>At the end, look first at the questions you were sure about but got wrong.</li>' +
+      '</ol></section>' +
+      '<section class="pick"><h2>Choose the rounds</h2>' +
+      '<div class="row"><button class="small" data-act="all">Select all</button>' +
+      '<button class="small" data-act="none">Clear</button></div>' +
+      '<div class="rounds">' + rounds + '</div></section>' +
+      '<section class="pick"><h2>Who is taking it?</h2><div class="modes">' +
+      '<label class="mode"><input type="radio" name="mode" value="solo"' + (pick.mode === "solo" ? " checked" : "") + '>' +
+      '<span><b>Me, on my own</b><span>You get a score at the end, and a list of the questions to look at again.</span></span></label>' +
+      '<label class="mode"><input type="radio" name="mode" value="class"' + (pick.mode === "class" ? " checked" : "") + '>' +
+      '<span><b>A class, on a projector</b><span>Bigger text and no score. Everyone picks an answer, then the teacher shows the right one and the reason for every wrong one.</span></span></label>' +
+      '</div><label class="check"><input type="checkbox" id="shuffle"' + (pick.shuffle ? " checked" : "") + '> Mix up the order of the questions</label>' +
+      '</section>' +
+      '<div class="row"><button class="btn big" data-act="start" id="startbtn">Start</button>' +
+      '<button class="btn quiet" data-act="quick">Quick quiz: one question from each round</button></div>' +
+      '<p class="note" id="startnote"></p>');
+    updateStart();
+  }
+
+  function updateStart() {
+    var n = selectedCount();
+    var btn = document.getElementById("startbtn");
+    if (!btn) return;
+    btn.textContent = n ? "Start: " + plural(n, "question") : "Pick at least one round";
+    btn.disabled = n === 0;
+    var k = ROUNDS.filter(function (r) { return pick.rounds.has(r.id); }).length;
+    document.getElementById("startnote").textContent = n
+      ? "Allow about a minute a question. The quick quiz is " + plural(k, "question") + ", one from each chosen round."
+      : "";
+  }
+
+  function begin(qids, mode) {
+    S = { mode: mode, queue: qids, pos: 0, st: {}, log: [] };
+    document.body.classList.toggle("classmode", mode === "class");
+    renderQ();
+  }
+
+  // ---------------------------------------------------------------- one question
+  function stateFor(q) {
+    if (S.st[q.id]) return S.st[q.id];
+    var st = { picked: null, checked: false, ok: null, hints: 0, sure: null, typed: "", tried: null };
+    if (q.opts) st.order = q.fixed ? range(q.opts.length) : shuffle(range(q.opts.length));
+    if (q.kind === "order") {
+      var pool, tries = 0;
+      do { pool = shuffle(range(q.lines.length)); tries++; }
+      while (q.okKeys.indexOf(pool.join(",")) >= 0 && tries < 50);
+      st.pool = pool; st.prog = [];
+    }
+    S.st[q.id] = st;
+    return st;
+  }
+
+  function codeHead(copy) {
+    return '<div class="codehead"><span class="fname">' + esc(D.file) + '</span>' +
+      (copy ? '<button class="small" data-act="copy">Copy the code</button>' : '') + '</div>';
+  }
+
+  function bodyHTML(o) {
+    if (o.s === "out") return "<pre>" + (o.h === "" ? '<span class="empty">(prints nothing)</span>' : o.h) + "</pre>";
+    if (o.s === "code") return "<pre>" + o.h + "</pre>";
+    if (o.s === "err") return '<span class="err">' + o.h + "</span>";
+    return "<span>" + o.h + "</span>";
+  }
+
+  function letterOf(st, oi) { return LETTERS[st.order.indexOf(oi)]; }
+  function rightIndex(q) { for (var i = 0; i < q.opts.length; i++) if (q.opts[i].ok) return i; return -1; }
+
+  function optsHTML(q, st) {
+    return '<div class="opts" role="radiogroup" aria-label="Answers">' + st.order.map(function (oi, pos) {
+      var o = q.opts[oi], checked = st.picked === oi, cls = "opt", tag = "";
+      if (st.checked) {
+        if (o.ok) { cls += " right"; tag = "Right answer"; }
+        else if (checked) { cls += " wrong"; tag = S.mode === "class" ? "Picked" : "Your answer"; }
+        else cls += " dim";
+      }
+      return '<button type="button" class="' + cls + '" role="radio" aria-checked="' + checked + '" data-act="pick" data-i="' + oi + '"' +
+        (st.checked ? " disabled" : "") + '><span class="letter" aria-hidden="true">' + LETTERS[pos] + '</span>' +
+        '<span class="body">' + bodyHTML(o) + '</span>' + (tag ? '<span class="tag">' + tag + '</span>' : "") + '</button>';
+    }).join("") + "</div>";
+  }
+
+  function wellsHTML(q, st) {
+    var dis = st.checked ? " disabled" : "";
+    var pool = st.pool.length
+      ? "<ol>" + st.pool.map(function (i) {
+          return '<li><button type="button" class="tile" data-act="add" data-i="' + i + '"' + dis + '>' + q.lines[i] + '</button></li>';
+        }).join("") + "</ol>"
+      : '<p class="placeholder">Every line is in your program.</p>';
+    var prog = st.prog.length
+      ? "<ol>" + st.prog.map(function (i, k) {
+          return '<li><span class="ln">' + (k + 1) + '</span><button type="button" class="tile" data-act="remove" data-i="' + i + '"' + dis + '>' + q.lines[i] + '</button></li>';
+        }).join("") + "</ol>"
+      : '<p class="placeholder">Tap the lines in the order they should run. They appear here, top to bottom.</p>';
+    return '<div><p class="label">Lines to use</p><div class="well">' + pool + '</div></div>' +
+      '<div><p class="label teal">Your program</p><div class="well prog">' + prog + '</div>' +
+      (!st.checked && st.prog.length ? '<div class="row" style="margin:10px 0 0"><button type="button" class="small" data-act="reset">Put every line back</button></div>' : "") +
+      "</div>";
+  }
+
+  function hintsHTML(q, st) {
+    var h = '<div class="hints">';
+    for (var i = 0; i < st.hints; i++) {
+      h += '<div class="hintbox"><p class="label">Hint' + (q.hints.length > 1 ? " " + (i + 1) : "") + '</p><p>' + q.hints[i] + '</p></div>';
+    }
+    if (!st.checked && st.hints < q.hints.length) {
+      h += '<button type="button" class="btn hint" data-act="hint">' + (st.hints ? "Show the next hint" : "Show a hint") + '</button>';
+    }
+    return h + "</div>";
+  }
+
+  function ready(q, st) {
+    if (q.opts) return st.picked !== null;
+    if (q.kind === "order") return st.pool.length === 0;
+    if (q.kind === "type") return st.typed.trim() !== "";
+    return false;
+  }
+
+  function actionsHTML(q, st) {
+    if (st.checked) return "";
+    var dis = ready(q, st) ? "" : " disabled";
+    if (S.mode === "class") {
+      return '<div class="row">' +
+        (q.kind === "order" ? '<button type="button" class="btn quiet" data-act="try"' + dis + '>Check this order</button>' : "") +
+        '<button type="button" class="btn" data-act="reveal">Show the answer</button></div>' +
+        '<div id="trybox">' + (st.tried !== null ? triedHTML(q, st) : "") + '</div>';
+    }
+    return '<div class="sure"><p>How sure are you?</p><div class="row">' +
+      '<button type="button" class="btn" data-act="check" data-sure="1"' + dis + '>Sure: check it</button>' +
+      '<button type="button" class="btn quiet" data-act="check" data-sure="0"' + dis + '>Not sure: check it</button></div></div>';
+  }
+
+  function renderQ() {
+    var q = current(), r = ROUND[q.round], st = stateFor(q);
+    var n = S.pos + 1, N = S.queue.length;
+    var h = '<div class="qmeta"><span class="where">Round ' + r.n + ' · ' + esc(r.title) + '</span>' +
+      '<span class="row" style="margin:0"><span class="where">Question ' + n + ' of ' + N + '</span>' +
+      '<button type="button" class="small" data-act="end">End the quiz</button></span></div>' +
+      '<div class="progress" role="progressbar" aria-label="Questions done" aria-valuemin="0" aria-valuemax="' + N + '" aria-valuenow="' + S.pos + '">' +
+      '<i style="width:' + (S.pos / N * 100).toFixed(1) + '%"></i></div>' +
+      '<section class="q"><h2 class="ask" tabindex="-1">' + q.ask + '</h2>';
+    if (q.stdin !== null && q.stdin !== undefined) {
+      h += '<p class="stdin">When the program asks, the person types <kbd>' + esc(q.stdin) + '</kbd> and presses Enter.</p>';
+    }
+    if (q.kind === "order") {
+      h += '<p class="label">It should print exactly this</p><pre class="target">' + outHTML(q.target) + '</pre>' +
+        '<p class="note">The spaces at the start of each line are already right. Only the order is up to you.</p>' +
+        '<div class="parsons" id="parsons">' + wellsHTML(q, st) + '</div>';
+    } else {
+      h += codeHead(q.kind !== "blank") + "<pre>" + q.code + "</pre>";
+      if (q.kind === "blank") {
+        h += '<p class="label">It should print exactly this</p><pre class="target">' + outHTML(q.target) + '</pre>';
+      }
+      if (q.opts) h += optsHTML(q, st);
+      if (q.kind === "type") {
+        h += '<label class="label" for="typed">Your answer</label><input class="typed" id="typed" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" value="' +
+          esc(st.typed) + '"' + (st.checked ? " disabled" : "") + '>';
+      }
+    }
+    h += hintsHTML(q, st) + '<div id="actions">' + actionsHTML(q, st) + '</div>';
+    if (st.checked) h += feedbackHTML(q, st);
+    h += "</section>";
+    if (!st.checked) {
+      h += '<p class="keys">Keys: ' + (q.opts ? "<kbd>A</kbd> to <kbd>" + LETTERS[q.opts.length - 1] + "</kbd> pick an answer · " : "") +
+        (S.mode === "class" ? "<kbd>R</kbd> show the answer" : "<kbd>S</kbd> sure · <kbd>N</kbd> not sure") +
+        (q.hints.length ? " · <kbd>H</kbd> hint" : "") + "</p>";
+    } else {
+      h += '<p class="keys">Keys: <kbd>Enter</kbd> ' + (S.pos + 1 < S.queue.length ? "next question" : "finish") + "</p>";
+    }
+    paint(h);
+  }
+
+  function refreshActions() {
+    var q = current(), st = stateFor(q);
+    var box = document.getElementById("actions");
+    if (!box) return;
+    var dis = !ready(q, st);
+    box.querySelectorAll('[data-act="check"],[data-act="try"]').forEach(function (b) { b.disabled = dis; });
+  }
+
+  // ---------------------------------------------------------------- feedback
+  function realHTML(q) {
+    var h = "";
+    if (q.kind === "blank" || q.kind === "order") {
+      h += '<p class="label teal">The finished program</p>' + codeHead(true) + "<pre>" + q.finished + "</pre>";
+    }
+    return h + '<p class="label green">What Python really prints</p><pre class="out">' + outHTML(q.real) + "</pre>";
+  }
+
+  function yourProgram(q, st) {
+    return st.prog.map(function (i) { return q.lines[i]; }).join("\n");
+  }
+
+  function triedHTML(q, st) {
+    var ok = q.okKeys.indexOf(st.tried) >= 0;
+    return '<div class="why' + (ok ? " good" : "") + '"><p class="label ' + (ok ? "green" : "clay") + '">This order prints</p>' +
+      '<pre class="out">' + outHTML(q.outs[q.perms[st.tried]]) + '</pre><p>' +
+      (ok ? "That matches what it should print." : "That does not match what it should print.") + "</p></div>";
+  }
+
+  function typedWhy(q, typed) {
+    var t = typed.trim();
+    for (var i = 0; i < q.common.length; i++) if (q.common[i].t === t) return q.common[i].why;
+    var bare = t.replace(/^["']|["']$/g, "");
+    if (bare === q.answer) return "Those are the right characters, but print does not show quote marks around text.";
+    if (t.toLowerCase() === q.answer.toLowerCase()) return "Check the capital and small letters. Python prints them exactly as they are.";
+    if (t.replace(/\s+/g, "") === q.answer.replace(/\s+/g, "")) return "Check the spaces. Python prints every space exactly.";
+    return "Compare what you typed with what Python really prints, below, one character at a time.";
+  }
+
+  function feedbackHTML(q, st) {
+    var h = '<div class="fb">';
+    var rl, i;
+    if (S.mode === "class") {
+      if (q.opts) {
+        rl = letterOf(st, rightIndex(q));
+        h += '<div class="verdict plain" tabindex="-1">The answer is ' + rl + '.</div>';
+      } else if (q.kind === "type") {
+        h += '<div class="verdict plain" tabindex="-1">The answer</div><pre class="out">' + outHTML(q.answer) + '</pre>';
+      } else {
+        h += '<div class="verdict plain" tabindex="-1">' + (q.okKeys.length > 1 ? "One order that works" : "The order that works") + '</div>';
+      }
+      h += '<div class="why good"><p class="label green">Why</p><p>' + q.explain + '</p></div>' + realHTML(q);
+      if (q.opts) {
+        h += "<h3>The other answers</h3>";
+        st.order.forEach(function (oi) {
+          var o = q.opts[oi];
+          if (o.ok) return;
+          h += '<div class="why"><p class="label clay">Why not ' + letterOf(st, oi) + '</p><p>' + o.why + '</p>' +
+            (o.out !== null ? '<p class="label clay">With this, the program prints</p><pre class="out">' + outHTML(o.out) + '</pre>' : "") + '</div>';
+        });
+      } else if (q.kind === "type" && q.common.length) {
+        h += "<h3>Answers people often give</h3>";
+        q.common.forEach(function (c) {
+          h += '<div class="why"><p class="label clay">' + esc(c.t) + '</p><p>' + c.why + '</p></div>';
+        });
+      }
+    } else {
+      h += '<div class="verdict ' + (st.ok ? "good" : "bad") + '" tabindex="-1">' + (st.ok ? "Right." : "Not this time.") + '</div>';
+      if (!st.ok) {
+        if (q.opts) {
+          var o = q.opts[st.picked];
+          h += '<div class="why"><p class="label clay">Why not ' + letterOf(st, st.picked) + '</p><p>' + o.why + '</p>' +
+            (o.out !== null ? '<p class="label clay">With this, the program prints</p><pre class="out">' + outHTML(o.out) + '</pre>' : "") + '</div>';
+        } else if (q.kind === "order") {
+          h += '<div class="why"><p class="label clay">Your order</p><pre>' + yourProgram(q, st) + '</pre>' +
+            '<p class="label clay">Your order prints</p><pre class="out">' + outHTML(q.outs[q.perms[st.prog.join(",")]]) + '</pre></div>';
+        } else if (q.kind === "type") {
+          h += '<div class="why"><p class="label clay">You typed</p><pre>' + esc(st.typed.trim()) + '</pre><p>' + typedWhy(q, st.typed) + '</p></div>';
+        }
+      }
+      if (q.opts) {
+        h += '<div class="why good"><p class="label green">The answer is ' + letterOf(st, rightIndex(q)) + '</p><p>' + q.explain + '</p></div>';
+      } else if (q.kind === "type") {
+        h += '<div class="why good"><p class="label green">The answer</p><pre class="out">' + outHTML(q.answer) + '</pre><p>' + q.explain + '</p></div>';
+      } else {
+        h += '<div class="why good"><p class="label green">Why</p><p>' + q.explain + '</p></div>';
+      }
+      h += realHTML(q);
+    }
+    var last = S.pos + 1 >= S.queue.length;
+    h += '<div class="row" style="margin-top:8px"><button type="button" class="btn big" data-act="next">' +
+      (last ? (S.mode === "class" ? "Finish" : "See my results") : "Next question") + '</button></div>';
+    return h + "</div>";
+  }
+
+  // ---------------------------------------------------------------- actions
+  function pickOption(oi) {
+    var q = current(), st = stateFor(q);
+    if (st.checked) return;
+    st.picked = oi;
+    app.querySelectorAll(".opt").forEach(function (b) {
+      b.setAttribute("aria-checked", String(Number(b.getAttribute("data-i")) === oi));
+    });
+    refreshActions();
+  }
+
+  function check(sure) {
+    var q = current(), st = stateFor(q);
+    if (st.checked || !ready(q, st)) return;
+    var ans;
+    if (q.opts) { st.ok = q.opts[st.picked].ok; ans = q.opts[st.picked].t; }
+    else if (q.kind === "order") {
+      st.ok = q.okKeys.indexOf(st.prog.join(",")) >= 0;
+      ans = st.prog.map(function (i) { return q.plain[i]; }).join("\n");
+    } else { st.ok = st.typed.trim() === q.answer; ans = st.typed.trim(); }
+    st.checked = true; st.sure = sure;
+    S.log.push({ id: q.id, ok: st.ok, sure: sure, hints: st.hints, ans: ans });
+    renderQ();
+    focusEl(app.querySelector(".verdict"));
+  }
+
+  function reveal() {
+    var q = current(), st = stateFor(q);
+    if (st.checked) return;
+    st.checked = true;
+    S.log.push({ id: q.id, shown: true });
+    renderQ();
+    focusEl(app.querySelector(".verdict"));
+  }
+
+  function next() {
+    S.pos++;
+    if (S.pos >= S.queue.length) { renderResults(); return; }
+    renderQ();
+    toTop();
+    focusEl(app.querySelector(".ask"));
+  }
+
+  function moveTile(act, i) {
+    var q = current(), st = stateFor(q);
+    if (st.checked) return;
+    if (act === "add") { st.pool.splice(st.pool.indexOf(i), 1); st.prog.push(i); }
+    else if (act === "remove") { st.prog.splice(st.prog.indexOf(i), 1); st.pool.push(i); }
+    else { st.pool = st.pool.concat(st.prog); st.prog = []; }
+    st.tried = null;
+    document.getElementById("parsons").innerHTML = wellsHTML(q, st);
+    var tb = document.getElementById("trybox"); if (tb) tb.innerHTML = "";
+    fitCode();
+    refreshActions();
+    var nextTile = app.querySelector('#parsons [data-act="' + (act === "remove" ? "remove" : "add") + '"]') ||
+      app.querySelector('#parsons .tile') || app.querySelector('[data-act="check"],[data-act="reveal"]');
+    focusEl(nextTile);
+  }
+
+  // ---------------------------------------------------------------- results
+  function reviewItem(e) {
+    var q = QS[QIDX[e.id]], r = ROUND[q.round];
+    var h = '<details class="rev"><summary><span class="meta">Round ' + r.n + '</span>' + q.ask +
+      '<span class="peek">' + esc(q.peek) + '</span></summary><div class="in">';
+    if (q.kind === "order") {
+      h += '<p class="label clay">' + (e.ok ? "Your order (right)" : "Your order") + '</p><pre>' + esc(e.ans) + "</pre>" +
+        '<p class="label green">' + (q.okKeys.length > 1 ? "One order that works" : "The order that works") + '</p><pre>' + q.finished + "</pre>";
+    } else {
+      h += codeHead(false) + "<pre>" + (q.kind === "blank" ? q.finished : q.code) + "</pre>";
+      var right = q.opts ? q.opts[rightIndex(q)].t : q.answer;
+      h += '<p class="label clay">' + (e.ok ? "Your answer (right)" : "Your answer") + '</p><pre>' + outHTML(e.ans) + "</pre>";
+      if (!e.ok) h += '<p class="label green">The right answer</p><pre>' + outHTML(right) + "</pre>";
+    }
+    h += '<div class="why good"><p class="label green">Why</p><p>' + q.explain + "</p></div>" +
+      '<p class="label green">What Python really prints</p><pre class="out">' + outHTML(q.real) + "</pre></div></details>";
+    return h;
+  }
+
+  function renderResults() {
+    var log = S.log;
+    if (S.mode === "class") {
+      paint('<section class="res"><p class="chunk-no">Finished</p><h2 class="ask" tabindex="-1">That was the last question.</h2>' +
+        '<p>The class went through ' + plural(log.length, "question") + '.</p>' +
+        '<div class="row"><button type="button" class="btn" data-act="restart">Back to the start</button></div></section>');
+      toTop(); focusEl(app.querySelector(".ask"));
+      return;
+    }
+    if (!log.length) {
+      paint('<section class="res"><h2 class="ask" tabindex="-1">No questions answered yet.</h2>' +
+        '<div class="row"><button type="button" class="btn" data-act="restart">Back to the start</button></div></section>');
+      toTop(); focusEl(app.querySelector(".ask"));
+      return;
+    }
+    var right = log.filter(function (e) { return e.ok; }).length;
+    var hinted = log.filter(function (e) { return e.hints > 0; }).length;
+    var g = { sw: [], nw: [], nr: [], sr: [] };
+    log.forEach(function (e) { g[(e.sure ? "s" : "n") + (e.ok ? "r" : "w")].push(e); });
+    function box(k, title, text) {
+      return '<div class="cbox ' + k + '"><div class="num">' + g[k].length + '</div><b>' + title + '</b><span>' + text + '</span></div>';
+    }
+    var h = '<section class="res"><p class="chunk-no">Your results</p>' +
+      '<h2 class="score ask" tabindex="-1">' + right + ' of ' + log.length + ' right</h2>' +
+      '<p>' + (hinted ? "You used a hint on " + plural(hinted, "question") + "." : "You did not use any hints.") + '</p>' +
+      '<div class="conf">' +
+      box("sw", "Sure, but wrong", "Look at these first. Each one shows an idea about Python that needs fixing.") +
+      box("nw", "Not sure, and wrong", "Look at these next. Read why the right answer is right.") +
+      box("nr", "Not sure, but right", "Read these too, so next time you know why.") +
+      box("sr", "Sure, and right", "You knew these.") + '</div></section>';
+
+    var rows = ROUNDS.map(function (r) {
+      var mine = log.filter(function (e) { return QS[QIDX[e.id]].round === r.id; });
+      if (!mine.length) return "";
+      var ok = mine.filter(function (e) { return e.ok; }).length;
+      return '<div class="bar"><span class="t">' + r.n + '. ' + esc(r.title) + '</span><span class="v">' + ok + ' of ' + mine.length + '</span>' +
+        '<span class="track"><i style="width:' + (ok / mine.length * 100).toFixed(0) + '%"></i></span></div>';
+    }).join("");
+    h += '<section class="res"><h2>By round</h2><div class="bars">' + rows + '</div></section>';
+
+    var again = g.sw.concat(g.nw, g.nr);
+    if (again.length) {
+      h += '<section class="res"><h2>Look at these again</h2><p class="note">Tap a question to open it.</p>';
+      [["sw", "Sure, but wrong"], ["nw", "Not sure, and wrong"], ["nr", "Not sure, but right"]].forEach(function (pair) {
+        if (!g[pair[0]].length) return;
+        h += "<h3>" + pair[1] + "</h3>" + g[pair[0]].map(reviewItem).join("");
+      });
+      h += "</section>";
+    }
+    h += '<div class="row">' + (again.length ? '<button type="button" class="btn" data-act="again">Try these ' + plural(again.length, "question") + ' again</button>' : "") +
+      '<button type="button" class="btn quiet" data-act="restart">Back to the start</button></div>';
+    S.again = again.map(function (e) { return e.id; });
+    paint(h);
+    toTop();
+    focusEl(app.querySelector(".ask"));
+  }
+
+  // ---------------------------------------------------------------- events
+  app.addEventListener("click", function (ev) {
+    var b = ev.target.closest("[data-act]");
+    if (!b || b.disabled) return;
+    var act = b.getAttribute("data-act");
+    if (act === "all" || act === "none") {
+      pick.rounds = act === "all" ? new Set(ROUNDS.map(function (r) { return r.id; })) : new Set();
+      app.querySelectorAll('.round input').forEach(function (c) { c.checked = act === "all"; });
+      updateStart();
+    } else if (act === "start") {
+      var ids = QS.filter(function (q) { return pick.rounds.has(q.round); }).map(function (q) { return q.id; });
+      if (pick.shuffle) shuffle(ids);
+      begin(ids, pick.mode);
+      toTop(); focusEl(app.querySelector(".ask"));
+    } else if (act === "quick") {
+      var chosen = ROUNDS.filter(function (r) { return pick.rounds.has(r.id); });
+      if (!chosen.length) chosen = ROUNDS;
+      var qids = chosen.map(function (r) {
+        var inRound = QS.filter(function (q) { return q.round === r.id; });
+        return inRound[Math.floor(Math.random() * inRound.length)].id;
+      });
+      if (pick.shuffle) shuffle(qids);
+      begin(qids, pick.mode);
+      toTop(); focusEl(app.querySelector(".ask"));
+    } else if (act === "pick") pickOption(Number(b.getAttribute("data-i")));
+    else if (act === "check") check(b.getAttribute("data-sure") === "1");
+    else if (act === "reveal") reveal();
+    else if (act === "try") {
+      var q = current(), st = stateFor(q);
+      if (!ready(q, st)) return;
+      st.tried = st.prog.join(",");
+      document.getElementById("trybox").innerHTML = triedHTML(q, st);
+      fitCode();
+    } else if (act === "hint") {
+      var qh = current(), sh = stateFor(qh);
+      sh.hints = Math.min(sh.hints + 1, qh.hints.length);
+      var wrap = b.parentNode;
+      wrap.outerHTML = hintsHTML(qh, sh);
+      var nb = app.querySelector('[data-act="hint"]');
+      focusEl(nb || app.querySelectorAll(".hintbox")[sh.hints - 1]);
+    } else if (act === "add" || act === "remove" || act === "reset") moveTile(act, Number(b.getAttribute("data-i")));
+    else if (act === "next") next();
+    else if (act === "end") {
+      if (S.mode === "class") renderStart(); else renderResults();
+    } else if (act === "again") begin(S.again.slice(), "solo");
+    else if (act === "restart") { renderStart(); toTop(); }
+    else if (act === "copy") copyText(current() ? current().copy : "", b);
+  });
+
+  app.addEventListener("change", function (ev) {
+    var t = ev.target;
+    if (t.matches(".round input")) {
+      if (t.checked) pick.rounds.add(t.value); else pick.rounds.delete(t.value);
+      updateStart();
+    } else if (t.name === "mode") pick.mode = t.value;
+    else if (t.id === "shuffle") pick.shuffle = t.checked;
+  });
+
+  app.addEventListener("toggle", fitCode, true);
+
+  app.addEventListener("input", function (ev) {
+    if (ev.target.id !== "typed" || !S) return;
+    stateFor(current()).typed = ev.target.value;
+    refreshActions();
+  });
+
+  document.addEventListener("keydown", function (ev) {
+    if (!S || S.pos >= S.queue.length || !app.querySelector("section.q")) return;
+    if (ev.metaKey || ev.ctrlKey || ev.altKey) return;
+    var tag = ev.target.tagName;
+    if (tag === "INPUT" || tag === "TEXTAREA") return;
+    var q = current(), st = stateFor(q), k = ev.key.toLowerCase();
+    if (st.checked) {
+      if (k === "enter" && tag !== "BUTTON" && tag !== "A" && tag !== "SUMMARY") { ev.preventDefault(); next(); }
+      return;
+    }
+    if (q.opts) {
+      var pos = LETTERS.toLowerCase().indexOf(k);
+      if (pos < 0 && /^[1-6]$/.test(k)) pos = Number(k) - 1;
+      if (pos >= 0 && pos < st.order.length && k.length === 1) { ev.preventDefault(); pickOption(st.order[pos]); return; }
+    }
+    if (k === "h" && st.hints < q.hints.length) {
+      var hb = app.querySelector('[data-act="hint"]'); if (hb) hb.click(); return;
+    }
+    if (S.mode === "class") { if (k === "r") reveal(); return; }
+    if (k === "s") check(true);
+    else if (k === "n") check(false);
+  });
+
+  renderStart();
+})();
+
+</script>
+</body>
+</html>
