@@ -257,7 +257,7 @@
         '<p class="note">The spaces at the start of each line are already right. Only the order is up to you.</p>' +
         '<div class="parsons" id="parsons">' + wellsHTML(q, st) + '</div>';
     } else {
-      h += codeHead(q.kind !== "blank") + "<pre>" + q.code + "</pre>";
+      h += codeHead(q.kind !== "blank") + '<pre class="num">' + q.code + "</pre>";
       if (q.kind === "blank") {
         h += '<p class="label">It should print exactly this</p><pre class="target">' + outHTML(q.target) + '</pre>';
       }
@@ -292,13 +292,13 @@
   function realHTML(q) {
     var h = "";
     if (q.kind === "blank" || q.kind === "order") {
-      h += '<p class="label teal">The finished program</p>' + codeHead(true) + "<pre>" + q.finished + "</pre>";
+      h += '<p class="label teal">The finished program</p>' + codeHead(true) + '<pre class="num">' + q.finished + "</pre>";
     }
     return h + '<p class="label green">What Python really prints</p><pre class="out">' + outHTML(q.real) + "</pre>";
   }
 
   function yourProgram(q, st) {
-    return st.prog.map(function (i) { return q.lines[i]; }).join("\n");
+    return st.prog.map(function (i) { return '<span class="cl">' + q.lines[i] + "</span>"; }).join("\n");
   }
 
   function triedHTML(q, st) {
@@ -353,7 +353,7 @@
           h += '<div class="why"><p class="label clay">Why not ' + letterOf(st, st.picked) + '</p><p>' + o.why + '</p>' +
             (o.out !== null ? '<p class="label clay">With this, the program prints</p><pre class="out">' + outHTML(o.out) + '</pre>' : "") + '</div>';
         } else if (q.kind === "order") {
-          h += '<div class="why"><p class="label clay">Your order</p><pre>' + yourProgram(q, st) + '</pre>' +
+          h += '<div class="why"><p class="label clay">Your order</p><pre class="num">' + yourProgram(q, st) + '</pre>' +
             '<p class="label clay">Your order prints</p><pre class="out">' + outHTML(q.outs[q.perms[st.prog.join(",")]]) + '</pre></div>';
         } else if (q.kind === "type") {
           h += '<div class="why"><p class="label clay">You typed</p><pre>' + esc(st.typed.trim()) + '</pre><p>' + typedWhy(q, st.typed) + '</p></div>';
@@ -440,9 +440,9 @@
       '<span class="peek">' + esc(q.peek) + '</span></summary><div class="in">';
     if (q.kind === "order") {
       h += '<p class="label clay">' + (e.ok ? "Your order (right)" : "Your order") + '</p><pre>' + esc(e.ans) + "</pre>" +
-        '<p class="label green">' + (q.okKeys.length > 1 ? "One order that works" : "The order that works") + '</p><pre>' + q.finished + "</pre>";
+        '<p class="label green">' + (q.okKeys.length > 1 ? "One order that works" : "The order that works") + '</p><pre class="num">' + q.finished + "</pre>";
     } else {
-      h += codeHead(false) + "<pre>" + (q.kind === "blank" ? q.finished : q.code) + "</pre>";
+      h += codeHead(false) + '<pre class="num">' + (q.kind === "blank" ? q.finished : q.code) + "</pre>";
       var right = q.opts ? q.opts[rightIndex(q)].t : q.answer;
       h += '<p class="label clay">' + (e.ok ? "Your answer (right)" : "Your answer") + '</p><pre>' + outHTML(e.ans) + "</pre>";
       if (!e.ok) h += '<p class="label green">The right answer</p><pre>' + outHTML(right) + "</pre>";

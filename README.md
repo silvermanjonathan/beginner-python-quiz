@@ -13,12 +13,12 @@ wrong, and what Python really printed.
 | # | Round | Questions | Covers |
 |---|---|---|---|
 | 1 | Printing and names | 4 | print, quote marks, and names that hold values |
-| 2 | Input and types | 5 | input, text against numbers, type(), int(), f-strings |
+| 2 | Input and types | 5 | input, text and numbers, type(), int(), f-strings |
 | 3 | Comparisons and if | 4 | True and False, ==, if, elif, else |
 | 4 | and, or, and while | 5 | two conditions at once, and loops that stop |
 | 5 | for loops and range | 4 | range, the loop variable, adding up a total |
 | 6 | Lists | 5 | index numbers, len, max, sum, counters, best so far |
-| 7 | Functions | 5 | def, parameters, return against print |
+| 7 | Functions | 5 | def, parameters, return and print |
 | 8 | Strings | 5 | index numbers, slices, strip, replace, in |
 | 9 | Remainders | 4 | %, wrapping around, even and odd |
 | 10 | Dictionaries | 4 | keys and values, KeyError, counting with a dictionary |

@@ -19,9 +19,14 @@ Kinds of question:
     type    Type the answer. take="last" means the last printed line.
 
 A wrong option that starts with ~ is shown as a sentence, not as program output.
+
+Code boxes on the page show line numbers, counting blank lines, so a reason may name
+a line by its number.
 """
 
 FILE_NAME = "Ada_quiz.py"
+
+ERROR_ASK = "Does this program stop with an error? If it does, what is the error's name?"
 
 
 def c(text):
@@ -33,7 +38,7 @@ ROUNDS = [
     {"id": "names", "title": "Printing and names",
      "about": "print, quote marks, and names that hold values"},
     {"id": "types", "title": "Input and types",
-     "about": "input, text against numbers, type(), int(), f-strings"},
+     "about": "input, text and numbers, type(), int(), f-strings"},
     {"id": "gates", "title": "Comparisons and if",
      "about": "True and False, ==, if, elif, else"},
     {"id": "andor", "title": "and, or, and while",
@@ -43,7 +48,7 @@ ROUNDS = [
     {"id": "lists", "title": "Lists",
      "about": "index numbers, len, max, sum, counters, best so far"},
     {"id": "functions", "title": "Functions",
-     "about": "def, parameters, return against print"},
+     "about": "def, parameters, return and print"},
     {"id": "strings", "title": "Strings",
      "about": "index numbers, slices, strip, replace, in"},
     {"id": "remainders", "title": "Remainders",
@@ -78,7 +83,8 @@ print(pet)
  "hints": ["Quote marks make text. A word with no quote marks is a name, and Python "
            "looks up its value."],
  "explain": "Line 2 prints the text inside the quote marks: pet. Line 3 has no quote "
-            "marks, so Python looks up the name `pet` and prints its value: Rex."},
+            "marks, so Python looks up the name `pet` and prints its value: Rex. A name "
+            "that holds a value, like `pet`, is called a **variable**."},
 
 {"id": "names-2", "round": "names", "kind": "output",
  "ask": "Line 2 and line 3 are the same. What does the program print?",
@@ -120,7 +126,7 @@ print(b)
             "`a` a new value, 7, but `b` still holds 3."},
 
 {"id": "names-4", "round": "names", "kind": "error",
- "ask": "Does this program run? If not, what is the name of the error?",
+ "ask": ERROR_ASK,
  "code": c('''
 name = "Mo"
 print(Name)
@@ -129,12 +135,12 @@ print(Name)
     ["No error. It prints Mo",
      "Python treats a capital N and a small n as different letters. `name` and `Name` "
      "are two different names, and only `name` was given a value."],
+    ["No error. It prints Name",
+     "`Name` has no quote marks, so Python looks for a value stored under `Name`. "
+     "Nothing was stored under it, so Python stops with an error."],
     ["SyntaxError",
      "A SyntaxError means Python cannot read a line at all, like a missing bracket. "
      "Both lines here are written correctly. The problem is a name Python does not know."],
-    ["TypeError",
-     "A TypeError is about the wrong type of value, like text plus a number. Here Python "
-     "never finds a value at all, because nothing was stored under `Name`."],
  ],
  "hints": ["Look closely at the first letter of the name on each line."],
  "explain": "The last line of the error starts with NameError and names the word `Name`. "
@@ -162,7 +168,7 @@ print(age + age)
             "`\"3\" + \"3\"` is `\"33\"`."},
 
 {"id": "types-2", "round": "types", "kind": "error", "stdin": "3",
- "ask": "Does this program run? If not, what is the name of the error?",
+ "ask": ERROR_ASK,
  "code": c('''
 age = input("Robot age: ")
 print(age + 1)
@@ -179,8 +185,9 @@ print(age + 1)
  ],
  "hints": ["The 3 the person typed comes back from input as text."],
  "explain": "`age` holds the text `\"3\"`. Text plus a number is not allowed, so Python "
-            "stops on line 2 with a TypeError. The last line of the error names both "
-            "types: str (text) and int (a whole number)."},
+            "stops on line 2 with a TypeError. The last line of the error says "
+            "`can only concatenate str (not \"int\") to str`. Concatenate means join, str "
+            "means text, and int means a whole number: Python joins text only to more text."},
 
 {"id": "types-3", "round": "types", "kind": "output",
  "ask": "What does this program print?",
@@ -193,11 +200,12 @@ print(type(7))
      "Quote marks make text, even around digits. `\"7\"` is a str, Python's word for text."],
     ["<class 'str'>\n<class 'str'>",
      "7 with no quote marks is a whole number. Python's name for that type is int."],
-    ["7\n7", "`type()` does not give back the value. It tells you what type the value is."],
+    ["7\n7", "`print(type(7))` prints the type of 7, not 7 itself."],
  ],
  "hints": ["One 7 has quote marks and one does not."],
- "explain": "`type()` tells you what **type** a value is. `\"7\"` has quote marks, so it is "
-            "a str (text). `7` has none, so it is an int (a whole number)."},
+ "explain": "A value's **type** is the kind of value it is. `type()` tells you the type. "
+            "`\"7\"` has quote marks, so its type is str (text). `7` has none, so its type "
+            "is int (a whole number)."},
 
 {"id": "types-4", "round": "types", "kind": "blank", "stdin": "4",
  "ask": "Which fills the blank so the program prints exactly what is shown below it?",
@@ -234,7 +242,8 @@ print(f"{name} ran {laps} laps")
     ["name ran laps laps",
      "The curly brackets tell Python to put in the value of the name, not the name itself."],
  ],
- "hints": ["The f in front of the quote mark matters."],
+ "hints": ["Look at the letter in front of the opening quote mark. What does it tell "
+           "Python to do with each name in curly brackets?"],
  "explain": "The `f` in front of the quote makes an **f-string**. Python puts the value of "
             "each name in curly brackets into the text: `{name}` becomes Ada and `{laps}` "
             "becomes 3."},
@@ -271,19 +280,21 @@ else:
  "wrong": [
     ["great", "`85 > 80` is True, but Python never gets to it. Python checks from the top "
               "and runs the lines under the first condition that is True: `score > 50`."],
-    ["pass\ngreat", "`if`, `elif` and `else` together run one set of lines at most. Once a "
-                    "condition is True, Python skips the rest."],
+    ["pass\ngreat", "With an `else` at the end, `if`, `elif` and `else` together run "
+                    "exactly one set of lines. Once a condition is True, Python skips the rest."],
     ["try again", "The lines under `else` run only when every condition above is False. "
                   "Here the first condition is True."],
  ],
- "hints": ["Python checks the conditions in order, from the top. How many of the three "
+ "hints": ["Each comparison after `if` or `elif` is a condition: it is True or False. "
+           "Python checks the conditions in order, from the top. How many of the three "
            "print lines can run?"],
- "explain": "Python checks the conditions from the top down. `score > 50` is True, so it "
+ "explain": "The comparison after `if` or `elif` is a **condition**: it is True or False. "
+            "Python checks the conditions from the top down. `score > 50` is True, so it "
             "prints pass and skips the `elif` and the `else`. To print great for 85, the "
             "`score > 80` check would have to come first."},
 
 {"id": "gates-3", "round": "gates", "kind": "error",
- "ask": "Does this program run? If not, what is the name of the error?",
+ "ask": ERROR_ASK,
  "code": c('''
 lives = 3
 if lives = 0:
@@ -291,17 +302,18 @@ if lives = 0:
 '''),
  "wrong": [
     ["No error. It prints nothing",
-     "One equals sign means store a value. An `if` needs a question, and the question "
-     "is `==`, two equals signs. Python cannot read line 2 as it is."],
+     "One equals sign stores a value. An `if` needs a condition that is True or False, "
+     "like `lives == 0`, with two equals signs. Python cannot read line 2 as it is."],
     ["NameError", "`lives` has a value from line 1. The problem is the punctuation on "
                   "line 2, not a name."],
     ["TypeError", "Python never gets as far as comparing values. It cannot read line 2, so "
                   "no line runs at all."],
  ],
  "hints": ["Count the equals signs on line 2. What does one equals sign do?"],
- "explain": "One equals sign stores a value. Two equals signs ask whether two values are "
-            "equal. An `if` needs a question, so Python cannot read line 2. It stops with a "
-            "SyntaxError before running any line."},
+ "explain": "One equals sign stores a value. Two equals signs compare two values: "
+            "`lives == 0` is True or False. An `if` needs a condition that is True or "
+            "False, so Python cannot read line 2. It stops with a SyntaxError before "
+            "running any line."},
 
 {"id": "gates-4", "round": "gates", "kind": "blank",
  "ask": "A ride's rule: you must be at least 120 cm tall. Which fills the blank so a "
@@ -320,7 +332,8 @@ else:
     [">=", None],
     ["<", "`<` means less than. `120 < 120` is False, so this prints too short. It would "
           "also let shorter riders on."],
-    ["!=", "`120 != 120` is False, because the two values are equal."],
+    ["=>", "Greater than or equal to is written `>=`, with the `>` first. Python cannot "
+           "read `=>`, so it stops with a SyntaxError."],
  ],
  "hints": ["At least 120 includes 120 itself."],
  "explain": "`>=` means greater than or equal to. `120 >= 120` is True, so the rider gets "
@@ -338,10 +351,10 @@ print(age >= 8 or height >= 140)
  "wrong": [
     ["True\nTrue", "`and` needs both sides to be True. `height >= 140` is False, so the "
                    "first line is False."],
-    ["False\nFalse", "`or` needs only one side to be True. `age >= 8` is True, so the "
+    ["False\nFalse", "`or` needs at least one side to be True. `age >= 8` is True, so the "
                      "second line is True."],
     ["True\nFalse", "This has `and` and `or` the wrong way round. `and` needs both sides "
-                    "True; `or` needs one."],
+                    "True; `or` needs at least one."],
  ],
  "hints": ["Work out `age >= 8` and `height >= 140` first. Each one is True or False."],
  "explain": "`age >= 8` is True and `height >= 140` is False. With **and**, both sides must "
@@ -391,8 +404,9 @@ print("empty")
            "before every pass."],
  "explain": "The loop checks `fuel > 0` before every **pass** (one time through its "
             "indented lines). It prints 3, 2 and 1, lowering fuel by 1 each time. When fuel "
-            "is 0, `0 > 0` is False, so the loop stops. This condition is the loop's "
-            "**stopping condition**. The last line then prints empty."},
+            "is 0, `0 > 0` is False, so the loop stops. `fuel > 0` is the loop's "
+            "**stopping condition**: the loop keeps going while it is True and stops the "
+            "first time it is False. The last line then prints empty."},
 
 {"id": "andor-4", "round": "andor", "kind": "output",
  "ask": "What does this program print?",
@@ -446,8 +460,9 @@ for i in range(3):
  ],
  "hints": ["`range(3)` gives three numbers. What is the first one?"],
  "explain": "`range(3)` gives the numbers 0, 1 and 2: three numbers, starting at 0 and "
-            "stopping before 3. Each pass, the **loop variable** `i` takes the next one, "
-            "and the print line runs."},
+            "stopping before 3. `i` is the **loop variable**: the name after `for`, which "
+            "holds the next number from `range` on each pass. The print line runs once "
+            "for each."},
 
 {"id": "loops-2", "round": "loops", "kind": "type", "take": "last",
  "ask": "What is the last number this program prints? Type it.",
@@ -517,7 +532,7 @@ print(colours[1])
             "and blue at 2."},
 
 {"id": "lists-2", "round": "lists", "kind": "error",
- "ask": "Does this program run? If not, what is the name of the error?",
+ "ask": ERROR_ASK,
  "code": c('''
 colours = ["red", "green", "blue"]
 print(colours[3])
@@ -546,7 +561,8 @@ print(sum(scores))
     ["3\n9\n22", "`len` counts the items, and there are 4. The last index is 3, but the "
                  "count is 4."],
     ["4\n7\n22", "`max` gives the biggest value in the list, not the last one."],
-    ["4\n9\n20", "Check the adding: 4 + 9 = 13, 13 + 2 = 15, 15 + 7 = 22."],
+    ["4\n1\n22", "`max` gives the biggest value itself, 9, not its index number. 9 is at "
+                 "index 1."],
  ],
  "hints": ["`len` counts, `max` finds the biggest, `sum` adds them all."],
  "explain": "`len` counts the items: 4. `max` gives the biggest value: 9. `sum` adds them "
@@ -566,14 +582,15 @@ print(count)
  "fills": [
     ["count = count + 1", None],
     ["count = s", "This stores the score itself, not a count. After the loop, `count` holds "
-                  "the last score that passed the check."],
-    ["count = count + s", "This adds up the scores instead of counting them."],
+                  "the last score where `s >= 10` is True."],
+    ["count = count + s", "This adds up the scores that are 10 or more, 12 + 10 + 15 = 37, "
+                          "instead of counting them."],
     ["count + 1", "This works out `count + 1` but never stores it, so `count` stays 0."],
  ],
- "hints": ["The program should add 1 to count for each score that passes the check."],
+ "hints": ["The program should add 1 to count for each score where `s >= 10` is True."],
  "explain": "A **counter** is a variable the program adds 1 to. `count` starts at 0, and "
-            "`count = count + 1` runs once for each score that passes the check "
-            "`s >= 10`: 12, 10 and 15."},
+            "`count = count + 1` runs once for each score where `s >= 10` is True: 12, 10 "
+            "and 15."},
 
 {"id": "lists-5", "round": "lists", "kind": "output",
  "ask": "What does this program print?",
@@ -593,9 +610,10 @@ print(tallest)
             "again."],
  ],
  "hints": ["Go through the list one height at a time. Does tallest change?"],
- "explain": "`tallest` starts as the first item, 120. The loop checks each height against "
-            "it: 145 is bigger, so tallest becomes 145; 132 is not; 150 is, so tallest "
-            "becomes 150; 128 is not. This is called **best so far**."},
+ "explain": "`tallest` starts as the first item, 120. The `if` line compares each height "
+            "with `tallest`: 120 is not bigger than itself; 145 is, so tallest becomes 145; "
+            "132 is not; 150 is, so tallest becomes 150; 128 is not. Keeping the biggest "
+            "value seen so far in a variable like this is called **best so far**."},
 
 # ---------------------------------------------------------------- functions
 {"id": "functions-1", "round": "functions", "kind": "output",
@@ -608,17 +626,16 @@ double(4)
 print(double(5))
 '''),
  "wrong": [
-    ["8\n10", "`double(4)` returns 8, but line 4 does nothing with it: no print, no name to "
-              "store it under. So the 8 is lost."],
+    ["8\n10", "`double(4)` returns 8, but line 4 does nothing with it: no print, and no "
+              "name to store it under. So the 8 is lost."],
     ["8", "Nothing prints the 8 from `double(4)`. The print line calls `double(5)`."],
     ["None", "`double` has a `return` line, so it returns `n * 2`. None is what a function "
              "returns when it has no `return` line."],
  ],
- "hints": ["Which lines print something? A value that comes back from a function does not "
-           "print by itself."],
- "explain": "`return` sends a value back to the line that called the function. On line 4, "
-            "`double(4)` returns 8, but nothing uses it, so nothing appears. Line 5 prints "
-            "the value `double(5)` returns: 10."},
+ "hints": ["Which lines print something? A return value does not print by itself."],
+ "explain": "A function returns a value to the line that called it. On line 4, the return "
+            "value of `double(4)`, 8, is not printed or stored, so nothing appears. Line 5 "
+            "prints the value `double(5)` returns: 10."},
 
 {"id": "functions-2", "round": "functions", "kind": "output",
  "ask": "What does this program print?",
@@ -636,7 +653,7 @@ print(result)
     ["Hi Ada", "The last line prints `result` too. `result` holds what `greet` returned."],
  ],
  "hints": ["greet has a print line but no return line. What does a function with no "
-           "return line give back?"],
+           "return line return?"],
  "explain": "Calling `greet(\"Ada\")` runs its print line, so Hi Ada appears. `greet` has no "
             "`return` line, so it returns **None**, Python's value for nothing. That is "
             "what `result` holds, and what line 5 prints."},
@@ -659,8 +676,8 @@ print(area(3, 4))
     ["return width + height", "`+` adds: 3 + 4 = 7. An area is width times height."],
  ],
  "hints": ["The last line prints whatever area returns."],
- "explain": "`return width * height` sends 12 back to the line that called `area`, and "
-            "that line prints it."},
+ "explain": "`return width * height` returns 12 to the line that called `area`, and that "
+            "line prints it."},
 
 {"id": "functions-4", "round": "functions", "kind": "output",
  "ask": "What does this program print?",
@@ -683,7 +700,7 @@ print(label(7, "Mo"))
            "brackets of the def."],
  "explain": "The names in the `def` line are **parameters**. The values in the call are "
             "**arguments**, and they fill the parameters in order: `name` gets 7 and `score` "
-            "gets \"Mo\". So the function returns 7: Mo."},
+            "gets \"Mo\". So the function returns the text `7: Mo`."},
 
 {"id": "functions-5", "round": "functions", "kind": "order",
  "ask": "Put the lines in order so the program prints 12.",
@@ -695,10 +712,10 @@ print(label(7, "Mo"))
  ],
  "target": "12",
  "ways": 1,
- "hints": ["Python has to read a def before any line that calls the function."],
- "explain": "The `def` and its indented `return` line go first, because Python reads the "
-            "file from the top and has to know `triple` before a line calls it. Then "
-            "`answer` stores what `triple(4)` returns, and the last line prints it."},
+ "hints": ["The `def` has to run before any line that calls the function."],
+ "explain": "The `def` and its indented `return` line go first, because Python runs the "
+            "file from the top, and the `def` has to run before a line can call `triple`. "
+            "Then `answer` stores what `triple(4)` returns, and the last line prints it."},
 
 # ---------------------------------------------------------------- strings
 {"id": "strings-1", "round": "strings", "kind": "output",
@@ -717,7 +734,7 @@ print(word[1:4])
  "hints": ["Write the index under each letter: p is 0, y is 1, and so on."],
  "explain": "A string is a row of characters, each with an index starting at 0: p is 0, y "
             "is 1, t is 2, h is 3. `word[1:4]` is a **slice**: it takes index 1 up to, but "
-            "not including, index 4."},
+            "not including, index 4. So `word[0]` prints p, and `word[1:4]` prints yth."},
 
 {"id": "strings-2", "round": "strings", "kind": "output",
  "ask": "What does this program print?",
@@ -727,14 +744,16 @@ name.strip()
 print(f"[{name}]")
 '''),
  "wrong": [
-    ["[ada]", "`strip` gives back a new string without the spaces, but line 2 does not "
-              "store it. `name` has not changed."],
-    ["[Ada]", "`strip` removes spaces at the start and end. It does not change small "
-              "letters to capitals."],
-    ["[  Ada  ]", "Nothing in this program makes a capital letter."],
+    ["[ada]", "`strip` returns a new string without the spaces, but line 2 does not store "
+              "it. `name` has not changed."],
+    ["~It stops with an error", "A line that works out a value and does not store it is "
+                                "allowed. Python makes the new string on line 2, then it "
+                                "is lost."],
+    ["ada", "The square brackets are inside the quote marks, so they print as text. And "
+            "line 2 does not store what `strip` returns, so the spaces stay."],
  ],
  "hints": ["Line 2 has no `=`. Is the result stored anywhere?"],
- "explain": "`name.strip()` gives a new string with the spaces taken off both ends, but "
+ "explain": "`name.strip()` returns a new string with the spaces taken off both ends, but "
             "line 2 does not store it, so it is lost. `name` does not change. To keep the "
             "result, the line has to be `name = name.strip()`."},
 
@@ -754,9 +773,10 @@ print("Cat" in "concatenate")
                     "capital Cat is not."],
  ],
  "hints": ["Look for c, a, t side by side in concatenate."],
- "explain": "`in` checks whether one string is located in another, as a run of characters "
-            "in order. concatenate has c, a, t side by side, so the first line is True. "
-            "Python treats C and c as different, so the second line is False."},
+ "explain": "`in` checks whether one string is located in another, with its characters "
+            "side by side and in the same order. concatenate has c, a, t side by side, so "
+            "the first line is True. Python treats C and c as different, so the second "
+            "line is False."},
 
 {"id": "strings-4", "round": "strings", "kind": "output",
  "ask": "What does this program print?",
@@ -767,12 +787,11 @@ print(msg)
 '''),
  "wrong": [
     ["o banana", "`replace` swaps every copy, not only the first one."],
-    ["a banana", "This time the result is stored back under `msg` on line 2, so `msg` "
-                 "changes."],
+    ["a banana", "Line 2 stores the result back under `msg`, so `msg` changes."],
     ["a bonono", "The first a is a copy of \"a\" too. `replace` swaps every one."],
  ],
  "hints": ["Line 2 has an `=`, so the result is stored."],
- "explain": "`replace(\"a\", \"o\")` gives a new string with every a swapped for o. Line 2 "
+ "explain": "`replace(\"a\", \"o\")` returns a new string with every a swapped for o. Line 2 "
             "stores it back under `msg`, so the print shows the new string."},
 
 {"id": "strings-5", "round": "strings", "kind": "order",
@@ -801,8 +820,9 @@ print(20 % 5)
 print(3 % 5)
 '''),
  "wrong": [
-    ["3.4\n4.0\n0.6", "`%` does not divide. It gives the remainder: what is left over "
-                      "after taking out as many fives as fit."],
+    ["3.4\n4.0\n0.6", "`%` does not give the answer to the division: 17 divided by 5 is "
+                      "3.4. It gives the remainder: what is left over after taking out as "
+                      "many fives as fit."],
     ["2\n0\n0", "5 does not fit into 3 at all, so all 3 is left over. `3 % 5` is 3."],
     ["2\n5\n3", "20 is exactly four fives, with nothing left over. `20 % 5` is 0."],
  ],
@@ -821,10 +841,12 @@ print(hour)
 '''),
  "wrong": [
     ["27", "`% 24` wraps the number around. 27 is one 24 with 3 left over."],
-    ["5", "The brackets add 5 to 22 first. Then `% 24` works on the 27."],
+    ["1", "`% 24` gives what is left over, not how many 24s fit. One 24 fits into 27, "
+          "with 3 left over."],
     ["2", "Count on from 22: 23, 0, 1, 2, 3. That is five steps, not four."],
  ],
- "hints": ["Work out the brackets first. Then take away 24 if the answer is 24 or more."],
+ "hints": ["Work out the brackets first. Then find what is left over after taking out as "
+           "many 24s as fit."],
  "explain": "Brackets go first: 22 + 5 = 27. Then `% 24` gives the remainder after taking "
             "out 24: 27 is one 24 with 3 left over. So the clock goes past midnight to 3."},
 
@@ -857,7 +879,8 @@ for i in range(5):
  "wrong": [
     ["~It stops with an IndexError", "`i % 3` is always 0, 1 or 2, so the index never goes "
                                      "past the end of the list."],
-    ["red\ngreen\nblue", "`range(5)` gives 5 passes: i is 0, 1, 2, 3 and 4."],
+    ["red\ngreen\nblue", "`range(5)` gives five numbers, 0 to 4, so the loop makes five "
+                         "passes."],
     ["green\nblue\nred\ngreen\nblue", "On the first pass i is 0, and `0 % 3` is 0, so the "
                                       "first colour is red."],
  ],
@@ -883,12 +906,12 @@ print(len(ages))
               "dictionary holds each key once."],
  ],
  "hints": ["Line 2 uses a key that is already there. Line 3 uses a key that is not."],
- "explain": "A **dictionary** pairs each **key** with a **value**. Line 2 changes the value "
+ "explain": "A **dictionary** pairs each **key** with a value. Line 2 changes the value "
             "under \"Mo\" to 13. Line 3 adds a new pair, because \"Zed\" was not a key yet. "
             "That makes 3 pairs, so `len` gives 3."},
 
 {"id": "dicts-2", "round": "dicts", "kind": "error",
- "ask": "Does this program run? If not, what is the name of the error?",
+ "ask": ERROR_ASK,
  "code": c('''
 ages = {"Ada": 11, "Mo": 12}
 print(ages["ada"])
@@ -896,8 +919,9 @@ print(ages["ada"])
  "wrong": [
     ["No error. It prints 11", "Keys must match exactly. \"ada\" with a small a is not the "
                                "same key as \"Ada\"."],
-    ["IndexError", "IndexError is for list positions. A dictionary looks things up by key, "
-                   "and a missing key gives a different error."],
+    ["IndexError", "IndexError is for an index number past the end of a list or a string. "
+                   "A dictionary looks things up by key, and a missing key gives a "
+                   "different error."],
     ["NameError", "The name `ages` is known. It is the key \"ada\" that is missing."],
  ],
  "hints": ["Compare the key on line 2 with the keys on line 1, letter by letter."],
@@ -923,24 +947,24 @@ print(5 in stock)
 {"id": "dicts-4", "round": "dicts", "kind": "type",
  "ask": "Type exactly what this program prints.",
  "code": c('''
-counts = {}
+tally = {}
 for letter in "banana":
-    if letter in counts:
-        counts[letter] = counts[letter] + 1
+    if letter in tally:
+        tally[letter] = tally[letter] + 1
     else:
-        counts[letter] = 1
-print(counts["a"])
+        tally[letter] = 1
+print(tally["a"])
 '''),
  "common": [
-    ["1", "The `else` lines run only the first time a letter is seen. After that, the `if` "
-          "lines add 1 each time."],
-    ["6", "`counts[\"a\"]` counts only the letter a. banana has 6 letters, but not all of "
+    ["1", "The line under `else` runs only the first time a letter is seen. After that, "
+          "the line under `if` adds 1 each time."],
+    ["6", "`tally[\"a\"]` counts only the letter a. banana has 6 letters, but not all of "
           "them are a."],
  ],
  "hints": ["The first a stores 1. What happens the next time an a comes along?"],
- "explain": "The first time a letter comes along, it is not a key yet, so the `else` line "
-            "stores 1. Each time after, the `if` line adds 1. banana has three a's, so "
-            "`counts[\"a\"]` is 3. Counting like this is called a **tally**."},
+ "explain": "The first time a letter comes along, it is not a key yet, so the line under "
+            "`else` stores 1. Each time after, the line under `if` adds 1. banana has three "
+            "a's, so `tally[\"a\"]` is 3. Counting like this is called a **tally**."},
 
 # ---------------------------------------------------------------- reading errors
 {"id": "errors-1", "round": "errors", "kind": "line",
@@ -977,21 +1001,23 @@ print(total)
                "`total` is used."],
     ["Line 4", "Python never gets to line 4. It stops on the first pass of the loop."],
  ],
- "hints": ["Python only notices a problem when it reaches a line it cannot run."],
+ "hints": ["Line 1 runs without a problem. Which is the first line that asks for the "
+           "value of `total`?"],
  "explain": "Python names the line where it could not go on, which is not always the line "
             "with the mistake. Line 3 asks for the value of `total` before anything was "
             "stored under that name, so Python stops there with a NameError."},
 
 {"id": "errors-3", "round": "errors", "kind": "error",
- "ask": "Does this program run? If not, what is the name of the error?",
+ "ask": ERROR_ASK,
  "code": c('''
 for i in range(3):
 print(i)
 '''),
  "wrong": [
     ["No error. It prints 0, 1 and 2", "Python uses indentation to know which lines belong "
-                                       "to the loop. With no indented line under the `for`, "
-                                       "the loop has no lines to repeat."],
+                                       "to the loop. A line ending in a colon must have an "
+                                       "indented line under it, so Python stops before "
+                                       "running any line."],
     ["NameError", "`i` is the loop variable, so it is a known name. The problem is the "
                   "missing indentation."],
     ["TypeError", "No values are being combined here. Python stops before running any line."],
@@ -1034,7 +1060,9 @@ print(total)
  "target": "10",
  "fills": [
     ["total = total + n", None],
-    ["total = n + 1", "This replaces `total` on every pass. It ends as 4 + 1."],
+    ["total = total + nums", "`nums` is the list itself, not one number. Python cannot add a "
+                             "list to a number, so it stops with a TypeError. The loop "
+                             "variable `n` holds one number on each pass."],
     ["total + n", "This works out a sum but never stores it, so `total` stays 0."],
     ["total = total + 1", "This adds 1 on each pass, so it counts the items instead of "
                           "adding them up."],
@@ -1044,7 +1072,7 @@ print(total)
             "the answer back in `total`."},
 
 {"id": "errors-6", "round": "errors", "kind": "error",
- "ask": "Does this program run? If not, what is the name of the error?",
+ "ask": ERROR_ASK,
  "code": c('''
 print(double(4))
 
@@ -1053,13 +1081,15 @@ def double(n):
 '''),
  "wrong": [
     ["No error. It prints 8", "Python runs the lines from top to bottom. When line 1 runs, "
-                              "the `def` has not been read yet, so `double` does not exist."],
+                              "the `def` lines below it have not run yet, so there is no "
+                              "function called `double`."],
     ["SyntaxError", "Every line is written correctly. The problem is the order of the lines."],
-    ["TypeError", "Python never gets as far as multiplying. It stops because it does not "
-                  "know the name `double` yet."],
+    ["TypeError", "Python never gets as far as multiplying. It stops because there is no "
+                  "function called `double` yet."],
  ],
- "hints": ["Python reads the file from the top. What does it know when line 1 runs?"],
- "explain": "Python reads a file from the top. Line 1 calls `double` before the `def` that "
-            "makes it, so Python stops with a NameError. This is why every `def` goes at the "
-            "top of the file."},
+ "hints": ["Python runs the file from the top. Which lines have run when line 1 runs?"],
+ "explain": "Python runs a file from the top. Line 1 calls `double` before the `def` that "
+            "makes it has run, so Python stops with a NameError. A `def` has to come before "
+            "any line that calls its function. Putting every `def` at the top of the file "
+            "makes sure of that."},
 ]

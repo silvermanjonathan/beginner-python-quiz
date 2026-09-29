@@ -47,7 +47,7 @@ BANNED_NODES = {
 }
 # Programs that break a code rule on purpose, because the rule is the question.
 RULE_BREAKERS = {"errors-6": "a call before its def is the point of the question"}
-MAX_LINE = 44  # longest code line that fits a 390px phone screen once the page shrinks it to 11px
+MAX_LINE = 41  # longest code line that fits a 390px phone, with line numbers, at 11px
 
 
 def programs(q):

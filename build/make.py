@@ -141,6 +141,15 @@ def mark_line(code_html, line_no):
     return "\n".join(lines)
 
 
+def numbered(code_html):
+    """Wrap each line so the page can show a line number in front of it (CSS counter)."""
+    lines = code_html.split("\n")
+    end = ""
+    if lines and lines[-1] == "":  # the newline at the end of the file is not a line
+        lines, end = lines[:-1], "\n"
+    return "\n".join(f'<span class="cl">{ln}</span>' for ln in lines) + end
+
+
 ERROR_NAME = re.compile(r"^[A-Z][A-Za-z]+Error$")
 
 
@@ -176,7 +185,7 @@ def build(q):
     if kind in ("output", "last", "error", "line", "type"):
         code = q["code"]
         r = run(code, stdin)
-        item["code"] = highlight(code)
+        item["code"] = numbered(highlight(code))
         item["copy"] = code
         item["real"] = r["term"]
         key.update(code=code, real=r["term"])
@@ -248,11 +257,11 @@ def build(q):
             if ok:
                 finished = code.replace("___", fill)
                 item["real"] = r["term"]
-                item["finished"] = mark_line(highlight(finished), blank_line)
+                item["finished"] = numbered(mark_line(highlight(finished), blank_line))
                 item["copy"] = finished
         if len(winners) != 1:
             raise Fail(f"{q['id']}: {len(winners)} fills print the target, need exactly 1")
-        item["code"] = mark_blank(highlight(code))
+        item["code"] = numbered(mark_blank(highlight(code)))
         item["target"] = target
         item["opts"] = opts
         key.update(code=code, answer=winners[0], real=item["real"],
@@ -288,7 +297,7 @@ def build(q):
         item["perms"] = perm_map
         item["outs"] = outs
         item["okKeys"] = ok_keys
-        item["finished"] = highlight(program)
+        item["finished"] = numbered(highlight(program))
         item["copy"] = program
         item["real"] = outs[perm_map[own]]
         key.update(code=program, answer="(the order above)", real=item["real"],
@@ -357,6 +366,10 @@ pre.target{background:#FFFDF7; border-color:var(--ochre-line); border-left:6px s
 .blank{background:var(--ochre-tint); color:var(--ochre); border-bottom:3px solid var(--ochre-line);
   font-weight:700; padding:0 2px}
 .filled{background:#FBF2DC; box-shadow:0 0 0 2px #FBF2DC}
+/* line numbers: drawn by CSS, so copying the code does not copy them */
+pre.num{counter-reset:ln}
+pre.num .cl::before{counter-increment:ln; content:counter(ln); display:inline-block; width:1ch;
+  margin-right:1.4ch; text-align:right; color:#6E6858; -webkit-user-select:none; user-select:none}
 a{color:var(--teal)}
 kbd{font-family:'JetBrains Mono',monospace; font-size:.9em; font-weight:700; background:#fff;
   border:2px solid var(--rule); border-bottom-width:3px; border-radius:4px; padding:0 7px}

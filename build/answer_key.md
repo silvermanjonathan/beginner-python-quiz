@@ -64,7 +64,7 @@ Real output:
 
 ### names-4 (error)
 
-Does this program run? If not, what is the name of the error?
+Does this program stop with an error? If it does, what is the error's name?
 
 ```python
 name = "Mo"
@@ -107,7 +107,7 @@ Robot age: 3
 
 ### types-2 (error)
 
-Does this program run? If not, what is the name of the error?
+Does this program stop with an error? If it does, what is the error's name?
 
 ```python
 age = input("Robot age: ")
@@ -270,7 +270,7 @@ pass
 
 ### gates-3 (error)
 
-Does this program run? If not, what is the name of the error?
+Does this program stop with an error? If it does, what is the error's name?
 
 ```python
 lives = 3
@@ -317,10 +317,13 @@ What each wrong fill really prints:
   too short
   ```
 
-- `!=`:
+- `=>`:
 
   ```
-  too short
+    File "Ada_quiz.py", line 2
+      if height => 120:
+                ^
+  SyntaxError: invalid syntax
   ```
 
 Real output:
@@ -543,7 +546,7 @@ green
 
 ### lists-2 (error)
 
-Does this program run? If not, what is the name of the error?
+Does this program stop with an error? If it does, what is the error's name?
 
 ```python
 colours = ["red", "green", "blue"]
@@ -1004,7 +1007,7 @@ Real output:
 
 ### dicts-2 (error)
 
-Does this program run? If not, what is the name of the error?
+Does this program stop with an error? If it does, what is the error's name?
 
 ```python
 ages = {"Ada": 11, "Mo": 12}
@@ -1048,13 +1051,13 @@ False
 Type exactly what this program prints.
 
 ```python
-counts = {}
+tally = {}
 for letter in "banana":
-    if letter in counts:
-        counts[letter] = counts[letter] + 1
+    if letter in tally:
+        tally[letter] = tally[letter] + 1
     else:
-        counts[letter] = 1
-print(counts["a"])
+        tally[letter] = 1
+print(tally["a"])
 ```
 
 Answer: `3`
@@ -1115,7 +1118,7 @@ NameError: name 'total' is not defined. Did you mean: 'totl'?
 
 ### errors-3 (error)
 
-Does this program run? If not, what is the name of the error?
+Does this program stop with an error? If it does, what is the error's name?
 
 ```python
 for i in range(3):
@@ -1169,10 +1172,14 @@ Answer: `total = total + n`
 
 What each wrong fill really prints:
 
-- `total = n + 1`:
+- `total = total + nums`:
 
   ```
-  5
+  Traceback (most recent call last):
+    File "Ada_quiz.py", line 4, in <module>
+      total = total + nums
+              ~~~~~~^~~~~~
+  TypeError: unsupported operand type(s) for +: 'int' and 'list'
   ```
 
 - `total + n`:
@@ -1195,7 +1202,7 @@ Real output:
 
 ### errors-6 (error)
 
-Does this program run? If not, what is the name of the error?
+Does this program stop with an error? If it does, what is the error's name?
 
 ```python
 print(double(4))
