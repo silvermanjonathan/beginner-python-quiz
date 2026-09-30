@@ -490,19 +490,74 @@ button{font-family:'DM Sans',sans-serif}
 .well .placeholder{color:var(--ink-soft); font-size:15.5px; margin:8px 6px}
 
 /* results */
-.score{font-family:'Bricolage Grotesque','DM Sans',sans-serif; font-weight:800;
-  font-size:clamp(34px,6vw,52px); line-height:1.1; color:var(--teal-deep); margin:0 0 8px}
-.conf{display:grid; gap:12px; grid-template-columns:1fr; margin:6px 0 0}
-@media(min-width:700px){.conf{grid-template-columns:1fr 1fr}}
-.cbox{border:2px solid var(--rule); border-radius:5px; padding:14px 16px; background:#FFFDF7}
-.cbox .num{font-family:'Bricolage Grotesque','DM Sans',sans-serif; font-weight:800; font-size:32px;
-  line-height:1}
-.cbox b{display:block; margin:4px 0 4px}
-.cbox span{display:block; font-size:15.5px; color:var(--ink-soft); line-height:1.45}
-.cbox.sw{border-top:6px solid var(--clay)} .cbox.sw .num{color:var(--clay)}
-.cbox.nw{border-top:6px solid var(--ochre-line)} .cbox.nw .num{color:var(--ochre)}
-.cbox.nr{border-top:6px solid var(--teal)} .cbox.nr .num{color:var(--teal)}
-.cbox.sr{border-top:6px solid var(--green)} .cbox.sr .num{color:var(--green)}
+/* the strengths and weaknesses infographic */
+.cardtools{justify-content:space-between}
+.namebox{display:flex; flex-wrap:wrap; gap:8px 10px; align-items:center; font-weight:700; font-size:16px}
+.namebox input{font:inherit; font-weight:500; padding:8px 10px; border:2px solid var(--ink-soft);
+  border-radius:4px; background:#fff; color:var(--ink); width:240px; max-width:100%}
+section.infocard{padding:0; overflow:hidden; border-left:8px solid var(--teal)}
+.ihead{display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-end; gap:14px 24px;
+  background:var(--teal); color:#FFFDF7; padding:20px 24px}
+.ihead .eyebrow{margin:0 0 6px}
+.ihead h2.ask{color:#FFFDF7; margin:0 0 8px; font-size:28px}
+.who{display:flex; flex-wrap:wrap; gap:4px 18px; margin:0; font-size:16px; color:#EAE3D2}
+.nameline{display:inline-block; min-width:160px; border-bottom:2px solid #EAE3D2; color:#FFFDF7}
+.hero{display:grid; justify-items:end; text-align:right}
+.hero .big{font-family:'DM Sans',system-ui,sans-serif; font-weight:700; font-size:58px; line-height:1}
+.hero .of{font-size:18px; font-weight:700}
+.hero .pc{font-family:'JetBrains Mono',monospace; font-size:13px; font-weight:700; color:#F2D89B; margin-top:4px}
+.ipart{padding:18px 24px; border-top:2px solid var(--rule)}
+.isum{display:grid; gap:14px; grid-template-columns:minmax(0,1fr)}
+@media(min-width:700px){.isum{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+.sumcol{border-radius:5px; padding:12px 14px}
+.sumcol .note{margin:0}
+.sumcol.good{background:var(--green-tint); border-left:6px solid var(--green)}
+.sumcol.bad{background:var(--clay-tint); border-left:6px solid var(--clay)}
+.sumlist{list-style:none; padding:0; margin:0}
+.sumlist li{display:flex; flex-wrap:wrap; align-items:center; gap:4px 12px; margin:0 0 8px}
+.sumlist li:last-child{margin-bottom:0}
+.sumlist .nm{font-weight:700; font-size:19px}
+.sumlist .sc{font-family:'JetBrains Mono',monospace; font-size:14px; font-weight:700; color:var(--ink-soft)}
+.fixfirst{display:flex; gap:12px; align-items:flex-start; margin:0; padding:14px 24px;
+  border-top:2px solid var(--rule); background:#FBF9F3}
+.fixfirst .mk{flex:none; margin-top:3px}
+.tmap{display:grid}
+.trow{display:grid; grid-template-columns:minmax(0,1.3fr) minmax(0,1.2fr) auto minmax(0,1fr);
+  gap:6px 14px; align-items:center; padding:8px 0; border-bottom:2px solid #EFE9DA}
+.trow:last-child{border-bottom:0}
+.tn{font-weight:700; display:flex; gap:10px; align-items:baseline; line-height:1.35}
+.tnum{font-family:'JetBrains Mono',monospace; font-size:13px; color:var(--teal); min-width:20px}
+.dots{display:flex; flex-wrap:wrap; gap:4px}
+.dots .mk{display:block}
+.tsc{font-family:'JetBrains Mono',monospace; font-weight:700; font-size:14px; white-space:nowrap}
+.band{display:inline-flex; gap:6px; align-items:center; font-size:15px; font-weight:700; white-space:nowrap}
+.band svg{flex:none}
+.band.strong{color:var(--green)} .band.mid{color:var(--ochre)} .band.weak{color:var(--clay)}
+.band.few{color:var(--ink-soft)}
+@media(max-width:640px){
+  .trow{grid-template-columns:minmax(0,1fr) auto; grid-template-areas:"tn tsc" "dots band"}
+  .tn{grid-area:tn} .dots{grid-area:dots} .tsc{grid-area:tsc; justify-self:end}
+  .band{grid-area:band; justify-self:end}
+  .ihead,.ipart,.fixfirst{padding-left:14px; padding-right:14px}
+  .hero{justify-items:start; text-align:left}
+}
+.ilegend{list-style:none; padding:0; margin:14px 0 0; display:flex; flex-wrap:wrap; gap:8px 20px; font-size:15.5px}
+.ilegend li{display:flex; align-items:center; gap:8px; margin:0}
+.stats{display:grid; gap:12px; grid-template-columns:minmax(0,1fr) minmax(0,1fr); margin:0 0 12px}
+.stat{border:2px solid var(--rule); border-radius:5px; padding:12px 14px; background:#FFFDF7; display:grid}
+.stat .tl{font-size:15px; font-weight:700; color:var(--ink-soft); line-height:1.35}
+.stat .big{font-family:'DM Sans',system-ui,sans-serif; font-weight:700; font-size:40px; line-height:1.15;
+  color:var(--teal-deep)}
+.stat .tsub{font-family:'JetBrains Mono',monospace; font-size:13.5px; color:var(--ink-soft)}
+.infocard .bar .track i{background:var(--teal)}
+.ipair{display:grid; grid-template-columns:minmax(0,1fr); border-top:2px solid var(--rule)}
+.ipair > .ipart{border-top:0}
+.ipair > .ipart + .ipart{border-top:2px solid var(--rule)}
+.ipart > .note:last-child{margin-bottom:0}
+@media(min-width:860px){
+  .ipair{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .ipair > .ipart + .ipart{border-top:0; border-left:2px solid var(--rule)}
+}
 .bars{display:grid; gap:10px}
 .bar{display:grid; grid-template-columns:minmax(0,1fr) auto; gap:4px 12px; align-items:center}
 .bar .t{font-weight:700}
@@ -550,12 +605,39 @@ body.classmode .wrap{max-width:1100px}
     font-size:12px; font-weight:700; color:var(--clay); letter-spacing:.08em; text-transform:uppercase; margin-top:4px}
   .btn{padding:11px 16px}
 }
+@page{size:letter; margin:12mm}
 @media print{
   body{background:#fff}
   header.top{background:#fff; color:#111; border-bottom:3px solid #111}
-  header.top h1,.sub,.eyebrow{color:#111}
+  header.top h1,.sub,header.top .eyebrow{color:#111}
   section{background:#fff; break-inside:avoid}
-  .row,.keys,footer{display:none}
+  .row,.keys,footer,.noprint{display:none !important}
+  .infocard,.infocard *{-webkit-print-color-adjust:exact; print-color-adjust:exact}
+  /* Print this picture: the infographic alone, on one page */
+  body.printcard header.top,body.printcard main > :not(.infocard){display:none !important}
+  body.printcard main{padding:0; max-width:none}
+  body.printcard{font-size:12.5px; line-height:1.4}
+  body.printcard .note,body.printcard .fixfirst,body.printcard .who{font-size:12px}
+  body.printcard .sumlist li{margin-bottom:4px}
+  body.printcard .stats{margin-bottom:8px}
+  body.printcard .infocard{border-width:1.5px; border-left-width:6px}
+  body.printcard .ihead{padding:12px 16px}
+  body.printcard .ihead h2.ask{font-size:22px}
+  body.printcard .hero .big{font-size:42px}
+  body.printcard .ipart{padding:10px 16px}
+  body.printcard .fixfirst{padding:8px 16px}
+  body.printcard .trow{padding:4px 0}
+  body.printcard .stat .big{font-size:26px}
+  body.printcard .stat{padding:8px 10px}
+  body.printcard .ipair{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  body.printcard .ipair > .ipart + .ipart{border-top:0; border-left:1.5px solid var(--rule)}
+  body.printcard .dots .mk,body.printcard .ilegend .mk{width:17px; height:17px}
+  body.printcard .trow{padding:3px 0}
+  body.printcard .band{font-size:12.5px}
+  body.printcard .ilegend{font-size:12.5px; margin-top:8px}
+  body.printcard .sumcol{padding:8px 12px}
+  body.printcard .bars{gap:6px}
+  body.printcard .sumlist .nm{font-size:15px}
 }
 """
 

@@ -185,19 +185,74 @@ button{font-family:'DM Sans',sans-serif}
 .well .placeholder{color:var(--ink-soft); font-size:15.5px; margin:8px 6px}
 
 /* results */
-.score{font-family:'Bricolage Grotesque','DM Sans',sans-serif; font-weight:800;
-  font-size:clamp(34px,6vw,52px); line-height:1.1; color:var(--teal-deep); margin:0 0 8px}
-.conf{display:grid; gap:12px; grid-template-columns:1fr; margin:6px 0 0}
-@media(min-width:700px){.conf{grid-template-columns:1fr 1fr}}
-.cbox{border:2px solid var(--rule); border-radius:5px; padding:14px 16px; background:#FFFDF7}
-.cbox .num{font-family:'Bricolage Grotesque','DM Sans',sans-serif; font-weight:800; font-size:32px;
-  line-height:1}
-.cbox b{display:block; margin:4px 0 4px}
-.cbox span{display:block; font-size:15.5px; color:var(--ink-soft); line-height:1.45}
-.cbox.sw{border-top:6px solid var(--clay)} .cbox.sw .num{color:var(--clay)}
-.cbox.nw{border-top:6px solid var(--ochre-line)} .cbox.nw .num{color:var(--ochre)}
-.cbox.nr{border-top:6px solid var(--teal)} .cbox.nr .num{color:var(--teal)}
-.cbox.sr{border-top:6px solid var(--green)} .cbox.sr .num{color:var(--green)}
+/* the strengths and weaknesses infographic */
+.cardtools{justify-content:space-between}
+.namebox{display:flex; flex-wrap:wrap; gap:8px 10px; align-items:center; font-weight:700; font-size:16px}
+.namebox input{font:inherit; font-weight:500; padding:8px 10px; border:2px solid var(--ink-soft);
+  border-radius:4px; background:#fff; color:var(--ink); width:240px; max-width:100%}
+section.infocard{padding:0; overflow:hidden; border-left:8px solid var(--teal)}
+.ihead{display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-end; gap:14px 24px;
+  background:var(--teal); color:#FFFDF7; padding:20px 24px}
+.ihead .eyebrow{margin:0 0 6px}
+.ihead h2.ask{color:#FFFDF7; margin:0 0 8px; font-size:28px}
+.who{display:flex; flex-wrap:wrap; gap:4px 18px; margin:0; font-size:16px; color:#EAE3D2}
+.nameline{display:inline-block; min-width:160px; border-bottom:2px solid #EAE3D2; color:#FFFDF7}
+.hero{display:grid; justify-items:end; text-align:right}
+.hero .big{font-family:'DM Sans',system-ui,sans-serif; font-weight:700; font-size:58px; line-height:1}
+.hero .of{font-size:18px; font-weight:700}
+.hero .pc{font-family:'JetBrains Mono',monospace; font-size:13px; font-weight:700; color:#F2D89B; margin-top:4px}
+.ipart{padding:18px 24px; border-top:2px solid var(--rule)}
+.isum{display:grid; gap:14px; grid-template-columns:minmax(0,1fr)}
+@media(min-width:700px){.isum{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+.sumcol{border-radius:5px; padding:12px 14px}
+.sumcol .note{margin:0}
+.sumcol.good{background:var(--green-tint); border-left:6px solid var(--green)}
+.sumcol.bad{background:var(--clay-tint); border-left:6px solid var(--clay)}
+.sumlist{list-style:none; padding:0; margin:0}
+.sumlist li{display:flex; flex-wrap:wrap; align-items:center; gap:4px 12px; margin:0 0 8px}
+.sumlist li:last-child{margin-bottom:0}
+.sumlist .nm{font-weight:700; font-size:19px}
+.sumlist .sc{font-family:'JetBrains Mono',monospace; font-size:14px; font-weight:700; color:var(--ink-soft)}
+.fixfirst{display:flex; gap:12px; align-items:flex-start; margin:0; padding:14px 24px;
+  border-top:2px solid var(--rule); background:#FBF9F3}
+.fixfirst .mk{flex:none; margin-top:3px}
+.tmap{display:grid}
+.trow{display:grid; grid-template-columns:minmax(0,1.3fr) minmax(0,1.2fr) auto minmax(0,1fr);
+  gap:6px 14px; align-items:center; padding:8px 0; border-bottom:2px solid #EFE9DA}
+.trow:last-child{border-bottom:0}
+.tn{font-weight:700; display:flex; gap:10px; align-items:baseline; line-height:1.35}
+.tnum{font-family:'JetBrains Mono',monospace; font-size:13px; color:var(--teal); min-width:20px}
+.dots{display:flex; flex-wrap:wrap; gap:4px}
+.dots .mk{display:block}
+.tsc{font-family:'JetBrains Mono',monospace; font-weight:700; font-size:14px; white-space:nowrap}
+.band{display:inline-flex; gap:6px; align-items:center; font-size:15px; font-weight:700; white-space:nowrap}
+.band svg{flex:none}
+.band.strong{color:var(--green)} .band.mid{color:var(--ochre)} .band.weak{color:var(--clay)}
+.band.few{color:var(--ink-soft)}
+@media(max-width:640px){
+  .trow{grid-template-columns:minmax(0,1fr) auto; grid-template-areas:"tn tsc" "dots band"}
+  .tn{grid-area:tn} .dots{grid-area:dots} .tsc{grid-area:tsc; justify-self:end}
+  .band{grid-area:band; justify-self:end}
+  .ihead,.ipart,.fixfirst{padding-left:14px; padding-right:14px}
+  .hero{justify-items:start; text-align:left}
+}
+.ilegend{list-style:none; padding:0; margin:14px 0 0; display:flex; flex-wrap:wrap; gap:8px 20px; font-size:15.5px}
+.ilegend li{display:flex; align-items:center; gap:8px; margin:0}
+.stats{display:grid; gap:12px; grid-template-columns:minmax(0,1fr) minmax(0,1fr); margin:0 0 12px}
+.stat{border:2px solid var(--rule); border-radius:5px; padding:12px 14px; background:#FFFDF7; display:grid}
+.stat .tl{font-size:15px; font-weight:700; color:var(--ink-soft); line-height:1.35}
+.stat .big{font-family:'DM Sans',system-ui,sans-serif; font-weight:700; font-size:40px; line-height:1.15;
+  color:var(--teal-deep)}
+.stat .tsub{font-family:'JetBrains Mono',monospace; font-size:13.5px; color:var(--ink-soft)}
+.infocard .bar .track i{background:var(--teal)}
+.ipair{display:grid; grid-template-columns:minmax(0,1fr); border-top:2px solid var(--rule)}
+.ipair > .ipart{border-top:0}
+.ipair > .ipart + .ipart{border-top:2px solid var(--rule)}
+.ipart > .note:last-child{margin-bottom:0}
+@media(min-width:860px){
+  .ipair{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .ipair > .ipart + .ipart{border-top:0; border-left:2px solid var(--rule)}
+}
 .bars{display:grid; gap:10px}
 .bar{display:grid; grid-template-columns:minmax(0,1fr) auto; gap:4px 12px; align-items:center}
 .bar .t{font-weight:700}
@@ -245,12 +300,39 @@ body.classmode .wrap{max-width:1100px}
     font-size:12px; font-weight:700; color:var(--clay); letter-spacing:.08em; text-transform:uppercase; margin-top:4px}
   .btn{padding:11px 16px}
 }
+@page{size:letter; margin:12mm}
 @media print{
   body{background:#fff}
   header.top{background:#fff; color:#111; border-bottom:3px solid #111}
-  header.top h1,.sub,.eyebrow{color:#111}
+  header.top h1,.sub,header.top .eyebrow{color:#111}
   section{background:#fff; break-inside:avoid}
-  .row,.keys,footer{display:none}
+  .row,.keys,footer,.noprint{display:none !important}
+  .infocard,.infocard *{-webkit-print-color-adjust:exact; print-color-adjust:exact}
+  /* Print this picture: the infographic alone, on one page */
+  body.printcard header.top,body.printcard main > :not(.infocard){display:none !important}
+  body.printcard main{padding:0; max-width:none}
+  body.printcard{font-size:12.5px; line-height:1.4}
+  body.printcard .note,body.printcard .fixfirst,body.printcard .who{font-size:12px}
+  body.printcard .sumlist li{margin-bottom:4px}
+  body.printcard .stats{margin-bottom:8px}
+  body.printcard .infocard{border-width:1.5px; border-left-width:6px}
+  body.printcard .ihead{padding:12px 16px}
+  body.printcard .ihead h2.ask{font-size:22px}
+  body.printcard .hero .big{font-size:42px}
+  body.printcard .ipart{padding:10px 16px}
+  body.printcard .fixfirst{padding:8px 16px}
+  body.printcard .trow{padding:4px 0}
+  body.printcard .stat .big{font-size:26px}
+  body.printcard .stat{padding:8px 10px}
+  body.printcard .ipair{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  body.printcard .ipair > .ipart + .ipart{border-top:0; border-left:1.5px solid var(--rule)}
+  body.printcard .dots .mk,body.printcard .ilegend .mk{width:17px; height:17px}
+  body.printcard .trow{padding:3px 0}
+  body.printcard .band{font-size:12.5px}
+  body.printcard .ilegend{font-size:12.5px; margin-top:8px}
+  body.printcard .sumcol{padding:8px 12px}
+  body.printcard .bars{gap:6px}
+  body.printcard .sumlist .nm{font-size:15px}
 }
 </style>
 </head>
@@ -723,6 +805,159 @@ body.classmode .wrap{max-width:1100px}
     return h;
   }
 
+
+  // ---------------------------------------------------------------- the strengths and weaknesses infographic
+  // Every mark carries its meaning twice: a tick or a cross for right or wrong, and a
+  // filled or outlined square for sure or not sure. Colour is a third, extra signal.
+  var MARK = {
+    sr: { label: "Sure, and right", fill: "#1D5B39", stroke: "#1D5B39", ink: "#FFFFFF", tick: true },
+    nr: { label: "Not sure, but right", fill: "#FFFFFF", stroke: "#1D5B39", ink: "#1D5B39", tick: true },
+    nw: { label: "Not sure, and wrong", fill: "#FFFFFF", stroke: "#8A5A00", ink: "#8A5A00", tick: false },
+    sw: { label: "Sure, but wrong", fill: "#9C2B22", stroke: "#9C2B22", ink: "#FFFFFF", tick: false }
+  };
+  var SKILLS = [
+    { title: "Predicting what code prints", kinds: ["output", "last", "type"] },
+    { title: "Reading error messages", kinds: ["error", "line"] },
+    { title: "Choosing the missing code", kinds: ["blank"] },
+    { title: "Putting lines in order", kinds: ["order"] }
+  ];
+  var BAND = {
+    strong: { label: "Strong", svg: '<circle cx="11" cy="11" r="9" fill="#1D5B39"/><path d="M6.6 11.4l3 3 5.8-6.2" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>' },
+    mid: { label: "Nearly there", svg: '<circle cx="11" cy="11" r="8" fill="#fff" stroke="#8A5A00" stroke-width="2"/><path d="M11 3a8 8 0 0 0 0 16z" fill="#8A5A00"/>' },
+    weak: { label: "Work on this", svg: '<circle cx="11" cy="11" r="9" fill="#9C2B22"/><path d="M11 6.2v6.3" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/><circle cx="11" cy="15.6" r="1.4" fill="#fff"/>' },
+    few: { label: "Too few to tell", svg: '<circle cx="11" cy="11" r="8" fill="#fff" stroke="#6E6858" stroke-width="2"/><circle cx="7.4" cy="11" r="1.3" fill="#6E6858"/><circle cx="11" cy="11" r="1.3" fill="#6E6858"/><circle cx="14.6" cy="11" r="1.3" fill="#6E6858"/>' }
+  };
+  var MIN_TO_RATE = 3; // a round needs this many answers before it is called strong or weak
+
+  function markKind(e) { return (e.sure ? "s" : "n") + (e.ok ? "r" : "w"); }
+
+  function markSVG(k, label) {
+    var m = MARK[k];
+    var path = m.tick ? "M6 11.5l3.3 3.3L16.2 7.8" : "M7.3 7.3l7.4 7.4M14.7 7.3l-7.4 7.4";
+    return '<svg class="mk" width="22" height="22" viewBox="0 0 22 22" role="img" aria-label="' + esc(label) + '">' +
+      '<rect x="1.5" y="1.5" width="19" height="19" rx="4" fill="' + m.fill + '" stroke="' + m.stroke + '" stroke-width="2"/>' +
+      '<path d="' + path + '" fill="none" stroke="' + m.ink + '" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  }
+
+  function bandOf(n, ok) {
+    if (n < MIN_TO_RATE) return "few";
+    if (ok / n >= 0.8) return "strong";
+    if (ok / n >= 0.5) return "mid";
+    return "weak";
+  }
+
+  function badge(k) {
+    return '<span class="band ' + k + '"><svg width="20" height="20" viewBox="0 0 22 22" aria-hidden="true">' + BAND[k].svg +
+      '</svg>' + BAND[k].label + '</span>';
+  }
+
+  function listNames(names) {
+    if (names.length < 2) return names.join("");
+    return names.slice(0, -1).join(", ") + " and " + names[names.length - 1];
+  }
+
+  function pct(ok, n) { return Math.round(ok / n * 100); }
+
+  function infographicHTML(log, g) {
+    var right = log.filter(function (e) { return e.ok; }).length;
+    var hinted = log.filter(function (e) { return e.hints > 0; }).length;
+    var today = new Date().toLocaleDateString(undefined, { day: "numeric", month: "long", year: "numeric" });
+
+    var rows = ROUNDS.map(function (r) {
+      var es = log.filter(function (e) { return QS[QIDX[e.id]].round === r.id; });
+      var ok = es.filter(function (e) { return e.ok; }).length;
+      return { r: r, es: es, n: es.length, ok: ok, band: bandOf(es.length, ok) };
+    }).filter(function (x) { return x.n > 0; });
+    var rated = rows.filter(function (x) { return x.band !== "few"; });
+    var byScoreDown = function (a, b) { return b.ok / b.n - a.ok / a.n || b.n - a.n; };
+    var strong = rated.filter(function (x) { return x.band === "strong"; }).sort(byScoreDown).slice(0, 3);
+    var work = rated.filter(function (x) { return x.band === "weak"; }).sort(byScoreDown).reverse().slice(0, 3);
+    var workIsNear = false;
+    if (!work.length) {
+      work = rated.filter(function (x) { return x.band === "mid"; }).sort(byScoreDown).reverse().slice(0, 2);
+      workIsNear = work.length > 0;
+    }
+
+    function item(x, practise) {
+      return '<li><span class="nm">' + esc(x.r.title) + '</span><span class="sc">' + x.ok + ' of ' + x.n + '</span>' +
+        (practise ? '<button type="button" class="small noprint" data-act="practise" data-round="' + x.r.id + '">Practise this round</button>' : "") + '</li>';
+    }
+
+    var h = '<div class="row noprint cardtools"><label class="namebox">Your name for the picture <input id="cardname" type="text" autocomplete="off" maxlength="40"></label>' +
+      '<button type="button" class="btn quiet" data-act="print">Print this picture</button></div>';
+
+    h += '<section class="infocard" aria-labelledby="cardtitle">';
+    // header
+    h += '<div class="ihead"><div class="ititle"><p class="eyebrow">Beginner Python Quiz · Results</p>' +
+      '<h2 id="cardtitle" class="ask" tabindex="-1">Strengths and weaknesses</h2>' +
+      '<p class="who"><span>Name: <b id="cardnameout" class="nameline"></b></span><span>' + esc(today) + '</span></p></div>' +
+      '<div class="hero"><span class="big">' + right + '</span><span class="of">of ' + log.length + ' right</span>' +
+      '<span class="pc">' + pct(right, log.length) + '% · ' + (hinted ? plural(hinted, "hint") + " used" : "no hints used") + '</span></div></div>';
+
+    // summary
+    h += '<div class="ipart isum"><div class="sumcol good"><p class="label green">Strongest topics</p>';
+    if (strong.length) h += '<ul class="sumlist">' + strong.map(function (x) { return item(x, false); }).join("") + '</ul>';
+    else h += '<p class="note">No topic reached 4 in 5 right yet.</p>';
+    h += '</div><div class="sumcol bad"><p class="label clay">' + (workIsNear ? "Nearly there: work on next" : "Work on next") + '</p>';
+    if (work.length) h += '<ul class="sumlist">' + work.map(function (x) { return item(x, true); }).join("") + '</ul>';
+    else if (rated.length) h += '<p class="note">Every topic had 4 in 5 right or better.</p>';
+    else h += '<p class="note">Each round had fewer than ' + MIN_TO_RATE + ' questions, which is not enough to tell. Try whole rounds to find your strengths and weaknesses.</p>';
+    h += '</div></div>';
+
+    // the ideas to fix first
+    var swCount = {};
+    g.sw.forEach(function (e) { var t = ROUND[QS[QIDX[e.id]].round].title; swCount[t] = (swCount[t] || 0) + 1; });
+    var swRounds = Object.keys(swCount).sort(function (a, b) { return swCount[b] - swCount[a]; });
+    var where = swRounds.length <= 3
+      ? "in " + listNames(swRounds.map(function (t) { return t + " (" + swCount[t] + ")"; }))
+      : "across " + plural(swRounds.length, "topic") + ": they are the filled squares with a cross in the chart below";
+    h += '<p class="fixfirst">' + markSVG("sw", MARK.sw.label) + '<span>' + (g.sw.length
+      ? 'You were sure but wrong on ' + plural(g.sw.length, "question") + ', ' + esc(where) + '. Those show ideas about Python to fix first.'
+      : 'None of your wrong answers were ones you felt sure about.') + '</span></p>';
+
+    // topic by topic
+    h += '<div class="ipart"><p class="label teal">Topic by topic: one square for each question</p><div class="tmap">';
+    rows.forEach(function (x) {
+      h += '<div class="trow"><span class="tn"><span class="tnum">' + x.r.n + '</span>' + esc(x.r.title) + '</span>' +
+        '<span class="dots">' + x.es.map(function (e, i) {
+          var k = markKind(e);
+          return markSVG(k, "Question " + (i + 1) + ": " + MARK[k].label);
+        }).join("") + '</span><span class="tsc">' + x.ok + ' of ' + x.n + '</span>' + badge(x.band) + '</div>';
+    });
+    h += '</div><ul class="ilegend">' + ["sr", "nr", "nw", "sw"].map(function (k) {
+      return '<li>' + markSVG(k, MARK[k].label) + '<b>' + g[k].length + '</b> ' + MARK[k].label + '</li>';
+    }).join("") + '</ul></div>';
+
+    // skills
+    var skillRows = SKILLS.map(function (sk) {
+      var es = log.filter(function (e) { return sk.kinds.indexOf(QS[QIDX[e.id]].kind) >= 0; });
+      if (!es.length) return "";
+      var ok = es.filter(function (e) { return e.ok; }).length;
+      return '<div class="bar"><span class="t">' + sk.title + '</span><span class="v">' + ok + ' of ' + es.length + '</span>' +
+        '<span class="track"><i style="width:' + pct(ok, es.length) + '%"></i></span></div>';
+    }).join("");
+    h += '<div class="ipair"><div class="ipart"><p class="label teal">Skills: the kind of question</p><div class="bars">' + skillRows + '</div></div>';
+
+    // how sure
+    var sure = log.filter(function (e) { return e.sure; });
+    var unsure = log.filter(function (e) { return !e.sure; });
+    function tile(title, es) {
+      var ok = es.filter(function (e) { return e.ok; }).length;
+      return '<div class="stat"><span class="tl">' + title + '</span>' + (es.length
+        ? '<span class="big">' + pct(ok, es.length) + '%</span><span class="tsub">right: ' + ok + ' of ' + es.length + '</span>'
+        : '<span class="big">none</span><span class="tsub">no answers</span>') + '</div>';
+    }
+    var sureOk = sure.filter(function (e) { return e.ok; }).length;
+    var verdict = !sure.length ? "You did not mark any answer as sure."
+      : sureOk / sure.length >= 0.8 ? "When you felt sure, you were right at least 4 times in 5."
+      : "When you felt sure, you were wrong more than 1 time in 5. Before you press Sure, trace the code line by line.";
+    h += '<div class="ipart"><p class="label teal">How sure you were</p><div class="stats">' +
+      tile("When you pressed Sure", sure) + tile("When you pressed Not sure", unsure) + '</div><p class="note">' + verdict + '</p></div></div>';
+
+    h += '</section>';
+    return h;
+  }
+
   function renderResults() {
     var log = S.log;
     if (S.mode === "class") {
@@ -738,30 +973,9 @@ body.classmode .wrap{max-width:1100px}
       toTop(); focusEl(app.querySelector(".ask"));
       return;
     }
-    var right = log.filter(function (e) { return e.ok; }).length;
-    var hinted = log.filter(function (e) { return e.hints > 0; }).length;
     var g = { sw: [], nw: [], nr: [], sr: [] };
-    log.forEach(function (e) { g[(e.sure ? "s" : "n") + (e.ok ? "r" : "w")].push(e); });
-    function box(k, title, text) {
-      return '<div class="cbox ' + k + '"><div class="num">' + g[k].length + '</div><b>' + title + '</b><span>' + text + '</span></div>';
-    }
-    var h = '<section class="res"><p class="chunk-no">Your results</p>' +
-      '<h2 class="score ask" tabindex="-1">' + right + ' of ' + log.length + ' right</h2>' +
-      '<p>' + (hinted ? "You used a hint on " + plural(hinted, "question") + "." : "You did not use any hints.") + '</p>' +
-      '<div class="conf">' +
-      box("sw", "Sure, but wrong", "Look at these first. Each one shows an idea about Python that needs fixing.") +
-      box("nw", "Not sure, and wrong", "Look at these next. Read why the right answer is right.") +
-      box("nr", "Not sure, but right", "Read these too, so next time you know why.") +
-      box("sr", "Sure, and right", "You knew these.") + '</div></section>';
-
-    var rows = ROUNDS.map(function (r) {
-      var mine = log.filter(function (e) { return QS[QIDX[e.id]].round === r.id; });
-      if (!mine.length) return "";
-      var ok = mine.filter(function (e) { return e.ok; }).length;
-      return '<div class="bar"><span class="t">' + r.n + '. ' + esc(r.title) + '</span><span class="v">' + ok + ' of ' + mine.length + '</span>' +
-        '<span class="track"><i style="width:' + (ok / mine.length * 100).toFixed(0) + '%"></i></span></div>';
-    }).join("");
-    h += '<section class="res"><h2>By round</h2><div class="bars">' + rows + '</div></section>';
+    log.forEach(function (e) { g[markKind(e)].push(e); });
+    var h = infographicHTML(log, g);
 
     var again = g.sw.concat(g.nw, g.nr);
     if (again.length) {
@@ -827,6 +1041,14 @@ body.classmode .wrap{max-width:1100px}
     } else if (act === "again") begin(S.again.slice(), "solo");
     else if (act === "restart") { renderStart(); toTop(); }
     else if (act === "copy") copyText(current() ? current().copy : "", b);
+    else if (act === "practise") {
+      var rid = b.getAttribute("data-round");
+      begin(QS.filter(function (q) { return q.round === rid; }).map(function (q) { return q.id; }), "solo");
+      toTop(); focusEl(app.querySelector(".ask"));
+    } else if (act === "print") {
+      document.body.classList.add("printcard");
+      window.print();
+    }
   });
 
   app.addEventListener("change", function (ev) {
@@ -840,7 +1062,13 @@ body.classmode .wrap{max-width:1100px}
 
   app.addEventListener("toggle", fitCode, true);
 
+  window.addEventListener("afterprint", function () { document.body.classList.remove("printcard"); });
+
   app.addEventListener("input", function (ev) {
+    if (ev.target.id === "cardname") {
+      document.getElementById("cardnameout").textContent = ev.target.value;
+      return;
+    }
     if (ev.target.id !== "typed" || !S) return;
     stateFor(current()).typed = ev.target.value;
     refreshActions();

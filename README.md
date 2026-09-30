@@ -40,10 +40,26 @@ Seven kinds of question, so it is not all multiple choice:
 ## How it works
 
 **On your own.** Pick an answer, then press **Sure** or **Not sure** to check it. Every
-wrong answer has its own reason. At the end you get a score, a score for each round, and
-the questions sorted into four groups: sure and wrong, not sure and wrong, not sure but
-right, sure and right. Sure-and-wrong comes first, because those are the ideas about
-Python that need fixing. One button runs just those questions again.
+wrong answer has its own reason. At the end comes a strengths and weaknesses picture:
+
+- **Strongest topics and Work on next.** Rounds with 4 in 5 right or better are strong;
+  rounds under half right are the ones to work on, each with a **Practise this round**
+  button. A round needs at least 3 answers before it is rated, so a quick quiz says it is
+  too few to tell.
+- **Topic by topic.** One square for each question: a tick or a cross for right or wrong,
+  filled for Sure and outlined for Not sure, so it reads without colour. Each round is
+  rated Strong, Nearly there, or Work on this.
+- **Sure but wrong.** The questions a student felt sure about and got wrong, and where
+  they were. Those show the ideas about Python to fix first.
+- **Skills.** Right answers by kind of question: predicting output, reading errors,
+  choosing the missing code, putting lines in order.
+- **How sure you were.** How often the student was right when they pressed Sure, and when
+  they pressed Not sure.
+
+A student can type their name onto the picture and press **Print this picture** to print
+it on one page (or save it as a PDF) to hand in. Below the picture, the questions are
+sorted into sure and wrong, not sure and wrong, and not sure but right, and one button
+runs just those questions again.
 
 **With a class on a projector.** Bigger text and no score. The class picks an answer,
 then the teacher presses **Show the answer**, which shows the right one and the reason

@@ -452,6 +452,159 @@
     return h;
   }
 
+
+  // ---------------------------------------------------------------- the strengths and weaknesses infographic
+  // Every mark carries its meaning twice: a tick or a cross for right or wrong, and a
+  // filled or outlined square for sure or not sure. Colour is a third, extra signal.
+  var MARK = {
+    sr: { label: "Sure, and right", fill: "#1D5B39", stroke: "#1D5B39", ink: "#FFFFFF", tick: true },
+    nr: { label: "Not sure, but right", fill: "#FFFFFF", stroke: "#1D5B39", ink: "#1D5B39", tick: true },
+    nw: { label: "Not sure, and wrong", fill: "#FFFFFF", stroke: "#8A5A00", ink: "#8A5A00", tick: false },
+    sw: { label: "Sure, but wrong", fill: "#9C2B22", stroke: "#9C2B22", ink: "#FFFFFF", tick: false }
+  };
+  var SKILLS = [
+    { title: "Predicting what code prints", kinds: ["output", "last", "type"] },
+    { title: "Reading error messages", kinds: ["error", "line"] },
+    { title: "Choosing the missing code", kinds: ["blank"] },
+    { title: "Putting lines in order", kinds: ["order"] }
+  ];
+  var BAND = {
+    strong: { label: "Strong", svg: '<circle cx="11" cy="11" r="9" fill="#1D5B39"/><path d="M6.6 11.4l3 3 5.8-6.2" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>' },
+    mid: { label: "Nearly there", svg: '<circle cx="11" cy="11" r="8" fill="#fff" stroke="#8A5A00" stroke-width="2"/><path d="M11 3a8 8 0 0 0 0 16z" fill="#8A5A00"/>' },
+    weak: { label: "Work on this", svg: '<circle cx="11" cy="11" r="9" fill="#9C2B22"/><path d="M11 6.2v6.3" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/><circle cx="11" cy="15.6" r="1.4" fill="#fff"/>' },
+    few: { label: "Too few to tell", svg: '<circle cx="11" cy="11" r="8" fill="#fff" stroke="#6E6858" stroke-width="2"/><circle cx="7.4" cy="11" r="1.3" fill="#6E6858"/><circle cx="11" cy="11" r="1.3" fill="#6E6858"/><circle cx="14.6" cy="11" r="1.3" fill="#6E6858"/>' }
+  };
+  var MIN_TO_RATE = 3; // a round needs this many answers before it is called strong or weak
+
+  function markKind(e) { return (e.sure ? "s" : "n") + (e.ok ? "r" : "w"); }
+
+  function markSVG(k, label) {
+    var m = MARK[k];
+    var path = m.tick ? "M6 11.5l3.3 3.3L16.2 7.8" : "M7.3 7.3l7.4 7.4M14.7 7.3l-7.4 7.4";
+    return '<svg class="mk" width="22" height="22" viewBox="0 0 22 22" role="img" aria-label="' + esc(label) + '">' +
+      '<rect x="1.5" y="1.5" width="19" height="19" rx="4" fill="' + m.fill + '" stroke="' + m.stroke + '" stroke-width="2"/>' +
+      '<path d="' + path + '" fill="none" stroke="' + m.ink + '" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  }
+
+  function bandOf(n, ok) {
+    if (n < MIN_TO_RATE) return "few";
+    if (ok / n >= 0.8) return "strong";
+    if (ok / n >= 0.5) return "mid";
+    return "weak";
+  }
+
+  function badge(k) {
+    return '<span class="band ' + k + '"><svg width="20" height="20" viewBox="0 0 22 22" aria-hidden="true">' + BAND[k].svg +
+      '</svg>' + BAND[k].label + '</span>';
+  }
+
+  function listNames(names) {
+    if (names.length < 2) return names.join("");
+    return names.slice(0, -1).join(", ") + " and " + names[names.length - 1];
+  }
+
+  function pct(ok, n) { return Math.round(ok / n * 100); }
+
+  function infographicHTML(log, g) {
+    var right = log.filter(function (e) { return e.ok; }).length;
+    var hinted = log.filter(function (e) { return e.hints > 0; }).length;
+    var today = new Date().toLocaleDateString(undefined, { day: "numeric", month: "long", year: "numeric" });
+
+    var rows = ROUNDS.map(function (r) {
+      var es = log.filter(function (e) { return QS[QIDX[e.id]].round === r.id; });
+      var ok = es.filter(function (e) { return e.ok; }).length;
+      return { r: r, es: es, n: es.length, ok: ok, band: bandOf(es.length, ok) };
+    }).filter(function (x) { return x.n > 0; });
+    var rated = rows.filter(function (x) { return x.band !== "few"; });
+    var byScoreDown = function (a, b) { return b.ok / b.n - a.ok / a.n || b.n - a.n; };
+    var strong = rated.filter(function (x) { return x.band === "strong"; }).sort(byScoreDown).slice(0, 3);
+    var work = rated.filter(function (x) { return x.band === "weak"; }).sort(byScoreDown).reverse().slice(0, 3);
+    var workIsNear = false;
+    if (!work.length) {
+      work = rated.filter(function (x) { return x.band === "mid"; }).sort(byScoreDown).reverse().slice(0, 2);
+      workIsNear = work.length > 0;
+    }
+
+    function item(x, practise) {
+      return '<li><span class="nm">' + esc(x.r.title) + '</span><span class="sc">' + x.ok + ' of ' + x.n + '</span>' +
+        (practise ? '<button type="button" class="small noprint" data-act="practise" data-round="' + x.r.id + '">Practise this round</button>' : "") + '</li>';
+    }
+
+    var h = '<div class="row noprint cardtools"><label class="namebox">Your name for the picture <input id="cardname" type="text" autocomplete="off" maxlength="40"></label>' +
+      '<button type="button" class="btn quiet" data-act="print">Print this picture</button></div>';
+
+    h += '<section class="infocard" aria-labelledby="cardtitle">';
+    // header
+    h += '<div class="ihead"><div class="ititle"><p class="eyebrow">Beginner Python Quiz · Results</p>' +
+      '<h2 id="cardtitle" class="ask" tabindex="-1">Strengths and weaknesses</h2>' +
+      '<p class="who"><span>Name: <b id="cardnameout" class="nameline"></b></span><span>' + esc(today) + '</span></p></div>' +
+      '<div class="hero"><span class="big">' + right + '</span><span class="of">of ' + log.length + ' right</span>' +
+      '<span class="pc">' + pct(right, log.length) + '% · ' + (hinted ? plural(hinted, "hint") + " used" : "no hints used") + '</span></div></div>';
+
+    // summary
+    h += '<div class="ipart isum"><div class="sumcol good"><p class="label green">Strongest topics</p>';
+    if (strong.length) h += '<ul class="sumlist">' + strong.map(function (x) { return item(x, false); }).join("") + '</ul>';
+    else h += '<p class="note">No topic reached 4 in 5 right yet.</p>';
+    h += '</div><div class="sumcol bad"><p class="label clay">' + (workIsNear ? "Nearly there: work on next" : "Work on next") + '</p>';
+    if (work.length) h += '<ul class="sumlist">' + work.map(function (x) { return item(x, true); }).join("") + '</ul>';
+    else if (rated.length) h += '<p class="note">Every topic had 4 in 5 right or better.</p>';
+    else h += '<p class="note">Each round had fewer than ' + MIN_TO_RATE + ' questions, which is not enough to tell. Try whole rounds to find your strengths and weaknesses.</p>';
+    h += '</div></div>';
+
+    // the ideas to fix first
+    var swCount = {};
+    g.sw.forEach(function (e) { var t = ROUND[QS[QIDX[e.id]].round].title; swCount[t] = (swCount[t] || 0) + 1; });
+    var swRounds = Object.keys(swCount).sort(function (a, b) { return swCount[b] - swCount[a]; });
+    var where = swRounds.length <= 3
+      ? "in " + listNames(swRounds.map(function (t) { return t + " (" + swCount[t] + ")"; }))
+      : "across " + plural(swRounds.length, "topic") + ": they are the filled squares with a cross in the chart below";
+    h += '<p class="fixfirst">' + markSVG("sw", MARK.sw.label) + '<span>' + (g.sw.length
+      ? 'You were sure but wrong on ' + plural(g.sw.length, "question") + ', ' + esc(where) + '. Those show ideas about Python to fix first.'
+      : 'None of your wrong answers were ones you felt sure about.') + '</span></p>';
+
+    // topic by topic
+    h += '<div class="ipart"><p class="label teal">Topic by topic: one square for each question</p><div class="tmap">';
+    rows.forEach(function (x) {
+      h += '<div class="trow"><span class="tn"><span class="tnum">' + x.r.n + '</span>' + esc(x.r.title) + '</span>' +
+        '<span class="dots">' + x.es.map(function (e, i) {
+          var k = markKind(e);
+          return markSVG(k, "Question " + (i + 1) + ": " + MARK[k].label);
+        }).join("") + '</span><span class="tsc">' + x.ok + ' of ' + x.n + '</span>' + badge(x.band) + '</div>';
+    });
+    h += '</div><ul class="ilegend">' + ["sr", "nr", "nw", "sw"].map(function (k) {
+      return '<li>' + markSVG(k, MARK[k].label) + '<b>' + g[k].length + '</b> ' + MARK[k].label + '</li>';
+    }).join("") + '</ul></div>';
+
+    // skills
+    var skillRows = SKILLS.map(function (sk) {
+      var es = log.filter(function (e) { return sk.kinds.indexOf(QS[QIDX[e.id]].kind) >= 0; });
+      if (!es.length) return "";
+      var ok = es.filter(function (e) { return e.ok; }).length;
+      return '<div class="bar"><span class="t">' + sk.title + '</span><span class="v">' + ok + ' of ' + es.length + '</span>' +
+        '<span class="track"><i style="width:' + pct(ok, es.length) + '%"></i></span></div>';
+    }).join("");
+    h += '<div class="ipair"><div class="ipart"><p class="label teal">Skills: the kind of question</p><div class="bars">' + skillRows + '</div></div>';
+
+    // how sure
+    var sure = log.filter(function (e) { return e.sure; });
+    var unsure = log.filter(function (e) { return !e.sure; });
+    function tile(title, es) {
+      var ok = es.filter(function (e) { return e.ok; }).length;
+      return '<div class="stat"><span class="tl">' + title + '</span>' + (es.length
+        ? '<span class="big">' + pct(ok, es.length) + '%</span><span class="tsub">right: ' + ok + ' of ' + es.length + '</span>'
+        : '<span class="big">none</span><span class="tsub">no answers</span>') + '</div>';
+    }
+    var sureOk = sure.filter(function (e) { return e.ok; }).length;
+    var verdict = !sure.length ? "You did not mark any answer as sure."
+      : sureOk / sure.length >= 0.8 ? "When you felt sure, you were right at least 4 times in 5."
+      : "When you felt sure, you were wrong more than 1 time in 5. Before you press Sure, trace the code line by line.";
+    h += '<div class="ipart"><p class="label teal">How sure you were</p><div class="stats">' +
+      tile("When you pressed Sure", sure) + tile("When you pressed Not sure", unsure) + '</div><p class="note">' + verdict + '</p></div></div>';
+
+    h += '</section>';
+    return h;
+  }
+
   function renderResults() {
     var log = S.log;
     if (S.mode === "class") {
@@ -467,30 +620,9 @@
       toTop(); focusEl(app.querySelector(".ask"));
       return;
     }
-    var right = log.filter(function (e) { return e.ok; }).length;
-    var hinted = log.filter(function (e) { return e.hints > 0; }).length;
     var g = { sw: [], nw: [], nr: [], sr: [] };
-    log.forEach(function (e) { g[(e.sure ? "s" : "n") + (e.ok ? "r" : "w")].push(e); });
-    function box(k, title, text) {
-      return '<div class="cbox ' + k + '"><div class="num">' + g[k].length + '</div><b>' + title + '</b><span>' + text + '</span></div>';
-    }
-    var h = '<section class="res"><p class="chunk-no">Your results</p>' +
-      '<h2 class="score ask" tabindex="-1">' + right + ' of ' + log.length + ' right</h2>' +
-      '<p>' + (hinted ? "You used a hint on " + plural(hinted, "question") + "." : "You did not use any hints.") + '</p>' +
-      '<div class="conf">' +
-      box("sw", "Sure, but wrong", "Look at these first. Each one shows an idea about Python that needs fixing.") +
-      box("nw", "Not sure, and wrong", "Look at these next. Read why the right answer is right.") +
-      box("nr", "Not sure, but right", "Read these too, so next time you know why.") +
-      box("sr", "Sure, and right", "You knew these.") + '</div></section>';
-
-    var rows = ROUNDS.map(function (r) {
-      var mine = log.filter(function (e) { return QS[QIDX[e.id]].round === r.id; });
-      if (!mine.length) return "";
-      var ok = mine.filter(function (e) { return e.ok; }).length;
-      return '<div class="bar"><span class="t">' + r.n + '. ' + esc(r.title) + '</span><span class="v">' + ok + ' of ' + mine.length + '</span>' +
-        '<span class="track"><i style="width:' + (ok / mine.length * 100).toFixed(0) + '%"></i></span></div>';
-    }).join("");
-    h += '<section class="res"><h2>By round</h2><div class="bars">' + rows + '</div></section>';
+    log.forEach(function (e) { g[markKind(e)].push(e); });
+    var h = infographicHTML(log, g);
 
     var again = g.sw.concat(g.nw, g.nr);
     if (again.length) {
@@ -556,6 +688,14 @@
     } else if (act === "again") begin(S.again.slice(), "solo");
     else if (act === "restart") { renderStart(); toTop(); }
     else if (act === "copy") copyText(current() ? current().copy : "", b);
+    else if (act === "practise") {
+      var rid = b.getAttribute("data-round");
+      begin(QS.filter(function (q) { return q.round === rid; }).map(function (q) { return q.id; }), "solo");
+      toTop(); focusEl(app.querySelector(".ask"));
+    } else if (act === "print") {
+      document.body.classList.add("printcard");
+      window.print();
+    }
   });
 
   app.addEventListener("change", function (ev) {
@@ -569,7 +709,13 @@
 
   app.addEventListener("toggle", fitCode, true);
 
+  window.addEventListener("afterprint", function () { document.body.classList.remove("printcard"); });
+
   app.addEventListener("input", function (ev) {
+    if (ev.target.id === "cardname") {
+      document.getElementById("cardnameout").textContent = ev.target.value;
+      return;
+    }
     if (ev.target.id !== "typed" || !S) return;
     stateFor(current()).typed = ev.target.value;
     refreshActions();
