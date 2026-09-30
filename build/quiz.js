@@ -136,7 +136,7 @@
     btn.disabled = n === 0;
     var k = ROUNDS.filter(function (r) { return pick.rounds.has(r.id); }).length;
     document.getElementById("startnote").textContent = n
-      ? "Allow about a minute a question. The quick quiz is " + plural(k, "question") + ", one from each chosen round."
+      ? "Allow about a minute a question. The quick quiz is " + (k === 1 ? "1 question from the chosen round." : k + " questions, one from each chosen round.")
       : "";
   }
 
