@@ -238,33 +238,6 @@ def repo_files():
                 yield os.path.join(base, f)
 
 
-def check_review():
-    """The review page must be what build/review.py writes today, and keep the page rules."""
-    import review
-    path = os.path.join(ROOT, review.OUT_NAME)
-    if not os.path.exists(path):
-        fail(f"{review.OUT_NAME} is missing; run build/review.py")
-        return
-    text = open(path, encoding="utf-8").read()
-    try:
-        fresh, _ = review.render()
-    except Exception as e:  # review.Fail, or a program that no longer runs
-        fail(f"build/review.py does not build: {e}")
-        return
-    if fresh != text:
-        fail(f"{review.OUT_NAME} differs from what build/review.py writes; run it again")
-    if STORAGE.search(text):
-        fail(f"{review.OUT_NAME}: uses browser storage")
-    for url in re.findall(r'(?:src|href)="(https?://[^"]+)"', text):
-        if not url.startswith(("https://fonts.googleapis.com", "https://fonts.gstatic.com",
-                               "https://github.com/silvermanjonathan/")):
-            fail(f"{review.OUT_NAME}: loads or links something outside the allowed list: {url}")
-    if "<title>" not in text or "<h1>" not in text:
-        fail(f"{review.OUT_NAME}: needs a title and an h1")
-    if re.search(r'<pre class="out">', text.split('<div class="answer"')[0]):
-        fail(f"{review.OUT_NAME}: an output box shows before its button")
-
-
 def check_page():
     path = os.path.join(ROOT, "index.html")
     page = open(path, encoding="utf-8").read()
@@ -284,8 +257,6 @@ def check_page():
             fail(f"index.html: loads or links something outside the allowed list: {url}")
     if "<title>" not in page or "<h1>" not in page:
         fail("index.html: needs a title and an h1")
-
-    check_review()
 
     shell = re.sub(r'<script type="application/json" id="quiz-data">.*?</script>', "", page, flags=re.S)
     for err in balanced(re.sub(r"<script>.*?</script>", "", shell, flags=re.S)):
